@@ -37,7 +37,10 @@ class SpeechRecognizer {
 
         //print(AVSpeechSynthesisVoice.speechVoices())
 
-        plugins.append(MeuralCanvasPlugin(delegate: self))
+        plugins.append(
+          MeuralCanvasPlugin(delegate: self),
+          TimerPlugin(delegate: self),
+        )
     }
 
     func start() {

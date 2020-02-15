@@ -10,6 +10,7 @@
 		A08CC72123F6645D003CB471 /* PluginProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08CC72023F6645D003CB471 /* PluginProtocol.swift */; };
 		A08CC72423F665D8003CB471 /* MeuralCanvasPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08CC72323F665D8003CB471 /* MeuralCanvasPlugin.swift */; };
 		A08CC72723F6687F003CB471 /* ObjectDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08CC72623F6687F003CB471 /* ObjectDecoder.swift */; };
+		A0FF1E7323F79150003A6183 /* TimerPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FF1E7223F79150003A6183 /* TimerPlugin.swift */; };
 		A0FFBDE923F5306C00EA63A4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FFBDE823F5306C00EA63A4 /* AppDelegate.swift */; };
 		A0FFBDEB23F5306C00EA63A4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FFBDEA23F5306C00EA63A4 /* SceneDelegate.swift */; };
 		A0FFBDED23F5306C00EA63A4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FFBDEC23F5306C00EA63A4 /* ContentView.swift */; };
@@ -23,6 +24,7 @@
 		A08CC72023F6645D003CB471 /* PluginProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginProtocol.swift; sourceTree = "<group>"; };
 		A08CC72323F665D8003CB471 /* MeuralCanvasPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeuralCanvasPlugin.swift; sourceTree = "<group>"; };
 		A08CC72623F6687F003CB471 /* ObjectDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectDecoder.swift; sourceTree = "<group>"; };
+		A0FF1E7223F79150003A6183 /* TimerPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerPlugin.swift; sourceTree = "<group>"; };
 		A0FFBDE523F5306C00EA63A4 /* assistant.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = assistant.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0FFBDE823F5306C00EA63A4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A0FFBDEA23F5306C00EA63A4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -49,6 +51,7 @@
 			isa = PBXGroup;
 			children = (
 				A08CC72323F665D8003CB471 /* MeuralCanvasPlugin.swift */,
+				A0FF1E7223F79150003A6183 /* TimerPlugin.swift */,
 			);
 			path = plugins;
 			sourceTree = "<group>";
@@ -186,6 +189,7 @@
 				A0FFBDE923F5306C00EA63A4 /* AppDelegate.swift in Sources */,
 				A0FFBDFE23F6453E00EA63A4 /* SpeechRecognizer.swift in Sources */,
 				A0FFBDEB23F5306C00EA63A4 /* SceneDelegate.swift in Sources */,
+				A0FF1E7323F79150003A6183 /* TimerPlugin.swift in Sources */,
 				A08CC72723F6687F003CB471 /* ObjectDecoder.swift in Sources */,
 				A08CC72123F6645D003CB471 /* PluginProtocol.swift in Sources */,
 				A0FFBDED23F5306C00EA63A4 /* ContentView.swift in Sources */,
