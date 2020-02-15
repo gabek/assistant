@@ -9,7 +9,11 @@
 import Foundation
 
 class MeuralCanvasPlugin: Plugin {
-    enum Command: String {
+    var commands: [String] {
+      return Command.allCases.map { return $0.rawValue }
+    }
+  
+    enum Command: String, CaseIterable {
         case whatIsShowing = "what painting is showing"
         case next = "next painting"
         case previous = "previous painting"
@@ -29,6 +33,7 @@ class MeuralCanvasPlugin: Plugin {
 
     private let canvasURL = "http://192.168.1.32"
 
+  
     required init(delegate: PluginDelegate) {
         self.delegate = delegate
     }

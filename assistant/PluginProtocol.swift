@@ -10,6 +10,7 @@ import Foundation
 
 protocol Plugin {
     var delegate: PluginDelegate? { get set }
+  var commands: [String] { get }
     init(delegate: PluginDelegate)
     func speechDetected(_ speech: String)
 }
