@@ -9,97 +9,56 @@
 import Foundation
 import Speech
 
-class SpeechRecognizer {
-    private let audioEngine = AVAudioEngine()
-    private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
-    private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en_US"))
-    private var recognitionTask: SFSpeechRecognitionTask?
-    private var endOfCommandTimer: Timer?
-    let audioSession = AVAudioSession.sharedInstance()
-
+class SpeechRecognizer: NSObject {
     fileprivate let speechSynthesizer = AVSpeechSynthesizer()
+    fileprivate var openEarsEventsObserver = OEEventsObserver()
 
     var plugins = [Plugin]()
 
-    init() {
-        try! audioSession.setCategory(.playAndRecord, mode: .measurement, options: .duckOthers)
-        try! audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+  override init() {
+    super.init()
+    plugins.append(MeuralCanvasPlugin(delegate: self))
+    setup()
+  }
 
-        let inputNode = audioEngine.inputNode
-        inputNode.removeTap(onBus: 0)
-        let recordingFormat = inputNode.outputFormat(forBus: 0)
-        inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
-            self.recognitionRequest?.append(buffer)
-        }
+  func start() {
+    
+  }
+  
+  private func generateSpeechRecognitionModels() -> (lmPath: String, dicPath: String)? {
+    let lmGenerator = OELanguageModelGenerator()
+    let phrases = plugins.flatMap { return $0.commands }
+    let name = "assistant"
+    
+    
+    let allowedPhrases = ["OneOfTheseWillBeSaidOnce": phrases]
+    let grammar = ["OneOfTheseWillBeSaidOnce": allowedPhrases]
 
-        audioEngine.prepare()
-        try! audioEngine.start()
+    let err: Error! = lmGenerator.generateGrammar(from: grammar, withFilesNamed: name, forAcousticModelAtPath: OEAcousticModel.path(toModel: "AcousticModelEnglish"))
+//    let err: Error! = lmGenerator.generateLanguageModel(from: words, withFilesNamed: name, forAcousticModelAtPath: OEAcousticModel.path(toModel: "AcousticModelEnglish"))
 
-        //print(AVSpeechSynthesisVoice.speechVoices())
+    if let err = err {
+      fatalError(err.localizedDescription)
+    }
+    
+    guard let lmPath = lmGenerator.pathToSuccessfullyGeneratedLanguageModel(withRequestedName: name) else { return nil }
+    guard let dicPath = lmGenerator.pathToSuccessfullyGeneratedDictionary(withRequestedName: name) else { return nil }
 
-        plugins.append(MeuralCanvasPlugin(delegate: self))
+    return (lmPath: lmPath, dicPath: dicPath)
+  }
+  
+  func setup() {
+    guard let paths = generateSpeechRecognitionModels() else { return }
+    
+    do {
+      try OEPocketsphinxController.sharedInstance().setActive(true) // Setting the shared OEPocketsphinxController active is necessary before any of its properties are accessed.
+    } catch {
+      print("Error: it wasn't possible to set the shared instance to active: \"\(error)\"")
     }
 
-    func start() {
-        restart()
-    }
-
-    func startRecording() throws {
-
-//        recognitionTask?.cancel()
-//        self.recognitionTask = nil
-
-        recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
-        guard let recognitionRequest = recognitionRequest else { fatalError("Unable to create a SFSpeechAudioBufferRecognitionRequest object") }
-        recognitionRequest.shouldReportPartialResults = true
-
-//        if #available(iOS 13, *) {
-            if speechRecognizer?.supportsOnDeviceRecognition ?? false {
-                recognitionRequest.requiresOnDeviceRecognition = true
-            }
-//        }
-
-        recognitionTask = speechRecognizer?.recognitionTask(with: recognitionRequest) { result, error in
-            if let result = result {
-                self.endOfCommandTimer?.invalidate()
-
-                DispatchQueue.main.async {
-                    for transcribedString in result.transcriptions {
-                        self.speechDetected(transcribedString.formattedString)
-                    }
-//                    let transcribedString = result.bestTranscription.formattedString
-//                    self.speechDetected(transcribedString)
-
-                    self.endOfCommandTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { (_) in
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                            self.restart()
-                        }
-                    })
-                }
-            }
-
-            if error != nil {
-//                print(error)
-//                self.audioEngine.stop()
-//                inputNode.removeTap(onBus: 0)
-//                self.recognitionRequest = nil
-//                self.recognitionTask = nil
-//                self.restart()
-            }
-        }
-    }
-
-    private func restart() {
-//        print("Restarting...")
-        //        audioEngine.stop()
-        recognitionRequest?.endAudio()
-        //        recognitionRequest?.
-        recognitionTask?.cancel()
-        //        recognitionRequest = nil
-        //        recognitionTask = nil
-
-        try! startRecording()
-    }
+    OEPocketsphinxController.sharedInstance().startListeningWithLanguageModel(atPath: paths.lmPath, dictionaryAtPath: paths.dicPath, acousticModelAtPath: OEAcousticModel.path(toModel: "AcousticModelEnglish"), languageModelIsJSGF: false)
+    openEarsEventsObserver.delegate = self
+  }
 
     private func speechDetected(_ speech: String) {
         print(speech)
@@ -108,30 +67,39 @@ class SpeechRecognizer {
             plugin.speechDetected(speech.lowercased())
         }
     }
-
-    func requestAuthorization() {
-        SFSpeechRecognizer.requestAuthorization{authStatus in
-            OperationQueue.main.addOperation {
-                switch authStatus {
-                case .authorized: print("authorized")
-                case .restricted: print("restricted")
-                case .notDetermined: print("not determined")
-                case .denied: print("denied")
-                @unknown default:
-                    fatalError()
-                }
-            }
-        }
-    }
 }
 
 extension SpeechRecognizer: PluginDelegate {
     func speak(_ text: String) {
         let utterance = AVSpeechUtterance(string: text)
         utterance.rate = 0.4
-        //utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.ttsbundle.siri_male_en-US_compact")
+        utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.ttsbundle.siri_male_en-US_compact")
         speechSynthesizer.speak(utterance)
     }
+}
 
-
+extension SpeechRecognizer: OEEventsObserverDelegate {
+  func pocketsphinxDidStartListening() {
+    print("Listening...")
+  }
+  
+  func pocketsphinxDidDetectSpeech() {
+    print("*** Did detect speech")
+  }
+  
+  func pocketsphinxDidDetectFinishedSpeech() {
+    print("*** Did finish speech")
+  }
+  
+  func pocketsphinxDidSuspendRecognition() {
+    print("*** Did suspend recognition")
+  }
+  
+  func pocketsphinxDidReceiveHypothesis(_ hypothesis: String!, recognitionScore: String!, utteranceID: String!) {
+    print("*** Speech \(recognitionScore!): \(hypothesis!)")
+    
+    for plugin in plugins {
+      plugin.speechDetected(hypothesis)
+    }
+  }
 }
