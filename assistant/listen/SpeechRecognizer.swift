@@ -37,11 +37,15 @@ class SpeechRecognizer {
 
         //print(AVSpeechSynthesisVoice.speechVoices())
 
-        plugins.append(MeuralCanvasPlugin(delegate: self))
+        
+        plugins += [
+            MeuralCanvasPlugin(delegate: self),
+            WeatherPlugin(delegate: self),
+        ]
     }
 
     func start() {
-        restart()
+        //restart()
     }
 
     func startRecording() throws {
@@ -130,7 +134,7 @@ extension SpeechRecognizer: PluginDelegate {
         let utterance = AVSpeechUtterance(string: text)
         utterance.rate = 0.4
         //utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.ttsbundle.siri_male_en-US_compact")
-        speechSynthesizer.speak(utterance)
+        //speechSynthesizer.speak(utterance)
     }
 
 
