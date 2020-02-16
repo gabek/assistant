@@ -17,7 +17,10 @@ class SpeechRecognizer: NSObject {
 
   override init() {
     super.init()
-    plugins.append(MeuralCanvasPlugin(delegate: self))
+    plugins += [
+        MeuralCanvasPlugin(delegate: self),
+        WeatherPlugin(delegate: self),
+    ]
     setup()
   }
 
@@ -34,8 +37,8 @@ class SpeechRecognizer: NSObject {
     let allowedPhrases = ["OneOfTheseWillBeSaidOnce": phrases]
     let grammar = ["OneOfTheseWillBeSaidOnce": allowedPhrases]
 
-    let err: Error! = lmGenerator.generateGrammar(from: grammar, withFilesNamed: name, forAcousticModelAtPath: OEAcousticModel.path(toModel: "AcousticModelEnglish"))
-//    let err: Error! = lmGenerator.generateLanguageModel(from: words, withFilesNamed: name, forAcousticModelAtPath: OEAcousticModel.path(toModel: "AcousticModelEnglish"))
+//    let err: Error! = lmGenerator.generateGrammar(from: grammar, withFilesNamed: name, forAcousticModelAtPath: OEAcousticModel.path(toModel: "AcousticModelEnglish"))
+    let err: Error! = lmGenerator.generateLanguageModel(from: phrases, withFilesNamed: name, forAcousticModelAtPath: OEAcousticModel.path(toModel: "AcousticModelEnglish"))
 
     if let err = err {
       fatalError(err.localizedDescription)
