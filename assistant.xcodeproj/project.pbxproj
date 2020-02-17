@@ -10,12 +10,13 @@
 		A08CC72123F6645D003CB471 /* PluginProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08CC72023F6645D003CB471 /* PluginProtocol.swift */; };
 		A08CC72423F665D8003CB471 /* MeuralCanvasPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08CC72323F665D8003CB471 /* MeuralCanvasPlugin.swift */; };
 		A08CC72723F6687F003CB471 /* ObjectDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08CC72623F6687F003CB471 /* ObjectDecoder.swift */; };
+		A08CC72923F8DA13003CB471 /* WeatherPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08CC72823F8DA13003CB471 /* WeatherPlugin.swift */; };
+		A0E5786F23F9F6F20019852C /* LightingPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E5786E23F9F6F20019852C /* LightingPlugin.swift */; };
 		A0FF1E6923F78232003A6183 /* Slt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0FF1E6623F78232003A6183 /* Slt.framework */; };
 		A0FF1E6A23F78233003A6183 /* OpenEars.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0FF1E6723F78232003A6183 /* OpenEars.framework */; };
 		A0FF1E6B23F78233003A6183 /* AcousticModelEnglish.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A0FF1E6823F78232003A6183 /* AcousticModelEnglish.bundle */; };
 		A0FF1E6E23F78253003A6183 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0FF1E6D23F78253003A6183 /* AudioToolbox.framework */; };
 		A0FF1E7023F78258003A6183 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0FF1E6F23F78258003A6183 /* AVFoundation.framework */; };
-		A08CC72923F8DA13003CB471 /* WeatherPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08CC72823F8DA13003CB471 /* WeatherPlugin.swift */; };
 		A0FFBDE923F5306C00EA63A4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FFBDE823F5306C00EA63A4 /* AppDelegate.swift */; };
 		A0FFBDEB23F5306C00EA63A4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FFBDEA23F5306C00EA63A4 /* SceneDelegate.swift */; };
 		A0FFBDED23F5306C00EA63A4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FFBDEC23F5306C00EA63A4 /* ContentView.swift */; };
@@ -29,13 +30,14 @@
 		A08CC72023F6645D003CB471 /* PluginProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginProtocol.swift; sourceTree = "<group>"; };
 		A08CC72323F665D8003CB471 /* MeuralCanvasPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeuralCanvasPlugin.swift; sourceTree = "<group>"; };
 		A08CC72623F6687F003CB471 /* ObjectDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectDecoder.swift; sourceTree = "<group>"; };
+		A08CC72823F8DA13003CB471 /* WeatherPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherPlugin.swift; sourceTree = "<group>"; };
+		A0E5786E23F9F6F20019852C /* LightingPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightingPlugin.swift; sourceTree = "<group>"; };
 		A0FF1E6623F78232003A6183 /* Slt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Slt.framework; sourceTree = "<group>"; };
 		A0FF1E6723F78232003A6183 /* OpenEars.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OpenEars.framework; sourceTree = "<group>"; };
 		A0FF1E6823F78232003A6183 /* AcousticModelEnglish.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AcousticModelEnglish.bundle; sourceTree = "<group>"; };
 		A0FF1E6D23F78253003A6183 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		A0FF1E6F23F78258003A6183 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		A0FF1E7123F78283003A6183 /* BridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BridgingHeader.h; sourceTree = "<group>"; };
-		A08CC72823F8DA13003CB471 /* WeatherPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherPlugin.swift; sourceTree = "<group>"; };
 		A0FFBDE523F5306C00EA63A4 /* assistant.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = assistant.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0FFBDE823F5306C00EA63A4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A0FFBDEA23F5306C00EA63A4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -67,6 +69,7 @@
 			children = (
 				A08CC72323F665D8003CB471 /* MeuralCanvasPlugin.swift */,
 				A08CC72823F8DA13003CB471 /* WeatherPlugin.swift */,
+				A0E5786E23F9F6F20019852C /* LightingPlugin.swift */,
 			);
 			path = plugins;
 			sourceTree = "<group>";
@@ -243,6 +246,7 @@
 				A0FFBDE923F5306C00EA63A4 /* AppDelegate.swift in Sources */,
 				A0FFBDFE23F6453E00EA63A4 /* SpeechRecognizer.swift in Sources */,
 				A0FFBDEB23F5306C00EA63A4 /* SceneDelegate.swift in Sources */,
+				A0E5786F23F9F6F20019852C /* LightingPlugin.swift in Sources */,
 				A08CC72723F6687F003CB471 /* ObjectDecoder.swift in Sources */,
 				A08CC72923F8DA13003CB471 /* WeatherPlugin.swift in Sources */,
 				A08CC72123F6645D003CB471 /* PluginProtocol.swift in Sources */,
