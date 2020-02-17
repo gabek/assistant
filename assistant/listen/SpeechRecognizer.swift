@@ -21,6 +21,7 @@ class SpeechRecognizer: NSObject {
         MeuralCanvasPlugin(delegate: self),
         WeatherPlugin(delegate: self),
         LightingPlugin(delegate: self),
+        TimerPlugin(delegate: self),
     ]
     setup()
   }

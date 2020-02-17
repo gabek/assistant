@@ -12,6 +12,7 @@
 		A08CC72723F6687F003CB471 /* ObjectDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08CC72623F6687F003CB471 /* ObjectDecoder.swift */; };
 		A08CC72923F8DA13003CB471 /* WeatherPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08CC72823F8DA13003CB471 /* WeatherPlugin.swift */; };
 		A0E5786F23F9F6F20019852C /* LightingPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E5786E23F9F6F20019852C /* LightingPlugin.swift */; };
+		A0E5787123FA24240019852C /* TimerPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E5787023FA24240019852C /* TimerPlugin.swift */; };
 		A0FF1E6923F78232003A6183 /* Slt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0FF1E6623F78232003A6183 /* Slt.framework */; };
 		A0FF1E6A23F78233003A6183 /* OpenEars.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0FF1E6723F78232003A6183 /* OpenEars.framework */; };
 		A0FF1E6B23F78233003A6183 /* AcousticModelEnglish.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A0FF1E6823F78232003A6183 /* AcousticModelEnglish.bundle */; };
@@ -32,6 +33,7 @@
 		A08CC72623F6687F003CB471 /* ObjectDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectDecoder.swift; sourceTree = "<group>"; };
 		A08CC72823F8DA13003CB471 /* WeatherPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherPlugin.swift; sourceTree = "<group>"; };
 		A0E5786E23F9F6F20019852C /* LightingPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightingPlugin.swift; sourceTree = "<group>"; };
+		A0E5787023FA24240019852C /* TimerPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerPlugin.swift; sourceTree = "<group>"; };
 		A0FF1E6623F78232003A6183 /* Slt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Slt.framework; sourceTree = "<group>"; };
 		A0FF1E6723F78232003A6183 /* OpenEars.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OpenEars.framework; sourceTree = "<group>"; };
 		A0FF1E6823F78232003A6183 /* AcousticModelEnglish.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AcousticModelEnglish.bundle; sourceTree = "<group>"; };
@@ -67,6 +69,7 @@
 		A08CC72223F66562003CB471 /* plugins */ = {
 			isa = PBXGroup;
 			children = (
+				A0E5787023FA24240019852C /* TimerPlugin.swift */,
 				A08CC72323F665D8003CB471 /* MeuralCanvasPlugin.swift */,
 				A08CC72823F8DA13003CB471 /* WeatherPlugin.swift */,
 				A0E5786E23F9F6F20019852C /* LightingPlugin.swift */,
@@ -248,6 +251,7 @@
 				A0FFBDEB23F5306C00EA63A4 /* SceneDelegate.swift in Sources */,
 				A0E5786F23F9F6F20019852C /* LightingPlugin.swift in Sources */,
 				A08CC72723F6687F003CB471 /* ObjectDecoder.swift in Sources */,
+				A0E5787123FA24240019852C /* TimerPlugin.swift in Sources */,
 				A08CC72923F8DA13003CB471 /* WeatherPlugin.swift in Sources */,
 				A08CC72123F6645D003CB471 /* PluginProtocol.swift in Sources */,
 				A0FFBDED23F5306C00EA63A4 /* ContentView.swift in Sources */,
