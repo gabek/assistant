@@ -33,6 +33,7 @@ class SpeechRecognizer: NSObject {
             WeatherPlugin(delegate: self),
             LightingPlugin(delegate: self),
             TimerPlugin(delegate: self),
+            WhiteNoisePlugin(delegate: self),
         ]
         setup()
     }

@@ -20,6 +20,8 @@
 		A0E5787F23FA4AF80019852C /* WeatherFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E5787E23FA4AF80019852C /* WeatherFetcher.swift */; };
 		A0E5788123FA6B120019852C /* UIView+Glow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E5788023FA6B120019852C /* UIView+Glow.swift */; };
 		A0E5788323FA6C350019852C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E5788223FA6C350019852C /* Constants.swift */; };
+		A0E5788523FA77D70019852C /* WhiteNoisePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E5788423FA77D70019852C /* WhiteNoisePlugin.swift */; };
+		A0E5788823FA78970019852C /* rain.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A0E5788723FA78970019852C /* rain.mp3 */; };
 		A0FF1E6923F78232003A6183 /* Slt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0FF1E6623F78232003A6183 /* Slt.framework */; };
 		A0FF1E6A23F78233003A6183 /* OpenEars.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0FF1E6723F78232003A6183 /* OpenEars.framework */; };
 		A0FF1E6B23F78233003A6183 /* AcousticModelEnglish.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A0FF1E6823F78232003A6183 /* AcousticModelEnglish.bundle */; };
@@ -48,6 +50,8 @@
 		A0E5787E23FA4AF80019852C /* WeatherFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherFetcher.swift; sourceTree = "<group>"; };
 		A0E5788023FA6B120019852C /* UIView+Glow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Glow.swift"; sourceTree = "<group>"; };
 		A0E5788223FA6C350019852C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		A0E5788423FA77D70019852C /* WhiteNoisePlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteNoisePlugin.swift; sourceTree = "<group>"; };
+		A0E5788723FA78970019852C /* rain.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = rain.mp3; sourceTree = "<group>"; };
 		A0FF1E6623F78232003A6183 /* Slt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Slt.framework; sourceTree = "<group>"; };
 		A0FF1E6723F78232003A6183 /* OpenEars.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OpenEars.framework; sourceTree = "<group>"; };
 		A0FF1E6823F78232003A6183 /* AcousticModelEnglish.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AcousticModelEnglish.bundle; sourceTree = "<group>"; };
@@ -88,6 +92,7 @@
 				A08CC72323F665D8003CB471 /* MeuralCanvasPlugin.swift */,
 				A08CC72823F8DA13003CB471 /* WeatherPlugin.swift */,
 				A0E5786E23F9F6F20019852C /* LightingPlugin.swift */,
+				A0E5788423FA77D70019852C /* WhiteNoisePlugin.swift */,
 			);
 			path = plugins;
 			sourceTree = "<group>";
@@ -132,6 +137,14 @@
 				A0E5787C23FA45690019852C /* scab-picker.jpg */,
 			);
 			path = wallpapers;
+			sourceTree = "<group>";
+		};
+		A0E5788623FA787F0019852C /* audio */ = {
+			isa = PBXGroup;
+			children = (
+				A0E5788723FA78970019852C /* rain.mp3 */,
+			);
+			path = audio;
 			sourceTree = "<group>";
 		};
 		A0FF1E6323F78232003A6183 /* vendor */ = {
@@ -191,6 +204,7 @@
 		A0FFBDE723F5306C00EA63A4 /* assistant */ = {
 			isa = PBXGroup;
 			children = (
+				A0E5788623FA787F0019852C /* audio */,
 				A0E5787B23FA45550019852C /* wallpapers */,
 				A0E5787823FA34A50019852C /* fonts */,
 				A0E5787523FA2CF80019852C /* extensions */,
@@ -301,6 +315,7 @@
 				A0E5787D23FA45690019852C /* scab-picker.jpg in Resources */,
 				A0FFBDF223F5306F00EA63A4 /* Preview Assets.xcassets in Resources */,
 				A0FFBDEF23F5306F00EA63A4 /* Assets.xcassets in Resources */,
+				A0E5788823FA78970019852C /* rain.mp3 in Resources */,
 				A0E5787A23FA34B90019852C /* digital-7.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -357,6 +372,7 @@
 				A08CC72423F665D8003CB471 /* MeuralCanvasPlugin.swift in Sources */,
 				A0E5787423FA27D60019852C /* MainViewController.swift in Sources */,
 				A0FFBDE923F5306C00EA63A4 /* AppDelegate.swift in Sources */,
+				A0E5788523FA77D70019852C /* WhiteNoisePlugin.swift in Sources */,
 				A0FFBDFE23F6453E00EA63A4 /* SpeechRecognizer.swift in Sources */,
 				A0E5786F23F9F6F20019852C /* LightingPlugin.swift in Sources */,
 				A0E5787F23FA4AF80019852C /* WeatherFetcher.swift in Sources */,
