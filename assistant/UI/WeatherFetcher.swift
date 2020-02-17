@@ -1,56 +1,43 @@
 //
-//  WeatherPlugin.swift
+//  WeatherFetcher.swift
 //  assistant
 //
-//  Created by Gabe Kangas on 2/15/20.
+//  Created by Gabe Kangas on 2/16/20.
 //  Copyright © 2020 Gabe Kangas. All rights reserved.
 //
 
 import Foundation
 
-class WeatherPlugin: Plugin {
-    weak var delegate: PluginDelegate?
-    
-    enum Command: String, CaseIterable {
-        case current = "what is the weather"
-        case forecast = "what is the weather forecast"
+class WeatherFetcher {
+    struct WeatherResponse {
+        var temp: Double
+        var icon: String
     }
     
-    required init(delegate: PluginDelegate) {
-        self.delegate = delegate        
-    }
-    
-    var commands: [String] {
-       return Command.allCases.map { return $0.rawValue }
-    }
-    
-    func speechDetected(_ speech: String) {
-        guard let command = Command(rawValue: speech) else { return }
-        
-        delegate?.commandAcknowledged(speech)
-        
-        if command == .current {
-            getCurrentWeather()
+    func start(completion: @escaping (WeatherResponse?) -> Void) {
+        getCurrentWeather(completion: completion)
+        Timer.scheduledTimer(withTimeInterval: 1.0 * 60, repeats: true) { (_) in
+            self.getCurrentWeather(completion: completion)
         }
     }
     
-    private func getCurrentWeather() {
+    private func getCurrentWeather(completion: @escaping (WeatherResponse?) -> Void) {
         let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?zip=94102,us&units=imperial&appid=93ed55d7ec87196fbea338496a481e4e")!
         
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             guard let data = data else { return }
             do {
                 let response = try ObjectDecoder<CurrentWeatherResponse>().getObjectFrom(jsonData: data, decodingStrategy: .convertFromSnakeCase)
-                self.delegate?.speak(response.speechResponse)
-                print(response.speechResponse)
+                guard let icon = response.weather.first?.icon else { return }
+                let iconURL = "https://openweathermap.org/img/wn/\(icon)@2x.png"
+                let weatherResponse = WeatherResponse(temp: response.main.temp, icon: iconURL)
+                DispatchQueue.main.async {
+                    completion(weatherResponse)
+                }
             } catch {
                 print(error)
             }
         }.resume()
-    }
-    
-    private func getForecast() {
-        let url = "https://api.openweathermap.org/data/2.5/forecast?zip=94102,us&units=imperial&appid=93ed55d7ec87196fbea338496a481e4e"
     }
     
     private struct CurrentWeatherResponse: Codable {

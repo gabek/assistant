@@ -41,6 +41,8 @@ class MeuralCanvasPlugin: Plugin {
     func speechDetected(_ speech: String) {
         guard let command = Command(rawValue: speech) else { return }
 
+        delegate?.commandAcknowledged(speech)
+        
         if command == .whatIsShowing {
             whatIsShowing()
         } else if command == .on {

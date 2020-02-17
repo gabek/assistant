@@ -10,11 +10,12 @@ import Foundation
 
 protocol Plugin {
     var delegate: PluginDelegate? { get set }
-  var commands: [String] { get }
+    var commands: [String] { get }
     init(delegate: PluginDelegate)
     func speechDetected(_ speech: String)
 }
 
 protocol PluginDelegate: class {
     func speak(_ text: String)
+    func commandAcknowledged(_ text: String)
 }

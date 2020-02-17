@@ -51,6 +51,8 @@ class LightingPlugin: Plugin {
     func speechDetected(_ speech: String) {
         guard let command = Command(rawValue: speech) else { return }
         
+        delegate?.commandAcknowledged(speech)
+        
         switch command {
         case .on:
             allLightsOn()
