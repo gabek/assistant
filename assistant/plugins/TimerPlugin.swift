@@ -23,8 +23,6 @@ class TimerPlugin: Plugin {
     
     required init(delegate: PluginDelegate) {
         self.delegate = delegate
-        
-        startTimer()
     }
     
     func speechDetected(_ speech: String) {
@@ -39,11 +37,6 @@ class TimerPlugin: Plugin {
             print(timer.id)
             print(timer.name)
         }
-        //    let timer = Timer.scheduledTimer(withTimeInterval: duration, repeats: false) { (timer) in
-        //      self.timers.removeAll { (singleTimer) -> Bool in
-        //        return singleTimer == timer
-        //      }
-        //    }
         
         timers.append(timer)
     }
