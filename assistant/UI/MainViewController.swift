@@ -33,6 +33,7 @@ class MainViewController: UIViewController {
         clockStackView.addArrangedSubview(answerLabel)
 
         statusStackView.addArrangedSubview(weatherIcon)
+        statusStackView.addArrangedSubview(doNotDisturbIcon)
         
         view.addSubview(statusStackView)
         
@@ -43,11 +44,15 @@ class MainViewController: UIViewController {
             ampmLabel.topAnchor.constraint(equalTo: timeLabel.topAnchor, constant: 15),
             ampmLabel.leftAnchor.constraint(equalTo: timeLabel.rightAnchor, constant: 10),
             
-            statusStackView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 30),
+            statusStackView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 50),
             statusStackView.centerXAnchor.constraint(equalTo: clockStackView.centerXAnchor),
             
             weatherIcon.widthAnchor.constraint(equalToConstant: 110),
             weatherIcon.heightAnchor.constraint(equalToConstant: 110),
+            
+            doNotDisturbIcon.widthAnchor.constraint(equalToConstant: 110),
+            doNotDisturbIcon.heightAnchor.constraint(equalToConstant: 110),
+
         ])
         
         wallpaperImageView.pinToEdges()
@@ -75,7 +80,7 @@ class MainViewController: UIViewController {
         Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { (_) in
             if self.isInSpeechSession { return }
             
-            let dimmingAlpha = 1.0 - (UIScreen.main.brightness * 2.6)
+            let dimmingAlpha = min(1.0 - (UIScreen.main.brightness * 2.6), 0.6)
             if dimmingAlpha == self.dimmingView.alpha { return }
             
             DispatchQueue.main.async {
@@ -118,7 +123,7 @@ class MainViewController: UIViewController {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.spacing = 15
+        stackView.spacing = 45
         stackView.alignment = .center
         return stackView
     }()
@@ -200,6 +205,14 @@ class MainViewController: UIViewController {
         return icon
     }()
     
+    fileprivate let doNotDisturbIcon: StatusButton = {
+        let icon = StatusButton()
+        icon.translatesAutoresizingMaskIntoConstraints = false
+        icon.setImage(UIImage(named: "mute"), for: .normal)
+        icon.setTitle("Mute", for: .normal)
+        return icon
+    }()
+    
     class StatusButton: LayoutableButton {
         init() {
             super.init(frame: .zero)
@@ -208,15 +221,18 @@ class MainViewController: UIViewController {
             titleEdgeInsets = UIEdgeInsets(top: 60, left: 0, bottom: 0, right: 0)
             imageEdgeInsets = UIEdgeInsets(top: -30, left: 0, bottom: 0, right: 0)
             
-            imageView?.tintColor = .green
+            imageView?.tintColor = Constants.itemColor
             
             backgroundColor = UIColor.black.withAlphaComponent(0.5)
-            setTitleColor(.green, for: .normal)
-            titleLabel?.font = UIFont.systemFont(ofSize: 22)
+            setTitleColor(Constants.itemColor, for: .normal)
+            titleLabel?.font = UIFont.boldSystemFont(ofSize: 22)
             titleLabel?.textAlignment = .center
             
-            layer.borderColor = UIColor.green.withAlphaComponent(0.7).cgColor
+            layer.borderColor = Constants.itemColor.withAlphaComponent(0.7).cgColor
             layer.borderWidth = 2.0
+            
+            titleLabel?.enableGlow(with: Constants.itemColor)
+            imageView?.enableGlow(with: Constants.itemColor.withAlphaComponent(0.6))
         }
         
         override func layoutSubviews() {
