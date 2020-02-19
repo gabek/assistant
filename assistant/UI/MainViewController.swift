@@ -63,6 +63,11 @@ class MainViewController: UIViewController {
             guard let weather = weather else { return }
             self.weatherIcon.set(temp: String(Int(weather.temp)), iconURL: weather.icon)
         }
+
+        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { (_) in
+            let dimmingAlpha = 1.0 - (UIScreen.main.brightness * 2.5)
+            self.dimmingView.alpha = dimmingAlpha
+        }
     }
     
     private func setupClock() {
@@ -168,7 +173,6 @@ class MainViewController: UIViewController {
         let dimming = UIView()
         dimming.translatesAutoresizingMaskIntoConstraints = false
         dimming.backgroundColor = .black
-        dimming.alpha = 0.4
         return dimming
     }()
     
