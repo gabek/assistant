@@ -13,6 +13,8 @@ class MainViewController: UIViewController {
     private let speechRecognizer = SpeechRecognizer()
     private let weatherFetcher = WeatherFetcher()
     
+    private var isInSpeechSession = false
+    
     override var prefersStatusBarHidden: Bool {
         return true
     }
@@ -43,6 +45,9 @@ class MainViewController: UIViewController {
             
             statusStackView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 30),
             statusStackView.centerXAnchor.constraint(equalTo: clockStackView.centerXAnchor),
+            
+            weatherIcon.widthAnchor.constraint(equalToConstant: 110),
+            weatherIcon.heightAnchor.constraint(equalToConstant: 110),
         ])
         
         wallpaperImageView.pinToEdges()
@@ -61,12 +66,24 @@ class MainViewController: UIViewController {
         
         weatherFetcher.start { (weather) in
             guard let weather = weather else { return }
-            self.weatherIcon.set(temp: String(Int(weather.temp)), iconURL: weather.icon)
+            self.weatherIcon.set(text: "\(Int(weather.temp))F", iconURL: weather.icon)
         }
 
+        // Check every n seconds to adjust the screen brightness
+        // based on the display brightness so it's not so blinding
+        // in the dark.
         Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { (_) in
-            let dimmingAlpha = 1.0 - (UIScreen.main.brightness * 2.5)
-            self.dimmingView.alpha = dimmingAlpha
+            if self.isInSpeechSession { return }
+            
+            let dimmingAlpha = 1.0 - (UIScreen.main.brightness * 2.6)
+            if dimmingAlpha == self.dimmingView.alpha { return }
+            
+            DispatchQueue.main.async {
+                self.dimmingView.layer.removeAllAnimations()
+                UIView.animate(withDuration: 2.0) {
+                    self.dimmingView.alpha = dimmingAlpha
+                }
+            }
         }
     }
     
@@ -173,55 +190,45 @@ class MainViewController: UIViewController {
         let dimming = UIView()
         dimming.translatesAutoresizingMaskIntoConstraints = false
         dimming.backgroundColor = .black
+        dimming.isUserInteractionEnabled = false
         return dimming
     }()
     
-    fileprivate let weatherIcon: WeatherIcon = {
-        let icon = WeatherIcon()
+    fileprivate let weatherIcon: StatusButton = {
+        let icon = StatusButton()
         icon.translatesAutoresizingMaskIntoConstraints = false
         return icon
     }()
     
-    class WeatherIcon: UIView {
-        private let label: UILabel = {
-            let label = UILabel()
-            label.translatesAutoresizingMaskIntoConstraints = false
-            label.textColor = .white
-            label.font = UIFont.systemFont(ofSize: 20)
-            label.textAlignment = .center
-            return label
-        }()
-        
-        private let icon: UIImageView = {
-            let image = UIImageView()
-            image.translatesAutoresizingMaskIntoConstraints = false
-            image.contentMode = .scaleAspectFit
-            return image
-        }()
-        
-        private let stackView: UIStackView = {
-            let stack = UIStackView()
-            stack.axis = .vertical
-            stack.alignment = .center
-            stack.spacing = 0
-            return stack
-        }()
-        
+    class StatusButton: LayoutableButton {
         init() {
             super.init(frame: .zero)
+            imageVerticalAlignment = .center
+            imageHorizontalAlignment = .center
+            titleEdgeInsets = UIEdgeInsets(top: 60, left: 0, bottom: 0, right: 0)
+            imageEdgeInsets = UIEdgeInsets(top: -30, left: 0, bottom: 0, right: 0)
             
-            addSubview(stackView)
-            stackView.pinToEdges()
-            stackView.addArrangedSubview(icon)
-            stackView.addArrangedSubview(label)
+            imageView?.tintColor = .green
             
-            icon.heightAnchor.constraint(equalToConstant: 75).isActive = true
+            backgroundColor = UIColor.black.withAlphaComponent(0.5)
+            setTitleColor(.green, for: .normal)
+            titleLabel?.font = UIFont.systemFont(ofSize: 22)
+            titleLabel?.textAlignment = .center
+            
+            layer.borderColor = UIColor.green.withAlphaComponent(0.7).cgColor
+            layer.borderWidth = 2.0
         }
         
-        func set(temp: String, iconURL: String) {
+        override func layoutSubviews() {
+            super.layoutSubviews()
+            
+            layer.cornerRadius = frame.size.width / 2
+        }
+        
+        func set(text: String, iconURL: String) {
             guard let url = URL(string: iconURL) else { return }
-            label.text = "\(temp) F"
-            icon.kf.setImage(with: url)
+            kf.setImage(with: url, for: .normal)
+            setTitle(text, for: .normal)
         }
         
         required init?(coder: NSCoder) {
@@ -252,9 +259,11 @@ extension MainViewController: SpeechRecognizerDelegate {
     func displayResponse(_ speech: String) {
         DispatchQueue.main.async {
             self.answerLabel.text = speech
-
+            self.isInSpeechSession = true
+            
             UIView.animate(withDuration: 0.4) {
                 self.answerLabel.alpha = 1.0
+                self.dimmingView.alpha = self.dimmingView.alpha * 0.5
             }
         }
     }
@@ -267,6 +276,7 @@ extension MainViewController: SpeechRecognizerDelegate {
             UIView.animate(withDuration: 1.7) {
                 self.statusStackView.alpha = 1.0
             }
+            self.isInSpeechSession = false
         }
     }
 }
