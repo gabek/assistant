@@ -26,6 +26,10 @@ class WhiteNoisePlugin: Plugin {
         self.delegate = delegate
     }
     
+    func setVolume(_ volume: Float) {
+        player?.setVolume(volume, fadeDuration: 0.6)
+    }
+    
     func speechDetected(_ speech: String) {
         guard let command = Command(rawValue: speech) else { return }
         

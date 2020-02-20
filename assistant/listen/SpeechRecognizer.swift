@@ -23,9 +23,13 @@ class SpeechRecognizer: NSObject {
     weak var delegate: SpeechRecognizerDelegate?
     
     var plugins = [Plugin]()
+    private var whiteNoisePlugin: WhiteNoisePlugin!
     
     override init() {
         super.init()
+        
+        whiteNoisePlugin = WhiteNoisePlugin(delegate: self)
+        
         speechSynthesizer.delegate = self
         
         plugins += [
@@ -33,7 +37,7 @@ class SpeechRecognizer: NSObject {
             WeatherPlugin(delegate: self),
             LightingPlugin(delegate: self),
             TimerPlugin(delegate: self),
-            WhiteNoisePlugin(delegate: self),
+            whiteNoisePlugin,
         ]
         setup()
     }
@@ -90,6 +94,8 @@ extension SpeechRecognizer: PluginDelegate {
         utterance.rate = 0.4
         utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.ttsbundle.siri_male_en-US_compact")
         speechSynthesizer.speak(utterance)
+        
+        whiteNoisePlugin.setVolume(0.4)
     }
 }
 
@@ -138,5 +144,6 @@ extension SpeechRecognizer: OEEventsObserverDelegate {
 extension SpeechRecognizer: AVSpeechSynthesizerDelegate {
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
         delegate?.didFinishSpeaking()
+        whiteNoisePlugin.setVolume(1.0)
     }
 }
