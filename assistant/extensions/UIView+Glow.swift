@@ -28,7 +28,7 @@ extension UIView {
         
         let radiusAnimation = CABasicAnimation(keyPath: "shadowRadius")
         radiusAnimation.fromValue = 10.0
-        radiusAnimation.toValue = 14.0
+        radiusAnimation.toValue = 16.0
         radiusAnimation.repeatCount = .infinity
         radiusAnimation.duration = 2.5
         radiusAnimation.autoreverses = true

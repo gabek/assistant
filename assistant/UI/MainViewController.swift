@@ -8,12 +8,25 @@
 
 import Foundation
 import Kingfisher
+import RxSwift
 
 class MainViewController: UIViewController {
+    private let disposeBag = DisposeBag()
+    
     private let speechRecognizer = SpeechRecognizer()
     private let weatherFetcher = WeatherFetcher()
     
     private var isInSpeechSession = false
+    private var isInDayMode = false {
+        didSet {
+            dimmingView.alpha = 0.0
+            let title = isInDayMode ? "Day" : "Night"
+            let imageName = isInDayMode ? "day-mode" : "night-mode"
+            let image = UIImage(named: imageName)!
+            dayNightButton.setImage(image, for: .normal)
+            dayNightButton.setTitle(title, for: .normal)
+        }
+    }
     
     override var prefersStatusBarHidden: Bool {
         return true
@@ -34,6 +47,7 @@ class MainViewController: UIViewController {
 
         statusStackView.addArrangedSubview(weatherIcon)
         statusStackView.addArrangedSubview(doNotDisturbIcon)
+        statusStackView.addArrangedSubview(dayNightButton)
         
         view.addSubview(statusStackView)
         
@@ -52,6 +66,9 @@ class MainViewController: UIViewController {
             
             doNotDisturbIcon.widthAnchor.constraint(equalToConstant: 110),
             doNotDisturbIcon.heightAnchor.constraint(equalToConstant: 110),
+
+            dayNightButton.widthAnchor.constraint(equalToConstant: 110),
+            dayNightButton.heightAnchor.constraint(equalToConstant: 110),
 
         ])
         
@@ -78,16 +95,28 @@ class MainViewController: UIViewController {
         // based on the display brightness so it's not so blinding
         // in the dark.
         Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { (_) in
-            if self.isInSpeechSession { return }
-            
-            let dimmingAlpha = min(1.0 - (UIScreen.main.brightness * 2.6), 0.6)
-            if dimmingAlpha == self.dimmingView.alpha { return }
-            
-            DispatchQueue.main.async {
-                self.dimmingView.layer.removeAllAnimations()
-                UIView.animate(withDuration: 2.0) {
-                    self.dimmingView.alpha = dimmingAlpha
-                }
+            self.handleScreenBrightness()
+        }
+        
+        // Toggle day/night mode via button
+        dayNightButton.rx.tap.subscribe(onNext: { [weak self] _ in
+            self?.isInDayMode.toggle()
+            self?.handleScreenBrightness()
+        }).disposed(by: disposeBag)
+        
+        isInDayMode = false
+    }
+    
+    private func handleScreenBrightness() {
+        if self.isInSpeechSession || self.isInDayMode { return }
+        
+        let dimmingAlpha = min(1.0 - (UIScreen.main.brightness * 2.6), 0.6)
+        if dimmingAlpha == self.dimmingView.alpha { return }
+        
+        DispatchQueue.main.async {
+            self.dimmingView.layer.removeAllAnimations()
+            UIView.animate(withDuration: 2.0) {
+                self.dimmingView.alpha = dimmingAlpha
             }
         }
     }
@@ -196,6 +225,7 @@ class MainViewController: UIViewController {
         dimming.translatesAutoresizingMaskIntoConstraints = false
         dimming.backgroundColor = .black
         dimming.isUserInteractionEnabled = false
+        dimming.alpha = 0.0
         return dimming
     }()
     
@@ -210,6 +240,12 @@ class MainViewController: UIViewController {
         icon.translatesAutoresizingMaskIntoConstraints = false
         icon.setImage(UIImage(named: "mute"), for: .normal)
         icon.setTitle("Mute", for: .normal)
+        return icon
+    }()
+    
+    fileprivate let dayNightButton: StatusButton = {
+        let icon = StatusButton()
+        icon.translatesAutoresizingMaskIntoConstraints = false
         return icon
     }()
     
