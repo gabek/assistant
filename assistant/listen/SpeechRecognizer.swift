@@ -52,16 +52,15 @@ class SpeechRecognizer: NSObject {
         let name = "assistant"
         
         let allowedPhrases = ["OneOfTheseWillBeSaidOnce": phrases]
-        let grammar = ["OneOfTheseWillBeSaidOnce": allowedPhrases]
+        let grammar = ["ThisWillBeSaidOnce": allowedPhrases]
         
-//        let err: Error! = lmGenerator.generateGrammar(from: grammar, withFilesNamed: name, forAcousticModelAtPath: OEAcousticModel.path(toModel: "AcousticModelEnglish"))
-        let err: Error! = lmGenerator.generateLanguageModel(from: phrases, withFilesNamed: name, forAcousticModelAtPath: OEAcousticModel.path(toModel: "AcousticModelEnglish"))
+        let err: Error! = lmGenerator.generateGrammar(from: grammar, withFilesNamed: name, forAcousticModelAtPath: OEAcousticModel.path(toModel: "AcousticModelEnglish"))
         
         if let err = err {
             fatalError(err.localizedDescription)
         }
         
-        guard let lmPath = lmGenerator.pathToSuccessfullyGeneratedLanguageModel(withRequestedName: name) else { return nil }
+        guard let lmPath = lmGenerator.pathToSuccessfullyGeneratedGrammar(withRequestedName: name) else { return nil }
         guard let dicPath = lmGenerator.pathToSuccessfullyGeneratedDictionary(withRequestedName: name) else { return nil }
         
         return (lmPath: lmPath, dicPath: dicPath)
@@ -70,6 +69,8 @@ class SpeechRecognizer: NSObject {
     func setup() {
         guard let paths = generateSpeechRecognitionModels() else { return }
         
+//        OELogging.startOpenEarsLogging()
+        
         do {
             try OEPocketsphinxController.sharedInstance().setActive(true) // Setting the shared OEPocketsphinxController active is necessary before any of its properties are accessed.
         } catch {
@@ -77,7 +78,7 @@ class SpeechRecognizer: NSObject {
         }
         openEarsEventsObserver.delegate = self
         OEPocketsphinxController.sharedInstance().disablePreferredBufferSize = true
-        OEPocketsphinxController.sharedInstance().startListeningWithLanguageModel(atPath: paths.lmPath, dictionaryAtPath: paths.dicPath, acousticModelAtPath: OEAcousticModel.path(toModel: "AcousticModelEnglish"), languageModelIsJSGF: false)
+        OEPocketsphinxController.sharedInstance().startListeningWithLanguageModel(atPath: paths.lmPath, dictionaryAtPath: paths.dicPath, acousticModelAtPath: OEAcousticModel.path(toModel: "AcousticModelEnglish"), languageModelIsJSGF: true)
     }
 }
 
