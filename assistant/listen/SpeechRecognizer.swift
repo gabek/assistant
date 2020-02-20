@@ -71,9 +71,9 @@ class SpeechRecognizer: NSObject {
         } catch {
             print("Error: it wasn't possible to set the shared instance to active: \"\(error)\"")
         }
-        
-        OEPocketsphinxController.sharedInstance().startListeningWithLanguageModel(atPath: paths.lmPath, dictionaryAtPath: paths.dicPath, acousticModelAtPath: OEAcousticModel.path(toModel: "AcousticModelEnglish"), languageModelIsJSGF: false)
         openEarsEventsObserver.delegate = self
+        OEPocketsphinxController.sharedInstance().disablePreferredBufferSize = true
+        OEPocketsphinxController.sharedInstance().startListeningWithLanguageModel(atPath: paths.lmPath, dictionaryAtPath: paths.dicPath, acousticModelAtPath: OEAcousticModel.path(toModel: "AcousticModelEnglish"), languageModelIsJSGF: false)
     }
 }
 
@@ -116,6 +116,22 @@ extension SpeechRecognizer: OEEventsObserverDelegate {
         for plugin in plugins {
             plugin.speechDetected(hypothesis)
         }
+    }
+    
+    func audioSessionInterruptionDidEnd() {
+        print("audioSessionInterruptionDidEnd")
+    }
+    
+    func audioSessionInterruptionDidBegin() {
+        print("audioSessionInterruptionDidBegin")
+    }
+    
+    func audioRouteDidChange(toRoute newRoute: String!) {
+        print(newRoute)
+    }
+    
+    func pocketsphinxFailedNoMicPermissions() {
+        print(pocketsphinxFailedNoMicPermissions)
     }
 }
 
