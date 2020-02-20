@@ -103,11 +103,11 @@ class LightingPlugin: Plugin {
         }
     }
     
-    private func allLightsOn() {
+    func allLightsOn() {
         sendSimpleCommand("/groups/0/action", command: "{\"on\":true}")
     }
 
-    private func allLightsOff() {
+    func allLightsOff() {
         sendSimpleCommand("/groups/0/action", command: "{\"on\":false}")
     }
     

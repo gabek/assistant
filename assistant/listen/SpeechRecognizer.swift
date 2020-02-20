@@ -24,20 +24,28 @@ class SpeechRecognizer: NSObject {
     
     var plugins = [Plugin]()
     private var whiteNoisePlugin: WhiteNoisePlugin!
+    private var compoundCommandPlugin: CompoundCommandPlugin!
+    private var lightingPlugin: LightingPlugin!
+    private var canvasPlugin: MeuralCanvasPlugin!
     
     override init() {
         super.init()
         
         whiteNoisePlugin = WhiteNoisePlugin(delegate: self)
+        compoundCommandPlugin = CompoundCommandPlugin(delegate: self)
+        lightingPlugin = LightingPlugin(delegate: self)
+        canvasPlugin = MeuralCanvasPlugin(delegate: self)
         
         speechSynthesizer.delegate = self
+        compoundCommandPlugin.pluginDelegate = self
         
         plugins += [
-            MeuralCanvasPlugin(delegate: self),
+            canvasPlugin,
             WeatherPlugin(delegate: self),
-            LightingPlugin(delegate: self),
+            lightingPlugin,
             TimerPlugin(delegate: self),
             whiteNoisePlugin,
+            compoundCommandPlugin
         ]
         setup()
     }
@@ -51,8 +59,10 @@ class SpeechRecognizer: NSObject {
         let phrases = plugins.flatMap { return $0.commands }
         let name = "assistant"
         
-        let allowedPhrases = ["OneOfTheseWillBeSaidOnce": phrases]
-        let grammar = ["ThisWillBeSaidOnce": allowedPhrases]
+        let grammar = [ThisWillBeSaidOnce : [
+            [ OneOfTheseWillBeSaidOnce : [Constants.prefixPhrase]],
+            [ OneOfTheseWillBeSaidOnce : phrases]]
+        ]
         
         let err: Error! = lmGenerator.generateGrammar(from: grammar, withFilesNamed: name, forAcousticModelAtPath: OEAcousticModel.path(toModel: "AcousticModelEnglish"))
         
@@ -120,8 +130,10 @@ extension SpeechRecognizer: OEEventsObserverDelegate {
     func pocketsphinxDidReceiveHypothesis(_ hypothesis: String!, recognitionScore: String!, utteranceID: String!) {
         print("*** Speech \(recognitionScore!): \(hypothesis!)")
         
+        let removedPrefixPhrase = hypothesis.replacingOccurrences(of: Constants.prefixPhrase, with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+        
         for plugin in plugins {
-            plugin.speechDetected(hypothesis)
+            plugin.speechDetected(removedPrefixPhrase)
         }
     }
     
@@ -147,4 +159,15 @@ extension SpeechRecognizer: AVSpeechSynthesizerDelegate {
         delegate?.didFinishSpeaking()
         whiteNoisePlugin.setVolume(1.0)
     }
+}
+
+extension SpeechRecognizer: CompoundCommandPluginDelegate {
+    func goodnight() {
+        lightingPlugin.allLightsOff()
+        canvasPlugin.off()
+        whiteNoisePlugin.start()
+        
+        speak("Goodnight!")
+    }
+    
 }

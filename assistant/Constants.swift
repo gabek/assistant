@@ -10,4 +10,5 @@ import Foundation
 
 class Constants {
     static let itemColor = UIColor.green
+    static let prefixPhrase = "hey computer"
 }

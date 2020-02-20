@@ -64,11 +64,11 @@ class MeuralCanvasPlugin: Plugin {
         }
     }
     
-    private func on() {
+    func on() {
         sendSimpleCommand(.on)
     }
     
-    private func off() {
+    func off() {
         sendSimpleCommand(.off)
     }
     
