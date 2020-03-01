@@ -85,7 +85,6 @@ class LightingPlugin: Plugin {
         } else {
             allLightsOn()
         }
-        lightsAreOn.toggle()
     }
     
     func speechDetected(_ speech: String) {
@@ -138,8 +137,6 @@ class LightingPlugin: Plugin {
             changeBrightness(percent: -90)
         case .dim100:
             changeBrightness(percent: -100)
-        @unknown default:
-            fatalError()
         }
     }
     

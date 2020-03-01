@@ -66,7 +66,7 @@ class WeatherPlugin: Plugin {
     }
     
     private func getForecast() {
-        let url = "https://api.openweathermap.org/data/2.5/forecast?zip=94102,us&units=imperial&appid=93ed55d7ec87196fbea338496a481e4e"
+//        let url = "https://api.openweathermap.org/data/2.5/forecast?zip=94102,us&units=imperial&appid=93ed55d7ec87196fbea338496a481e4e"
     }
     
     private struct CurrentWeatherResponse: Codable {
