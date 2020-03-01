@@ -30,21 +30,23 @@ class SpeechRecognizer: NSObject {
     
     private func generateSpeechRecognitionModels() -> (lmPath: String, dicPath: String)? {
         let lmGenerator = OELanguageModelGenerator()
-        let phrases = plugins.flatMap { return $0.commands }
+        let phrases = plugins.flatMap { return $0.commands } + [Constants.prefixPhrase]
         let name = "assistant"
         
-        let grammar = [ThisWillBeSaidOnce : [
-            [OneOfTheseWillBeSaidOnce: [Constants.prefixPhrase]],
-            [OneOfTheseWillBeSaidOnce: phrases]]
-        ]
+//        let grammar = [ThisWillBeSaidOnce : [
+//            [OneOfTheseWillBeSaidOnce: [Constants.prefixPhrase]],
+//            [OneOfTheseWillBeSaidOnce: phrases]]
+//        ]
+//
+//        let err: Error! = lmGenerator.generateGrammar(from: grammar, withFilesNamed: name, forAcousticModelAtPath: OEAcousticModel.path(toModel: "AcousticModelEnglish"))
         
-        let err: Error! = lmGenerator.generateGrammar(from: grammar, withFilesNamed: name, forAcousticModelAtPath: OEAcousticModel.path(toModel: "AcousticModelEnglish"))
-        
+        let err: Error! = lmGenerator.generateLanguageModel(from: phrases, withFilesNamed: name, forAcousticModelAtPath: OEAcousticModel.path(toModel: "AcousticModelEnglish"))
         if let err = err {
             fatalError(err.localizedDescription)
         }
-        
-        guard let lmPath = lmGenerator.pathToSuccessfullyGeneratedGrammar(withRequestedName: name) else { return nil }
+  
+        guard let lmPath = lmGenerator.pathToSuccessfullyGeneratedLanguageModel(withRequestedName: name) else { return nil }
+//        guard let lmPath = lmGenerator.pathToSuccessfullyGeneratedGrammar(withRequestedName: name) else { return nil }
         guard let dicPath = lmGenerator.pathToSuccessfullyGeneratedDictionary(withRequestedName: name) else { return nil }
         
         return (lmPath: lmPath, dicPath: dicPath)
@@ -62,7 +64,7 @@ class SpeechRecognizer: NSObject {
         }
         openEarsEventsObserver.delegate = self
         OEPocketsphinxController.sharedInstance().disablePreferredBufferSize = true
-        OEPocketsphinxController.sharedInstance().startListeningWithLanguageModel(atPath: paths.lmPath, dictionaryAtPath: paths.dicPath, acousticModelAtPath: OEAcousticModel.path(toModel: "AcousticModelEnglish"), languageModelIsJSGF: true)
+        OEPocketsphinxController.sharedInstance().startListeningWithLanguageModel(atPath: paths.lmPath, dictionaryAtPath: paths.dicPath, acousticModelAtPath: OEAcousticModel.path(toModel: "AcousticModelEnglish"), languageModelIsJSGF: false)
     }
 }
 
@@ -84,6 +86,9 @@ extension SpeechRecognizer: OEEventsObserverDelegate {
     func pocketsphinxDidReceiveHypothesis(_ hypothesis: String!, recognitionScore: String!, utteranceID: String!) {
         print("*** Speech \(recognitionScore!): \(hypothesis!)")
         
+        if !hypothesis.contains(Constants.prefixPhrase) {
+            return
+        }
         let removedPrefixPhrase = hypothesis.replacingOccurrences(of: Constants.prefixPhrase, with: "").trimmingCharacters(in: .whitespacesAndNewlines)
         
         for plugin in plugins {
