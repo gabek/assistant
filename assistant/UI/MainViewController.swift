@@ -17,9 +17,11 @@ class MainViewController: UIViewController {
     private var compoundCommandPlugin: CompoundCommandPlugin!
     private var lightingPlugin: LightingPlugin!
     private var canvasPlugin: MeuralCanvasPlugin!
-
+    
     private let speechRecognizer = SpeechRecognizer()
     fileprivate let textToSpeech = TextToSpeech()
+    
+    fileprivate let audioEngine = AVAudioEngine()
     
     fileprivate var doNotDisturbEnabled = false {
         didSet {
@@ -30,7 +32,7 @@ class MainViewController: UIViewController {
             doNotDisturbOutline.layer.borderWidth = width
         }
     }
-
+    
     private var isInSpeechSession = false
     private var isInDayMode = false {
         didSet {
@@ -48,8 +50,10 @@ class MainViewController: UIViewController {
     }
     
     override func viewDidLoad() {
+        view.layer.borderColor = UIColor.systemPurple.withAlphaComponent(0.3).cgColor
+        
         speechRecognizer.delegate = self
-                
+        
         view.addSubview(wallpaperImageView)
         view.addSubview(clockStackView)
         view.addSubview(ampmLabel)
@@ -59,7 +63,7 @@ class MainViewController: UIViewController {
         clockStackView.setCustomSpacing(40, after: dateLabel)
         clockStackView.addArrangedSubview(questionLabel)
         clockStackView.addArrangedSubview(answerLabel)
-
+        
         statusStackView.addArrangedSubview(doNotDisturbButton)
         statusStackView.addArrangedSubview(dayNightButton)
         
@@ -77,13 +81,13 @@ class MainViewController: UIViewController {
             
             doNotDisturbButton.widthAnchor.constraint(equalToConstant: 110),
             doNotDisturbButton.heightAnchor.constraint(equalToConstant: 110),
-
+            
             dayNightButton.widthAnchor.constraint(equalToConstant: 110),
             dayNightButton.heightAnchor.constraint(equalToConstant: 110),
         ])
         
         wallpaperImageView.pinToEdges()
-
+        
         setupClock()
         
         view.addSubview(dimmingView)
@@ -117,7 +121,7 @@ class MainViewController: UIViewController {
                 button.heightAnchor.constraint(equalToConstant: 110),
             ])
         }
-
+        
         // Check every n seconds to adjust the screen brightness
         // based on the display brightness so it's not so blinding
         // in the dark.
@@ -135,6 +139,52 @@ class MainViewController: UIViewController {
         doNotDisturbEnabled = false
         
         doNotDisturbButton.addTarget(self, action: #selector(toggleDoNotDisturb), for: .touchUpInside)
+        
+        let inputNode = audioEngine.inputNode
+        let bus = 0
+        inputNode.installTap(onBus: bus, bufferSize: 2048, format: inputNode.inputFormat(forBus: bus)) {
+            (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
+            
+            if !self.isInSpeechSession { return }
+            
+            func scaledPower(power: Float) -> Float {
+                let minDb: Float = -40.0
+                
+                guard power.isFinite else { return 0.0 }
+                
+                if power < minDb {
+                    return 0.0
+                } else if power >= 1.0 {
+                    return 1.0
+                } else {
+                    return (abs(minDb) - abs(power)) / abs(minDb)
+                }
+            }
+                        
+            guard let channelData = buffer.floatChannelData else { return }
+            
+            let channelDataValue = channelData.pointee
+            let channelDataValueArray = stride(from: 0,
+                                               to: Int(buffer.frameLength),
+                                               by: buffer.stride).map{ channelDataValue[$0] }
+            
+            let value = channelDataValueArray.map{ $0 * $0 }.reduce(0, +) / Float(buffer.frameLength)
+            let rms = sqrt(value)
+            let avgPower = 20 * log10(rms)
+            let meterLevel = scaledPower(power: avgPower)
+            
+            let borderWidth: CGFloat = max(4.0, CGFloat(meterLevel * 80.0))
+            DispatchQueue.main.async {
+                self.view.layer.borderWidth = borderWidth
+            }
+        }
+        
+        audioEngine.prepare()
+        do {
+            try audioEngine.start()
+        } catch {
+            print(error)
+        }
     }
     
     private func handleScreenBrightness() {
@@ -164,7 +214,7 @@ class MainViewController: UIViewController {
         
         let ampmFormatter = DateFormatter()
         ampmFormatter.dateFormat = "a"
-
+        
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (_) in
             let date = Date()
             self.timeLabel.text = timeFormatter.string(from: date)
@@ -297,7 +347,7 @@ extension MainViewController: SpeechRecognizerDelegate {
     func speechDetected(_ speech: String) {
         DispatchQueue.main.async {
             self.questionLabel.text = "\"\(speech)\""
-
+            
             UIView.animate(withDuration: 0.2) {
                 self.statusStackView.alpha = 0
             }
@@ -326,16 +376,16 @@ extension MainViewController: SpeechRecognizerDelegate {
     
     func didFinishSpeaking() {
         whiteNoisePlugin.setVolume(1.0)
-
+        
         UIView.animate(withDuration: 2.5, animations: {
             self.questionLabel.alpha = 0
             self.answerLabel.alpha = 0
-            self.view.layer.borderWidth = 0.0
         }) { (_) in
             UIView.animate(withDuration: 1.7) {
                 self.statusStackView.alpha = 1.0
             }
             self.isInSpeechSession = false
+            self.view.layer.borderWidth = 0.0
         }
     }
 }
@@ -352,8 +402,7 @@ extension MainViewController: PluginDelegate {
             textToSpeech.speak(text)
             
             DispatchQueue.main.async {
-                self.view.layer.borderColor = UIColor.systemPurple.withAlphaComponent(0.5).cgColor
-                self.view.layer.borderWidth = 3.0
+                //                self.view.layer.borderWidth = 3.0
                 self.view.layer.cornerRadius = 22.0
             }
         }
