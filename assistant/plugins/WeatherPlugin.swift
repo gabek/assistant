@@ -22,8 +22,10 @@ class WeatherPlugin: Plugin {
         
         weatherFetcher.start { (weather) in
             guard let weather = weather else { return }
-            self.weatherIcon.set(text: "\(Int(weather.temp))F", iconURL: weather.icon)
+            self.weatherButton.set(text: "\(Int(weather.temp))F", iconURL: weather.icon)
         }
+        
+        weatherButton.addTarget(self, action: #selector(getCurrentWeather), for: .touchUpInside)
     }
     
     var commands: [String] {
@@ -31,10 +33,10 @@ class WeatherPlugin: Plugin {
     }
     
     var actionButton: UIButton? {
-        return weatherIcon
+        return weatherButton
     }
 
-    fileprivate let weatherIcon: StatusButton = {
+    fileprivate let weatherButton: StatusButton = {
         let icon = StatusButton()
         icon.translatesAutoresizingMaskIntoConstraints = false
         return icon
@@ -50,7 +52,7 @@ class WeatherPlugin: Plugin {
         }
     }
     
-    private func getCurrentWeather() {
+    @objc private func getCurrentWeather() {
         let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?zip=94102,us&units=imperial&appid=93ed55d7ec87196fbea338496a481e4e")!
         
         URLSession.shared.dataTask(with: url) { (data, response, error) in

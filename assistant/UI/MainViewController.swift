@@ -51,7 +51,8 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         view.layer.borderColor = UIColor.systemPurple.withAlphaComponent(0.3).cgColor
-        
+        view.layer.cornerRadius = 22.0
+
         speechRecognizer.delegate = self
         
         view.addSubview(wallpaperImageView)
@@ -223,6 +224,20 @@ class MainViewController: UIViewController {
         }
     }
     
+    fileprivate func removeActionButtons() {
+        UIView.animate(withDuration: 0.2) {
+            self.statusStackView.alpha = 0
+        }
+        
+        UIView.animate(withDuration: 0.4) {
+            self.questionLabel.alpha = 1.0
+        }
+        
+        Timer.scheduledTimer(withTimeInterval: 10.0, repeats: false) { (_) in
+            self.didFinishSpeaking()
+        }
+    }
+    
     private let clockStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -348,17 +363,7 @@ extension MainViewController: SpeechRecognizerDelegate {
         DispatchQueue.main.async {
             self.questionLabel.text = "\"\(speech)\""
             
-            UIView.animate(withDuration: 0.2) {
-                self.statusStackView.alpha = 0
-            }
-            
-            UIView.animate(withDuration: 0.4) {
-                self.questionLabel.alpha = 1.0
-            }
-            
-            Timer.scheduledTimer(withTimeInterval: 10.0, repeats: false) { (_) in
-                self.didFinishSpeaking()
-            }
+            self.removeActionButtons()
         }
     }
     
@@ -396,15 +401,16 @@ extension MainViewController: PluginDelegate {
     }
     
     func speak(_ text: String) {
+        DispatchQueue.main.async {
+            self.removeActionButtons()
+        }
+        
         displayResponse(text)
         whiteNoisePlugin.setVolume(0.4)
         if !doNotDisturbEnabled {
             textToSpeech.speak(text)
             
-            DispatchQueue.main.async {
-                //                self.view.layer.borderWidth = 3.0
-                self.view.layer.cornerRadius = 22.0
-            }
+
         }
     }
 }
