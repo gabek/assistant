@@ -42,6 +42,10 @@ class MeuralCanvasPlugin: Plugin {
     
     private let canvasURL = "http://192.168.1.32"
     
+    var actionButton: UIButton? {
+        return nil
+    }
+
     required init(delegate: PluginDelegate) {
         self.delegate = delegate        
     }

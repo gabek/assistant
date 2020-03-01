@@ -16,14 +16,42 @@ class WhiteNoisePlugin: Plugin {
         case stop = "stop rain"
     }
     
+    private var isSoundPlaying = false {
+        didSet {
+            let title = isSoundPlaying ? "Stop" : "Start"
+            noiseButton.setTitle(title, for: .normal)
+        }
+    }
+    
     private var player: AVAudioPlayer?
     
     var commands: [String] {
         return Command.allCases.map { return $0.rawValue }
     }
     
+    var actionButton: UIButton? {
+        return noiseButton
+    }
+
+    fileprivate let noiseButton: StatusButton = {
+        let icon = StatusButton()
+        icon.translatesAutoresizingMaskIntoConstraints = false
+        icon.setTitle("Start", for: .normal)
+        return icon
+    }()
+
     required init(delegate: PluginDelegate) {
         self.delegate = delegate
+        
+        noiseButton.addTarget(self, action: #selector(toggleSound), for: .touchUpInside)
+    }
+    
+    @objc private func toggleSound() {
+        if isSoundPlaying {
+            stop()
+        } else {
+            start()
+        }
     }
     
     func setVolume(_ volume: Float) {
@@ -49,11 +77,14 @@ class WhiteNoisePlugin: Plugin {
         } catch {
             print(error)
         }
+        
+        isSoundPlaying = true
     }
     
     func stop() {
         player?.stop()
         player = nil
+        isSoundPlaying = false
     }
     
 }

@@ -13,9 +13,24 @@ import RxSwift
 class MainViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
+    private var whiteNoisePlugin: WhiteNoisePlugin!
+    private var compoundCommandPlugin: CompoundCommandPlugin!
+    private var lightingPlugin: LightingPlugin!
+    private var canvasPlugin: MeuralCanvasPlugin!
+
     private let speechRecognizer = SpeechRecognizer()
-    private let weatherFetcher = WeatherFetcher()
+    fileprivate let textToSpeech = TextToSpeech()
     
+    fileprivate var doNotDisturbEnabled = false {
+        didSet {
+            let title = doNotDisturbEnabled ? "Unmute" : "Mute"
+            doNotDisturbButton.setTitle(title, for: .normal)
+            
+            let width: CGFloat = doNotDisturbEnabled ? 5.0 : 0.0
+            doNotDisturbOutline.layer.borderWidth = width
+        }
+    }
+
     private var isInSpeechSession = false
     private var isInDayMode = false {
         didSet {
@@ -45,8 +60,7 @@ class MainViewController: UIViewController {
         clockStackView.addArrangedSubview(questionLabel)
         clockStackView.addArrangedSubview(answerLabel)
 
-        statusStackView.addArrangedSubview(weatherIcon)
-        statusStackView.addArrangedSubview(doNotDisturbIcon)
+        statusStackView.addArrangedSubview(doNotDisturbButton)
         statusStackView.addArrangedSubview(dayNightButton)
         
         view.addSubview(statusStackView)
@@ -61,15 +75,11 @@ class MainViewController: UIViewController {
             statusStackView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 50),
             statusStackView.centerXAnchor.constraint(equalTo: clockStackView.centerXAnchor),
             
-            weatherIcon.widthAnchor.constraint(equalToConstant: 110),
-            weatherIcon.heightAnchor.constraint(equalToConstant: 110),
-            
-            doNotDisturbIcon.widthAnchor.constraint(equalToConstant: 110),
-            doNotDisturbIcon.heightAnchor.constraint(equalToConstant: 110),
+            doNotDisturbButton.widthAnchor.constraint(equalToConstant: 110),
+            doNotDisturbButton.heightAnchor.constraint(equalToConstant: 110),
 
             dayNightButton.widthAnchor.constraint(equalToConstant: 110),
             dayNightButton.heightAnchor.constraint(equalToConstant: 110),
-
         ])
         
         wallpaperImageView.pinToEdges()
@@ -79,16 +89,33 @@ class MainViewController: UIViewController {
         view.addSubview(dimmingView)
         dimmingView.pinToEdges()
         
-//        for family in UIFont.familyNames.sorted() {
-//            let names = UIFont.fontNames(forFamilyName: family)
-//            print("Family: \(family) Font names: \(names)")
-//        }
+        view.addSubview(doNotDisturbOutline)
+        doNotDisturbOutline.pinToEdges()
         
-        speechRecognizer.start()
+        whiteNoisePlugin = WhiteNoisePlugin(delegate: self)
+        compoundCommandPlugin = CompoundCommandPlugin(delegate: self)
+        lightingPlugin = LightingPlugin(delegate: self)
+        canvasPlugin = MeuralCanvasPlugin(delegate: self)
         
-        weatherFetcher.start { (weather) in
-            guard let weather = weather else { return }
-            self.weatherIcon.set(text: "\(Int(weather.temp))F", iconURL: weather.icon)
+        compoundCommandPlugin.pluginDelegate = self
+        
+        let plugins: [Plugin] = [
+            WeatherPlugin(delegate: self),
+            canvasPlugin,
+            lightingPlugin,
+            TimerPlugin(delegate: self),
+            whiteNoisePlugin,
+            compoundCommandPlugin,
+        ]
+        speechRecognizer.setPlugins(plugins)
+        
+        let pluginButtons = plugins.compactMap({ return $0.actionButton })
+        for button in pluginButtons {
+            statusStackView.addArrangedSubview(button)
+            NSLayoutConstraint.activate([
+                button.widthAnchor.constraint(equalToConstant: 110),
+                button.heightAnchor.constraint(equalToConstant: 110),
+            ])
         }
 
         // Check every n seconds to adjust the screen brightness
@@ -105,12 +132,15 @@ class MainViewController: UIViewController {
         }).disposed(by: disposeBag)
         
         isInDayMode = false
+        doNotDisturbEnabled = false
+        
+        doNotDisturbButton.addTarget(self, action: #selector(toggleDoNotDisturb), for: .touchUpInside)
     }
     
     private func handleScreenBrightness() {
         if self.isInSpeechSession || self.isInDayMode { return }
         
-        let dimmingAlpha = min(1.0 - (UIScreen.main.brightness * 2.6), 0.6)
+        let dimmingAlpha = min(1.0 - (UIScreen.main.brightness * 3.5), 0.6)
         if dimmingAlpha == self.dimmingView.alpha { return }
         
         DispatchQueue.main.async {
@@ -119,6 +149,10 @@ class MainViewController: UIViewController {
                 self.dimmingView.alpha = dimmingAlpha
             }
         }
+    }
+    
+    @objc private func toggleDoNotDisturb() {
+        doNotDisturbEnabled.toggle()
     }
     
     private func setupClock() {
@@ -226,16 +260,25 @@ class MainViewController: UIViewController {
         dimming.backgroundColor = .black
         dimming.isUserInteractionEnabled = false
         dimming.alpha = 0.0
+        dimming.layer.borderWidth = 5
+        dimming.layer.cornerRadius = 22.0
         return dimming
     }()
     
-    fileprivate let weatherIcon: StatusButton = {
-        let icon = StatusButton()
-        icon.translatesAutoresizingMaskIntoConstraints = false
-        return icon
+    fileprivate let doNotDisturbOutline: UIView = {
+        let outline = UIView()
+        outline.translatesAutoresizingMaskIntoConstraints = false
+        outline.backgroundColor = .clear
+        outline.isUserInteractionEnabled = false
+        outline.alpha = 0.5
+        outline.layer.borderWidth = 5
+        outline.layer.cornerRadius = 22.0
+        outline.layer.borderColor = UIColor.systemRed.cgColor
+        return outline
     }()
     
-    fileprivate let doNotDisturbIcon: StatusButton = {
+    
+    fileprivate let doNotDisturbButton: StatusButton = {
         let icon = StatusButton()
         icon.translatesAutoresizingMaskIntoConstraints = false
         icon.setImage(UIImage(named: "mute"), for: .normal)
@@ -248,45 +291,6 @@ class MainViewController: UIViewController {
         icon.translatesAutoresizingMaskIntoConstraints = false
         return icon
     }()
-    
-    class StatusButton: LayoutableButton {
-        init() {
-            super.init(frame: .zero)
-            imageVerticalAlignment = .center
-            imageHorizontalAlignment = .center
-            titleEdgeInsets = UIEdgeInsets(top: 60, left: 0, bottom: 0, right: 0)
-            imageEdgeInsets = UIEdgeInsets(top: -30, left: 0, bottom: 0, right: 0)
-            
-            imageView?.tintColor = Constants.itemColor
-            
-            backgroundColor = UIColor.black.withAlphaComponent(0.5)
-            setTitleColor(Constants.itemColor, for: .normal)
-            titleLabel?.font = UIFont.boldSystemFont(ofSize: 22)
-            titleLabel?.textAlignment = .center
-            
-            layer.borderColor = Constants.itemColor.withAlphaComponent(0.7).cgColor
-            layer.borderWidth = 2.0
-            
-            titleLabel?.enableGlow(with: Constants.itemColor)
-            imageView?.enableGlow(with: Constants.itemColor.withAlphaComponent(0.6))
-        }
-        
-        override func layoutSubviews() {
-            super.layoutSubviews()
-            
-            layer.cornerRadius = frame.size.width / 2
-        }
-        
-        func set(text: String, iconURL: String) {
-            guard let url = URL(string: iconURL) else { return }
-            kf.setImage(with: url, for: .normal)
-            setTitle(text, for: .normal)
-        }
-        
-        required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-    }
 }
 
 extension MainViewController: SpeechRecognizerDelegate {
@@ -321,14 +325,52 @@ extension MainViewController: SpeechRecognizerDelegate {
     }
     
     func didFinishSpeaking() {
+        whiteNoisePlugin.setVolume(1.0)
+
         UIView.animate(withDuration: 2.5, animations: {
             self.questionLabel.alpha = 0
             self.answerLabel.alpha = 0
+            self.view.layer.borderWidth = 0.0
         }) { (_) in
             UIView.animate(withDuration: 1.7) {
                 self.statusStackView.alpha = 1.0
             }
             self.isInSpeechSession = false
         }
+    }
+}
+
+extension MainViewController: PluginDelegate {
+    func commandAcknowledged(_ text: String) {
+        speechDetected(text)
+    }
+    
+    func speak(_ text: String) {
+        displayResponse(text)
+        whiteNoisePlugin.setVolume(0.4)
+        if !doNotDisturbEnabled {
+            textToSpeech.speak(text)
+            
+            DispatchQueue.main.async {
+                self.view.layer.borderColor = UIColor.systemPurple.withAlphaComponent(0.5).cgColor
+                self.view.layer.borderWidth = 3.0
+                self.view.layer.cornerRadius = 22.0
+            }
+        }
+    }
+}
+
+extension MainViewController: CompoundCommandPluginDelegate {
+    func turnOnAllTheThings() {
+        lightingPlugin.allLightsOn()
+        canvasPlugin.on()
+    }
+    
+    func goodnight() {
+        lightingPlugin.allLightsOff()
+        canvasPlugin.off()
+        whiteNoisePlugin.start()
+        
+        speak("Goodnight!")
     }
 }

@@ -42,10 +42,50 @@ class LightingPlugin: Plugin {
         return Command.allCases.map { return $0.rawValue }
     }
     
+    var actionButton: UIButton? {
+        return toggleButton
+    }
+
+    private let toggleButton: UIButton = {
+        let button = StatusButton()
+        return button
+    }()
+    
     private let username = "EgXXcP6A9XHyYHEi1i4M0BNd0RZn48eqvFMqmym0"
+    
+    private var lightsAreOn = false {
+        didSet {
+            let title = lightsAreOn ? "All Off" : "All On"
+            toggleButton.setTitle(title, for: .normal)
+        }
+    }
     
     required init(delegate: PluginDelegate) {
         self.delegate = delegate
+        
+        toggleButton.addTarget(self, action: #selector(toggleLights), for: .touchUpInside)
+        checkLightsStatus()
+        
+        Timer.scheduledTimer(withTimeInterval: 5.0 * 60, repeats: true) { (_) in
+            self.checkLightsStatus()
+        }
+    }
+    
+    private func checkLightsStatus() {
+        getGroup(0) { (group) in
+            DispatchQueue.main.async {
+                self.lightsAreOn = group.state.anyOn
+            }
+        }
+    }
+    
+    @objc private func toggleLights() {
+        if lightsAreOn {
+            allLightsOff()
+        } else {
+            allLightsOn()
+        }
+        lightsAreOn.toggle()
     }
     
     func speechDetected(_ speech: String) {
@@ -103,12 +143,14 @@ class LightingPlugin: Plugin {
         }
     }
     
-    func allLightsOn() {
+    @objc func allLightsOn() {
         sendSimpleCommand("/groups/0/action", command: "{\"on\":true}")
+        lightsAreOn = true
     }
 
-    func allLightsOff() {
+    @objc func allLightsOff() {
         sendSimpleCommand("/groups/0/action", command: "{\"on\":false}")
+        lightsAreOn = false
     }
     
     private func changeBrightness(percent: Double) {
@@ -137,9 +179,7 @@ class LightingPlugin: Plugin {
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             guard let data = data else { return }
             do {
-                let group = try ObjectDecoder<Group>().getObjectFrom(jsonData: data)
-            
-                print(group.action.bri)
+                let group = try ObjectDecoder<Group>().getObjectFrom(jsonData: data, decodingStrategy: .convertFromSnakeCase)            
                 completion(group)
             } catch {
                 print(error)
@@ -152,6 +192,12 @@ class LightingPlugin: Plugin {
             var bri: Int
         }
         
+        struct State: Codable {
+            var allOn: Bool
+            var anyOn: Bool
+        }
+        
+        var state: State
         var action: Action
     }
 }

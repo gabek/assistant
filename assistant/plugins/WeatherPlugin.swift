@@ -10,19 +10,35 @@ import Foundation
 
 class WeatherPlugin: Plugin {
     weak var delegate: PluginDelegate?
-    
+    private let weatherFetcher = WeatherFetcher()
+
     enum Command: String, CaseIterable {
         case current = "what is the weather"
         case forecast = "what is the weather forecast"
     }
     
     required init(delegate: PluginDelegate) {
-        self.delegate = delegate        
+        self.delegate = delegate
+        
+        weatherFetcher.start { (weather) in
+            guard let weather = weather else { return }
+            self.weatherIcon.set(text: "\(Int(weather.temp))F", iconURL: weather.icon)
+        }
     }
     
     var commands: [String] {
        return Command.allCases.map { return $0.rawValue }
     }
+    
+    var actionButton: UIButton? {
+        return weatherIcon
+    }
+
+    fileprivate let weatherIcon: StatusButton = {
+        let icon = StatusButton()
+        icon.translatesAutoresizingMaskIntoConstraints = false
+        return icon
+    }()
     
     func speechDetected(_ speech: String) {
         guard let command = Command(rawValue: speech) else { return }

@@ -2,8 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSHomeKitUsageDescription</key>
+	<string>Uses HomeKit in order to turn on and off the AppleTV</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>Need to recognize speechh to act upon commmands</string>
+	<string>Need to recognize speech to act upon commmands</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Need to use the microphhone to listen for commands</string>
 	<key>UIAppFonts</key>

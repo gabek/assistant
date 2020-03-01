@@ -21,6 +21,10 @@ class TimerPlugin: Plugin {
         case start = "start timer"
     }
     
+    var actionButton: UIButton? {
+        return nil
+    }
+
     required init(delegate: PluginDelegate) {
         self.delegate = delegate
     }

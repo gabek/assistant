@@ -9,6 +9,7 @@
 import Foundation
 protocol CompoundCommandPluginDelegate: class {
     func goodnight()
+    func turnOnAllTheThings()
 }
 
 class CompoundCommandPlugin: Plugin {
@@ -17,12 +18,17 @@ class CompoundCommandPlugin: Plugin {
     
     enum Command: String, CaseIterable {
         case goodnight = "goodnight"
+        case turnOnTheThings = "turn on all the things"
     }
     
     var commands: [String] {
         return Command.allCases.map { return $0.rawValue }
     }
     
+    var actionButton: UIButton? {
+        return nil
+    }
+
     required init(delegate: PluginDelegate) {
         self.delegate = delegate
     }
@@ -32,6 +38,8 @@ class CompoundCommandPlugin: Plugin {
         
         if command == .goodnight {
             pluginDelegate?.goodnight()
+        } else if command == .turnOnTheThings {
+            pluginDelegate?.turnOnAllTheThings()
         }
     }
     
