@@ -8,6 +8,7 @@
 
 import Foundation
 import Speech
+import TLSphinx
 
 protocol SpeechRecognizerDelegate: class {
     func speechDetected(_ speech: String)
@@ -25,7 +26,11 @@ class SpeechRecognizer: NSObject {
     
     func setPlugins(_ plugins: [Plugin]) {
         self.plugins = plugins
-        setup()
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+            self.setup()
+        }
+        //setup()
     }
     
     private func generateSpeechRecognitionModels() -> (lmPath: String, dicPath: String)? {
@@ -33,74 +38,75 @@ class SpeechRecognizer: NSObject {
         let phrases = plugins.flatMap { return $0.commands } + [Constants.prefixPhrase]
         let name = "assistant"
         
-//        let grammar = [ThisWillBeSaidOnce : [
-//            [OneOfTheseWillBeSaidOnce: [Constants.prefixPhrase]],
-//            [OneOfTheseWillBeSaidOnce: phrases]]
-//        ]
-//
-//        let err: Error! = lmGenerator.generateGrammar(from: grammar, withFilesNamed: name, forAcousticModelAtPath: OEAcousticModel.path(toModel: "AcousticModelEnglish"))
+        //        let grammar = [ThisWillBeSaidOnce : [
+        //            [OneOfTheseWillBeSaidOnce: [Constants.prefixPhrase]],
+        //            [OneOfTheseWillBeSaidOnce: phrases]]
+        //        ]
+        //
+        //        let err: Error! = lmGenerator.generateGrammar(from: grammar, withFilesNamed: name, forAcousticModelAtPath: OEAcousticModel.path(toModel: "AcousticModelEnglish"))
         
         let err: Error! = lmGenerator.generateLanguageModel(from: phrases, withFilesNamed: name, forAcousticModelAtPath: OEAcousticModel.path(toModel: "AcousticModelEnglish"))
         if let err = err {
             fatalError(err.localizedDescription)
         }
-  
+
         guard let lmPath = lmGenerator.pathToSuccessfullyGeneratedLanguageModel(withRequestedName: name) else { return nil }
-//        guard let lmPath = lmGenerator.pathToSuccessfullyGeneratedGrammar(withRequestedName: name) else { return nil }
+        //        guard let lmPath = lmGenerator.pathToSuccessfullyGeneratedGrammar(withRequestedName: name) else { return nil }
         guard let dicPath = lmGenerator.pathToSuccessfullyGeneratedDictionary(withRequestedName: name) else { return nil }
         
         return (lmPath: lmPath, dicPath: dicPath)
     }
     
+    var decoder: Decoder!
     func setup() {
-        guard let paths = generateSpeechRecognitionModels() else { return }
-        
-//        OELogging.startOpenEarsLogging()
-        
-        do {
-            try OEPocketsphinxController.sharedInstance().setActive(true) // Setting the shared OEPocketsphinxController active is necessary before any of its properties are accessed.
-        } catch {
-            print("Error: it wasn't possible to set the shared instance to active: \"\(error)\"")
+        try! AVAudioSession.sharedInstance().setActive(true, options: .notifyOthersOnDeactivation)
+        try! AVAudioSession.sharedInstance().setCategory(.playAndRecord)//, options: [.allowBluetooth, .mixWithOthers, .allowBluetoothA2DP])
+        try! AVAudioSession.sharedInstance().setMode(.gameChat)
+        try! AVAudioSession.sharedInstance().setPreferredInputNumberOfChannels(1)
+        try! AVAudioSession.sharedInstance().setPreferredSampleRate(48000)
+
+        let test = generateSpeechRecognitionModels()
+        let hmm = Bundle.main.bundlePath   // Path to the acustic model
+        let lm = test!.lmPath//Bundle.main.path(forResource: "en-us-phone", ofType: "lm.dmp") else { return } // Path to the languaje model
+        let dict = test!.dicPath//Bundle.main.path(forResource: "cmudict-en-us", ofType: "dict") else { return } // Path to the languaje dictionary
+        let keywords = Bundle.main.path(forResource: "commands", ofType: "txt")!
+        if let config = Config(args: ("-hmm", hmm), ("-lm", lm),
+                               ("-kws", keywords), ("-dict", dict),
+                               ("-nfft", "2048"), ("-samprate", "48000")
+            ) {
+            config.showDebugInfo = false
+            decoder = Decoder(config: config)!
+            //        try! decoder.add(words:[("HEY","HH EY"), ("HELLO","HH EH L OW"), ("HEY COMPUTER", "HH EY K AH M P Y UW T ER")])
+
+            try! decoder.startDecodingSpeech({ (hypothosis) in
+                guard let hypothosis = hypothosis else { return }
+                self.didReceiveSpeech(hypothosis.text.lowercased())
+            })
+
+        } else {
+            // Handle Config() fail
+            print("Config fail")
         }
-        openEarsEventsObserver.delegate = self
-        OEPocketsphinxController.sharedInstance().disablePreferredBufferSize = true
-        OEPocketsphinxController.sharedInstance().startListeningWithLanguageModel(atPath: paths.lmPath, dictionaryAtPath: paths.dicPath, acousticModelAtPath: OEAcousticModel.path(toModel: "AcousticModelEnglish"), languageModelIsJSGF: false)
-    }
-}
-
-
-
-extension SpeechRecognizer: OEEventsObserverDelegate {
-    func pocketsphinxDidStartListening() {
-        print("Listening...")
     }
     
-    func pocketsphinxDidDetectSpeech() {
-        print("*** Did detect speech")
-    }
-    
-    func pocketsphinxDidDetectFinishedSpeech() {
-        print("*** Did finish speech")
-    }
-    
-    func pocketsphinxDidReceiveHypothesis(_ hypothesis: String!, recognitionScore: String!, utteranceID: String!) {
-        print("*** Speech \(recognitionScore!): \(hypothesis!)")
+    fileprivate func didReceiveSpeech(_ speech: String) {
+        if speech == "" { return }
         
-        if !hypothesis.contains(Constants.prefixPhrase) {
-            return
-        }
-        let removedPrefixPhrase = hypothesis.replacingOccurrences(of: Constants.prefixPhrase, with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+        guard let location = speech.range(of: Constants.prefixPhrase)?.lowerBound else { return }
+
+        let fixedString = speech.suffix(from: location)
+
+        print("*****", fixedString)
+
+        let removedPrefixPhrase = fixedString.replacingOccurrences(of: Constants.prefixPhrase, with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+        if removedPrefixPhrase == "" { return }
         
         for plugin in plugins {
-            plugin.speechDetected(removedPrefixPhrase)
+            for command in plugin.commands {
+                if fixedString.contains(command) {
+                    plugin.speechDetected(command)
+                }
+            }
         }
     }
-    
-    func pocketsphinxFailedNoMicPermissions() {
-        print(pocketsphinxFailedNoMicPermissions)
-    }
 }
-
-
-
-

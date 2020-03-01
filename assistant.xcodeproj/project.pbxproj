@@ -13,6 +13,24 @@
 		A050FA50240C88C700DCCB82 /* HarmonyHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050FA4F240C88C700DCCB82 /* HarmonyHub.swift */; };
 		A0815280241E016E002C6D0A /* UIView+Flicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A081527F241E016E002C6D0A /* UIView+Flicker.swift */; };
 		A0815282241EC1CF002C6D0A /* PopupPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0815281241EC1CF002C6D0A /* PopupPanelView.swift */; };
+		A0110812241A067100CB44D6 /* commands.txt in Resources */ = {isa = PBXBuildFile; fileRef = A0110811241A067100CB44D6 /* commands.txt */; };
+		A050F9F52406488A00DCCB82 /* TextToSpeech.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050F9F42406488A00DCCB82 /* TextToSpeech.swift */; };
+		A050F9F7240B4F2B00DCCB82 /* StatusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050F9F6240B4F2B00DCCB82 /* StatusButton.swift */; };
+		A050FA08240C43C400DCCB82 /* TLSphinx.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A050FA03240C435A00DCCB82 /* TLSphinx.framework */; };
+		A050FA09240C43C400DCCB82 /* TLSphinx.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A050FA03240C435A00DCCB82 /* TLSphinx.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A050FA40240C48F800DCCB82 /* en-us-phone.lm.dmp in Resources */ = {isa = PBXBuildFile; fileRef = A050FA31240C48F700DCCB82 /* en-us-phone.lm.dmp */; };
+		A050FA41240C48F800DCCB82 /* cmudict-en-us.dict in Resources */ = {isa = PBXBuildFile; fileRef = A050FA32240C48F700DCCB82 /* cmudict-en-us.dict */; };
+		A050FA42240C48F800DCCB82 /* 6844.dic in Resources */ = {isa = PBXBuildFile; fileRef = A050FA34240C48F700DCCB82 /* 6844.dic */; };
+		A050FA44240C48F800DCCB82 /* goforward.raw in Resources */ = {isa = PBXBuildFile; fileRef = A050FA36240C48F700DCCB82 /* goforward.raw */; };
+		A050FA45240C48F800DCCB82 /* sendump in Resources */ = {isa = PBXBuildFile; fileRef = A050FA38240C48F700DCCB82 /* sendump */; };
+		A050FA46240C48F800DCCB82 /* noisedict in Resources */ = {isa = PBXBuildFile; fileRef = A050FA39240C48F700DCCB82 /* noisedict */; };
+		A050FA47240C48F800DCCB82 /* means in Resources */ = {isa = PBXBuildFile; fileRef = A050FA3A240C48F700DCCB82 /* means */; };
+		A050FA48240C48F800DCCB82 /* mdef in Resources */ = {isa = PBXBuildFile; fileRef = A050FA3B240C48F700DCCB82 /* mdef */; };
+		A050FA49240C48F800DCCB82 /* transition_matrices in Resources */ = {isa = PBXBuildFile; fileRef = A050FA3C240C48F700DCCB82 /* transition_matrices */; };
+		A050FA4A240C48F800DCCB82 /* feat.params in Resources */ = {isa = PBXBuildFile; fileRef = A050FA3D240C48F700DCCB82 /* feat.params */; };
+		A050FA4B240C48F800DCCB82 /* variances in Resources */ = {isa = PBXBuildFile; fileRef = A050FA3E240C48F700DCCB82 /* variances */; };
+		A050FA4C240C48F800DCCB82 /* en-us.lm.dmp in Resources */ = {isa = PBXBuildFile; fileRef = A050FA3F240C48F700DCCB82 /* en-us.lm.dmp */; };
+		A050FA4D240C4C0600DCCB82 /* 6844.lm in Resources */ = {isa = PBXBuildFile; fileRef = A050FA35240C48F700DCCB82 /* 6844.lm */; };
 		A08CC72123F6645D003CB471 /* PluginProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08CC72023F6645D003CB471 /* PluginProtocol.swift */; };
 		A08CC72423F665D8003CB471 /* MeuralCanvasPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08CC72323F665D8003CB471 /* MeuralCanvasPlugin.swift */; };
 		A08CC72723F6687F003CB471 /* ObjectDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08CC72623F6687F003CB471 /* ObjectDecoder.swift */; };
@@ -45,6 +63,44 @@
 		DF31D1F956897DAC934A2A0E /* Pods_assistant.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC603D89C6516FD231521964 /* Pods_assistant.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		A050FA02240C435A00DCCB82 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A050F9FD240C435A00DCCB82 /* TLSphinx.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9B5187AF1B18E1E80000E78D;
+			remoteInfo = TLSphinx;
+		};
+		A050FA04240C435A00DCCB82 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A050F9FD240C435A00DCCB82 /* TLSphinx.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9B5187BA1B18E1E80000E78D;
+			remoteInfo = TLSphinxTests;
+		};
+		A050FA0B240C460F00DCCB82 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A050F9FD240C435A00DCCB82 /* TLSphinx.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 9B5187AE1B18E1E80000E78D;
+			remoteInfo = TLSphinx;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A050FA0A240C43C400DCCB82 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A050FA09240C43C400DCCB82 /* TLSphinx.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		6D006C6A1CD3F250EEB5B652 /* Pods-assistant.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-assistant.release.xcconfig"; path = "Target Support Files/Pods-assistant/Pods-assistant.release.xcconfig"; sourceTree = "<group>"; };
 		A0110815241DA99F00CB44D6 /* sensors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sensors.swift; sourceTree = "<group>"; };
@@ -53,6 +109,23 @@
 		A050FA4F240C88C700DCCB82 /* HarmonyHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmonyHub.swift; sourceTree = "<group>"; };
 		A081527F241E016E002C6D0A /* UIView+Flicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Flicker.swift"; sourceTree = "<group>"; };
 		A0815281241EC1CF002C6D0A /* PopupPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupPanelView.swift; sourceTree = "<group>"; };
+		A0110811241A067100CB44D6 /* commands.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = commands.txt; sourceTree = "<group>"; };
+		A050F9F42406488A00DCCB82 /* TextToSpeech.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextToSpeech.swift; sourceTree = "<group>"; };
+		A050F9F6240B4F2B00DCCB82 /* StatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusButton.swift; sourceTree = "<group>"; };
+		A050F9FD240C435A00DCCB82 /* TLSphinx.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TLSphinx.xcodeproj; path = assistant/vendor/TLSphinx/TLSphinx.xcodeproj; sourceTree = "<group>"; };
+		A050FA31240C48F700DCCB82 /* en-us-phone.lm.dmp */ = {isa = PBXFileReference; lastKnownFileType = file; path = "en-us-phone.lm.dmp"; sourceTree = "<group>"; };
+		A050FA32240C48F700DCCB82 /* cmudict-en-us.dict */ = {isa = PBXFileReference; explicitFileType = compiled; path = "cmudict-en-us.dict"; sourceTree = "<group>"; };
+		A050FA34240C48F700DCCB82 /* 6844.dic */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 6844.dic; sourceTree = "<group>"; };
+		A050FA35240C48F700DCCB82 /* 6844.lm */ = {isa = PBXFileReference; explicitFileType = compiled; fileEncoding = 4; path = 6844.lm; sourceTree = "<group>"; };
+		A050FA36240C48F700DCCB82 /* goforward.raw */ = {isa = PBXFileReference; lastKnownFileType = file; path = goforward.raw; sourceTree = "<group>"; };
+		A050FA38240C48F700DCCB82 /* sendump */ = {isa = PBXFileReference; lastKnownFileType = file; path = sendump; sourceTree = "<group>"; };
+		A050FA39240C48F700DCCB82 /* noisedict */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = noisedict; sourceTree = "<group>"; };
+		A050FA3A240C48F700DCCB82 /* means */ = {isa = PBXFileReference; lastKnownFileType = file; path = means; sourceTree = "<group>"; };
+		A050FA3B240C48F700DCCB82 /* mdef */ = {isa = PBXFileReference; lastKnownFileType = file; path = mdef; sourceTree = "<group>"; };
+		A050FA3C240C48F700DCCB82 /* transition_matrices */ = {isa = PBXFileReference; lastKnownFileType = file; path = transition_matrices; sourceTree = "<group>"; };
+		A050FA3D240C48F700DCCB82 /* feat.params */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = feat.params; sourceTree = "<group>"; };
+		A050FA3E240C48F700DCCB82 /* variances */ = {isa = PBXFileReference; lastKnownFileType = file; path = variances; sourceTree = "<group>"; };
+		A050FA3F240C48F700DCCB82 /* en-us.lm.dmp */ = {isa = PBXFileReference; lastKnownFileType = file; path = "en-us.lm.dmp"; sourceTree = "<group>"; };
 		A08CC72023F6645D003CB471 /* PluginProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginProtocol.swift; sourceTree = "<group>"; };
 		A08CC72323F665D8003CB471 /* MeuralCanvasPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeuralCanvasPlugin.swift; sourceTree = "<group>"; };
 		A08CC72623F6687F003CB471 /* ObjectDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectDecoder.swift; sourceTree = "<group>"; };
@@ -100,6 +173,7 @@
 				A0FF1E6E23F78253003A6183 /* AudioToolbox.framework in Frameworks */,
 				A0FF1E6923F78232003A6183 /* Slt.framework in Frameworks */,
 				A0FF1E6A23F78233003A6183 /* OpenEars.framework in Frameworks */,
+				A050FA08240C43C400DCCB82 /* TLSphinx.framework in Frameworks */,
 				DF31D1F956897DAC934A2A0E /* Pods_assistant.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -113,6 +187,58 @@
 				A0110815241DA99F00CB44D6 /* sensors.swift */,
 			);
 			path = sensors;
+		A050F9FE240C435A00DCCB82 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A050FA03240C435A00DCCB82 /* TLSphinx.framework */,
+				A050FA05240C435A00DCCB82 /* TLSphinxTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A050FA2F240C48F700DCCB82 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				A050FA30240C48F700DCCB82 /* en-us */,
+			);
+			name = model;
+			path = TLSphinx/Sphinx/share/pocketsphinx/model;
+			sourceTree = "<group>";
+		};
+		A050FA30240C48F700DCCB82 /* en-us */ = {
+			isa = PBXGroup;
+			children = (
+				A050FA31240C48F700DCCB82 /* en-us-phone.lm.dmp */,
+				A050FA32240C48F700DCCB82 /* cmudict-en-us.dict */,
+				A050FA33240C48F700DCCB82 /* basic-lm */,
+				A050FA36240C48F700DCCB82 /* goforward.raw */,
+				A050FA37240C48F700DCCB82 /* en-us */,
+				A050FA3F240C48F700DCCB82 /* en-us.lm.dmp */,
+			);
+			path = "en-us";
+			sourceTree = "<group>";
+		};
+		A050FA33240C48F700DCCB82 /* basic-lm */ = {
+			isa = PBXGroup;
+			children = (
+				A050FA34240C48F700DCCB82 /* 6844.dic */,
+				A050FA35240C48F700DCCB82 /* 6844.lm */,
+			);
+			path = "basic-lm";
+			sourceTree = "<group>";
+		};
+		A050FA37240C48F700DCCB82 /* en-us */ = {
+			isa = PBXGroup;
+			children = (
+				A050FA38240C48F700DCCB82 /* sendump */,
+				A050FA39240C48F700DCCB82 /* noisedict */,
+				A050FA3A240C48F700DCCB82 /* means */,
+				A050FA3B240C48F700DCCB82 /* mdef */,
+				A050FA3C240C48F700DCCB82 /* transition_matrices */,
+				A050FA3D240C48F700DCCB82 /* feat.params */,
+				A050FA3E240C48F700DCCB82 /* variances */,
+			);
+			path = "en-us";
 			sourceTree = "<group>";
 		};
 		A08CC72223F66562003CB471 /* plugins */ = {
@@ -187,6 +313,7 @@
 		A0FF1E6323F78232003A6183 /* vendor */ = {
 			isa = PBXGroup;
 			children = (
+				A050FA2F240C48F700DCCB82 /* model */,
 				A0FF1E6423F78232003A6183 /* openears */,
 				A0A4B5CA23FD0EC90044CBFB /* LayoutableButton.swift */,
 			);
@@ -225,6 +352,7 @@
 		A0FFBDDC23F5306C00EA63A4 = {
 			isa = PBXGroup;
 			children = (
+				A050F9FD240C435A00DCCB82 /* TLSphinx.xcodeproj */,
 				A0FFBDE723F5306C00EA63A4 /* assistant */,
 				A0FFBDE623F5306C00EA63A4 /* Products */,
 				A0FF1E6C23F78252003A6183 /* Frameworks */,
@@ -278,6 +406,7 @@
 			isa = PBXGroup;
 			children = (
 				A0FFBDFD23F6453E00EA63A4 /* SpeechRecognizer.swift */,
+				A0110811241A067100CB44D6 /* commands.txt */,
 			);
 			path = listen;
 			sourceTree = "<group>";
@@ -303,10 +432,12 @@
 				A0FFBDE223F5306C00EA63A4 /* Frameworks */,
 				A0FFBDE323F5306C00EA63A4 /* Resources */,
 				026A1D3B02571864D043AF63 /* [CP] Embed Pods Frameworks */,
+				A050FA0A240C43C400DCCB82 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				A050FA0C240C460F00DCCB82 /* PBXTargetDependency */,
 			);
 			name = assistant;
 			productName = assistant;
@@ -339,6 +470,12 @@
 			mainGroup = A0FFBDDC23F5306C00EA63A4;
 			productRefGroup = A0FFBDE623F5306C00EA63A4 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = A050F9FE240C435A00DCCB82 /* Products */;
+					ProjectRef = A050F9FD240C435A00DCCB82 /* TLSphinx.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				A0FFBDE423F5306C00EA63A4 /* assistant */,
@@ -346,18 +483,49 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXReferenceProxy section */
+		A050FA03240C435A00DCCB82 /* TLSphinx.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = TLSphinx.framework;
+			remoteRef = A050FA02240C435A00DCCB82 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A050FA05240C435A00DCCB82 /* TLSphinxTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = TLSphinxTests.xctest;
+			remoteRef = A050FA04240C435A00DCCB82 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
 /* Begin PBXResourcesBuildPhase section */
 		A0FFBDE323F5306C00EA63A4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0110812241A067100CB44D6 /* commands.txt in Resources */,
+				A050FA4D240C4C0600DCCB82 /* 6844.lm in Resources */,
 				A0FFBDF523F5306F00EA63A4 /* LaunchScreen.storyboard in Resources */,
+				A050FA44240C48F800DCCB82 /* goforward.raw in Resources */,
+				A050FA48240C48F800DCCB82 /* mdef in Resources */,
 				A0FF1E6B23F78233003A6183 /* AcousticModelEnglish.bundle in Resources */,
+				A050FA45240C48F800DCCB82 /* sendump in Resources */,
+				A050FA49240C48F800DCCB82 /* transition_matrices in Resources */,
 				A0E5787D23FA45690019852C /* scab-picker.jpg in Resources */,
 				A0FFBDF223F5306F00EA63A4 /* Preview Assets.xcassets in Resources */,
+				A050FA4A240C48F800DCCB82 /* feat.params in Resources */,
+				A050FA46240C48F800DCCB82 /* noisedict in Resources */,
+				A050FA47240C48F800DCCB82 /* means in Resources */,
 				A0FFBDEF23F5306F00EA63A4 /* Assets.xcassets in Resources */,
+				A050FA41240C48F800DCCB82 /* cmudict-en-us.dict in Resources */,
+				A050FA4B240C48F800DCCB82 /* variances in Resources */,
+				A050FA4C240C48F800DCCB82 /* en-us.lm.dmp in Resources */,
 				A0E5788823FA78970019852C /* rain.mp3 in Resources */,
 				A0E5787A23FA34B90019852C /* digital-7.ttf in Resources */,
+				A050FA42240C48F800DCCB82 /* 6844.dic in Resources */,
+				A050FA40240C48F800DCCB82 /* en-us-phone.lm.dmp in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -437,6 +605,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A050FA0C240C460F00DCCB82 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TLSphinx;
+			targetProxy = A050FA0B240C460F00DCCB82 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		A0FFBDF323F5306F00EA63A4 /* LaunchScreen.storyboard */ = {
@@ -578,12 +754,18 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/assistant/vendor/openears/Framework",
 				);
+				HEADER_SEARCH_PATHS = (
+					"<Multiple",
+					"values>",
+					"$(SRCROOT)/vendor/Sphinx/include/**",
+				);
 				INFOPLIST_FILE = assistant/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/vendor/Sphinx/lib/**";
 				PRODUCT_BUNDLE_IDENTIFIER = com.gabekangas.assistant;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = assistant/BridgingHeader.h;
@@ -606,12 +788,18 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/assistant/vendor/openears/Framework",
 				);
+				HEADER_SEARCH_PATHS = (
+					"<Multiple",
+					"values>",
+					"$(SRCROOT)/vendor/Sphinx/include/**",
+				);
 				INFOPLIST_FILE = assistant/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/vendor/Sphinx/lib/**";
 				PRODUCT_BUNDLE_IDENTIFIER = com.gabekangas.assistant;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = assistant/BridgingHeader.h;

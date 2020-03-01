@@ -23,7 +23,7 @@ class MainViewController: UIViewController {
     private let speechRecognizer = SpeechRecognizer()
     fileprivate let textToSpeech = TextToSpeech()
     
-    fileprivate let audioEngine = AVAudioEngine()
+//    fileprivate let audioEngine = AVAudioEngine()
     
     fileprivate let sensors = Sensors()
     fileprivate var sensorBrightness: Int?
@@ -158,44 +158,44 @@ class MainViewController: UIViewController {
         
         doNotDisturbButton.addTarget(self, action: #selector(toggleDoNotDisturb), for: .touchUpInside)
         
-        let inputNode = audioEngine.inputNode
-        let bus = 0
-        inputNode.installTap(onBus: bus, bufferSize: 2048, format: inputNode.inputFormat(forBus: bus)) {
-            (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
-            
-            if !self.isInSpeechSession { return }
-            
-            func scaledPower(power: Float) -> Float {
-                let minDb: Float = -40.0
-                
-                guard power.isFinite else { return 0.0 }
-                
-                if power < minDb {
-                    return 0.0
-                } else if power >= 1.0 {
-                    return 1.0
-                } else {
-                    return (abs(minDb) - abs(power)) / abs(minDb)
-                }
-            }
-                        
-            guard let channelData = buffer.floatChannelData else { return }
-            
-            let channelDataValue = channelData.pointee
-            let channelDataValueArray = stride(from: 0,
-                                               to: Int(buffer.frameLength),
-                                               by: buffer.stride).map{ channelDataValue[$0] }
-            
-            let value = channelDataValueArray.map{ $0 * $0 }.reduce(0, +) / Float(buffer.frameLength)
-            let rms = sqrt(value)
-            let avgPower = 20 * log10(rms)
-            let meterLevel = scaledPower(power: avgPower)
-            
-            let borderWidth: CGFloat = max(4.0, CGFloat(meterLevel * 80.0))
-            DispatchQueue.main.async {
-                self.view.layer.borderWidth = borderWidth
-            }
-        }
+//        let inputNode = audioEngine.inputNode
+//        let bus = 0
+//        inputNode.installTap(onBus: bus, bufferSize: 2048, format: inputNode.inputFormat(forBus: bus)) {
+//            (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
+//
+//            if !self.isInSpeechSession { return }
+//
+//            func scaledPower(power: Float) -> Float {
+//                let minDb: Float = -40.0
+//
+//                guard power.isFinite else { return 0.0 }
+//
+//                if power < minDb {
+//                    return 0.0
+//                } else if power >= 1.0 {
+//                    return 1.0
+//                } else {
+//                    return (abs(minDb) - abs(power)) / abs(minDb)
+//                }
+//            }
+//
+//            guard let channelData = buffer.floatChannelData else { return }
+//
+//            let channelDataValue = channelData.pointee
+//            let channelDataValueArray = stride(from: 0,
+//                                               to: Int(buffer.frameLength),
+//                                               by: buffer.stride).map{ channelDataValue[$0] }
+//
+//            let value = channelDataValueArray.map{ $0 * $0 }.reduce(0, +) / Float(buffer.frameLength)
+//            let rms = sqrt(value)
+//            let avgPower = 20 * log10(rms)
+//            let meterLevel = scaledPower(power: avgPower)
+//
+//            let borderWidth: CGFloat = max(4.0, CGFloat(meterLevel * 80.0))
+//            DispatchQueue.main.async {
+//                self.view.layer.borderWidth = borderWidth
+//            }
+//        }
         
         audioEngine.prepare()
         do {
