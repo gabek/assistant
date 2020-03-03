@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		A050F9F52406488A00DCCB82 /* TextToSpeech.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050F9F42406488A00DCCB82 /* TextToSpeech.swift */; };
 		A050F9F7240B4F2B00DCCB82 /* StatusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050F9F6240B4F2B00DCCB82 /* StatusButton.swift */; };
+		A050FA50240C88C700DCCB82 /* HarmonyHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050FA4F240C88C700DCCB82 /* HarmonyHub.swift */; };
 		A08CC72123F6645D003CB471 /* PluginProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08CC72023F6645D003CB471 /* PluginProtocol.swift */; };
 		A08CC72423F665D8003CB471 /* MeuralCanvasPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08CC72323F665D8003CB471 /* MeuralCanvasPlugin.swift */; };
 		A08CC72723F6687F003CB471 /* ObjectDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08CC72623F6687F003CB471 /* ObjectDecoder.swift */; };
@@ -45,6 +46,7 @@
 		6D006C6A1CD3F250EEB5B652 /* Pods-assistant.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-assistant.release.xcconfig"; path = "Target Support Files/Pods-assistant/Pods-assistant.release.xcconfig"; sourceTree = "<group>"; };
 		A050F9F42406488A00DCCB82 /* TextToSpeech.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextToSpeech.swift; sourceTree = "<group>"; };
 		A050F9F6240B4F2B00DCCB82 /* StatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusButton.swift; sourceTree = "<group>"; };
+		A050FA4F240C88C700DCCB82 /* HarmonyHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmonyHub.swift; sourceTree = "<group>"; };
 		A08CC72023F6645D003CB471 /* PluginProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginProtocol.swift; sourceTree = "<group>"; };
 		A08CC72323F665D8003CB471 /* MeuralCanvasPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeuralCanvasPlugin.swift; sourceTree = "<group>"; };
 		A08CC72623F6687F003CB471 /* ObjectDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectDecoder.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 				A0E5788423FA77D70019852C /* WhiteNoisePlugin.swift */,
 				A0A4B5CC23FE4CF00044CBFB /* CompoundCommandPlugin.swift */,
 				A0A4B5CE23FE5B0A0044CBFB /* HomeKitPlugin.swift */,
+				A050FA4F240C88C700DCCB82 /* HarmonyHub.swift */,
 			);
 			path = plugins;
 			sourceTree = "<group>";
@@ -402,6 +405,7 @@
 				A0E5788323FA6C350019852C /* Constants.swift in Sources */,
 				A0A4B5CD23FE4CF00044CBFB /* CompoundCommandPlugin.swift in Sources */,
 				A08CC72723F6687F003CB471 /* ObjectDecoder.swift in Sources */,
+				A050FA50240C88C700DCCB82 /* HarmonyHub.swift in Sources */,
 				A0E5787123FA24240019852C /* TimerPlugin.swift in Sources */,
 				A0E5788123FA6B120019852C /* UIView+Glow.swift in Sources */,
 				A0A4B5CF23FE5B0A0044CBFB /* HomeKitPlugin.swift in Sources */,

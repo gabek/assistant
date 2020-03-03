@@ -17,6 +17,7 @@ class MainViewController: UIViewController {
     private var compoundCommandPlugin: CompoundCommandPlugin!
     private var lightingPlugin: LightingPlugin!
     private var canvasPlugin: MeuralCanvasPlugin!
+    private var harmonyHubPlugin: HarmonyHubPlugin!
     
     private let speechRecognizer = SpeechRecognizer()
     fileprivate let textToSpeech = TextToSpeech()
@@ -101,7 +102,7 @@ class MainViewController: UIViewController {
         compoundCommandPlugin = CompoundCommandPlugin(delegate: self)
         lightingPlugin = LightingPlugin(delegate: self)
         canvasPlugin = MeuralCanvasPlugin(delegate: self)
-        
+        harmonyHubPlugin = HarmonyHubPlugin(delegate: self)
         compoundCommandPlugin.pluginDelegate = self
         
         let plugins: [Plugin] = [
@@ -111,6 +112,7 @@ class MainViewController: UIViewController {
             TimerPlugin(delegate: self),
             whiteNoisePlugin,
             compoundCommandPlugin,
+            harmonyHubPlugin,
         ]
         speechRecognizer.setPlugins(plugins)
         
@@ -422,6 +424,7 @@ extension MainViewController: CompoundCommandPluginDelegate {
     }
     
     func goodnight() {
+        harmonyHubPlugin.turnOffTV()
         lightingPlugin.allLightsOff()
         canvasPlugin.off()
         whiteNoisePlugin.start()
