@@ -113,6 +113,7 @@ class MainViewController: UIViewController {
             whiteNoisePlugin,
             compoundCommandPlugin,
             harmonyHubPlugin,
+            SensorsPlugin(delegate: self),
         ]
         speechRecognizer.setPlugins(plugins)
         
@@ -193,8 +194,9 @@ class MainViewController: UIViewController {
     private func handleScreenBrightness() {
         if self.isInSpeechSession || self.isInDayMode { return }
         
-        let dimmingAlpha = min(1.0 - (UIScreen.main.brightness * 3.5), 0.6)
+        let dimmingAlpha = min(1.0 - (UIScreen.main.brightness * 2.9), 0.6)
         if dimmingAlpha == self.dimmingView.alpha { return }
+        
         
         DispatchQueue.main.async {
             self.dimmingView.layer.removeAllAnimations()

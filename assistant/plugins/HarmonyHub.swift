@@ -32,7 +32,7 @@ class HarmonyHubPlugin: Plugin {
         }
     }
     
-    var delegate: PluginDelegate?
+    weak var delegate: PluginDelegate?
     
     var commands: [String] {
        return Command.allCases.map { return $0.rawValue }
