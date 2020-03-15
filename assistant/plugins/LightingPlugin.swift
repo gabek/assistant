@@ -66,7 +66,7 @@ class LightingPlugin: Plugin {
         toggleButton.addTarget(self, action: #selector(toggleLights), for: .touchUpInside)
         checkLightsStatus()
         
-        Timer.scheduledTimer(withTimeInterval: 5.0 * 60, repeats: true) { (_) in
+        Timer.scheduledTimer(withTimeInterval: 1.0 * 60, repeats: true) { (_) in
             self.checkLightsStatus()
         }
     }
@@ -74,7 +74,7 @@ class LightingPlugin: Plugin {
     private func checkLightsStatus() {
         getGroup(0) { (group) in
             DispatchQueue.main.async {
-                self.lightsAreOn = group.state.anyOn
+                self.lightsAreOn = group.state.allOn
             }
         }
     }
