@@ -16,7 +16,7 @@ class HarmonyHubPlugin: Plugin {
     }
     
     enum Constants: String, RawRepresentable {
-        case hubIP = "192.168.1.3"
+        case hubIP = "192.168.1.4"
         case hubPort = "8088"
         case hubPath = "?domain=svcs.myharmony.com&hubId=3888326"
         
@@ -135,6 +135,7 @@ extension HarmonyHubPlugin: WebSocketDelegate {
         case .error(let error):
             isConnected = false
             print(error)
+            setup()
         }
     }
     
