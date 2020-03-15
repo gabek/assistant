@@ -294,7 +294,7 @@ class MainViewController: UIViewController {
         label.textAlignment = .center
         label.textColor = Constants.itemColor
         label.startFlicker()
-        label.enableGlow(with: Constants.itemColor)
+        label.enableGlow(with: Constants.shadowColor)
         return label
     }()
     
@@ -306,7 +306,7 @@ class MainViewController: UIViewController {
         label.textAlignment = .center
         label.textColor = Constants.secondaryColor
         label.alpha = 0.5
-        label.enableGlow(with: Constants.itemColor)
+        label.enableGlow(with: Constants.shadowColor)
         return label
     }()
     
@@ -316,7 +316,7 @@ class MainViewController: UIViewController {
         label.font = UIFont.init(name: "Digital-7", size: 70)
         label.textAlignment = .center
         label.textColor = Constants.itemColor
-        label.enableGlow(with: Constants.itemColor)
+        label.enableGlow(with: Constants.shadowColor)
         label.startFlicker()
         return label
     }()
@@ -328,7 +328,7 @@ class MainViewController: UIViewController {
         label.textAlignment = .center
         label.textColor = Constants.itemColor
         label.alpha = 0.9
-        label.enableGlow(with: Constants.itemColor)
+        label.enableGlow(with: Constants.shadowColor)
         return label
     }()
     

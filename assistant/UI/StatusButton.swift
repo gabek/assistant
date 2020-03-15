@@ -26,8 +26,9 @@ class StatusButton: LayoutableButton {
         layer.borderColor = Constants.itemColor.withAlphaComponent(0.7).cgColor
         layer.borderWidth = 2.0
         
-        titleLabel?.enableGlow(with: Constants.itemColor)
-        imageView?.enableGlow(with: Constants.itemColor.withAlphaComponent(0.6))
+        titleLabel?.enableGlow(with: Constants.shadowColor)
+        imageView?.enableGlow(with: Constants.shadowColor.withAlphaComponent(0.8))
+        imageView?.startFlicker()
     }
     
     override func layoutSubviews() {
