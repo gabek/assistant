@@ -73,6 +73,7 @@ class MainViewController: UIViewController {
         
         statusStackView.addArrangedSubview(doNotDisturbButton)
         statusStackView.addArrangedSubview(dayNightButton)
+        statusStackView.addArrangedSubview(goodnightButton)
         
         randomItemsStackView.addArrangedSubview(roomTempLabel)
         
@@ -94,6 +95,9 @@ class MainViewController: UIViewController {
             
             dayNightButton.widthAnchor.constraint(equalToConstant: 110),
             dayNightButton.heightAnchor.constraint(equalToConstant: 110),
+
+            goodnightButton.widthAnchor.constraint(equalToConstant: 110),
+            goodnightButton.heightAnchor.constraint(equalToConstant: 110),
             
             randomItemsStackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 40),
             randomItemsStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40),
@@ -140,6 +144,10 @@ class MainViewController: UIViewController {
         dayNightButton.rx.tap.subscribe(onNext: { [weak self] _ in
             self?.isInDayMode.toggle()
             self?.handleScreenBrightness()
+        }).disposed(by: disposeBag)
+        
+        goodnightButton.rx.tap.subscribe(onNext: { [weak self] _ in
+            self?.goodnight()
         }).disposed(by: disposeBag)
         
         isInDayMode = false
@@ -391,6 +399,14 @@ class MainViewController: UIViewController {
     fileprivate let dayNightButton: StatusButton = {
         let icon = StatusButton()
         icon.translatesAutoresizingMaskIntoConstraints = false
+        return icon
+    }()
+    
+    fileprivate let goodnightButton: StatusButton = {
+        let icon = StatusButton()
+        icon.translatesAutoresizingMaskIntoConstraints = false
+        icon.setTitle("Sleep", for: .normal)
+        icon.setImage(UIImage(named: "sleep"), for: .normal)
         return icon
     }()
 }
