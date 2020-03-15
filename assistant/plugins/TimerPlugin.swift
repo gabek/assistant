@@ -57,4 +57,12 @@ class TimerPlugin: Plugin {
             })
         }
     }
+    
+    func internalTempChanged(temp: Int) {
+        //
+    }
+    
+    func lightingChanged(value: Int) {
+        //
+    }
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A0110816241DA99F00CB44D6 /* sensors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0110815241DA99F00CB44D6 /* sensors.swift */; };
 		A050F9F52406488A00DCCB82 /* TextToSpeech.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050F9F42406488A00DCCB82 /* TextToSpeech.swift */; };
 		A050F9F7240B4F2B00DCCB82 /* StatusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050F9F6240B4F2B00DCCB82 /* StatusButton.swift */; };
 		A050FA50240C88C700DCCB82 /* HarmonyHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050FA4F240C88C700DCCB82 /* HarmonyHub.swift */; };
@@ -44,6 +45,7 @@
 
 /* Begin PBXFileReference section */
 		6D006C6A1CD3F250EEB5B652 /* Pods-assistant.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-assistant.release.xcconfig"; path = "Target Support Files/Pods-assistant/Pods-assistant.release.xcconfig"; sourceTree = "<group>"; };
+		A0110815241DA99F00CB44D6 /* sensors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sensors.swift; sourceTree = "<group>"; };
 		A050F9F42406488A00DCCB82 /* TextToSpeech.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextToSpeech.swift; sourceTree = "<group>"; };
 		A050F9F6240B4F2B00DCCB82 /* StatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusButton.swift; sourceTree = "<group>"; };
 		A050FA4F240C88C700DCCB82 /* HarmonyHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmonyHub.swift; sourceTree = "<group>"; };
@@ -101,6 +103,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A0110814241DA98E00CB44D6 /* sensors */ = {
+			isa = PBXGroup;
+			children = (
+				A0110815241DA99F00CB44D6 /* sensors.swift */,
+			);
+			path = sensors;
+			sourceTree = "<group>";
+		};
 		A08CC72223F66562003CB471 /* plugins */ = {
 			isa = PBXGroup;
 			children = (
@@ -228,6 +238,7 @@
 			isa = PBXGroup;
 			children = (
 				A0A4B5D023FE5B4F0044CBFB /* assistant.entitlements */,
+				A0110814241DA98E00CB44D6 /* sensors */,
 				A0E5788623FA787F0019852C /* audio */,
 				A0E5787B23FA45550019852C /* wallpapers */,
 				A0E5787823FA34A50019852C /* fonts */,
@@ -405,6 +416,7 @@
 				A0E5788323FA6C350019852C /* Constants.swift in Sources */,
 				A0A4B5CD23FE4CF00044CBFB /* CompoundCommandPlugin.swift in Sources */,
 				A08CC72723F6687F003CB471 /* ObjectDecoder.swift in Sources */,
+				A0110816241DA99F00CB44D6 /* sensors.swift in Sources */,
 				A050FA50240C88C700DCCB82 /* HarmonyHub.swift in Sources */,
 				A0E5787123FA24240019852C /* TimerPlugin.swift in Sources */,
 				A0E5788123FA6B120019852C /* UIView+Glow.swift in Sources */,

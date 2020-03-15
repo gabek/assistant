@@ -105,9 +105,7 @@ class HarmonyHubPlugin: Plugin {
             turnOffTV()
         }
     }
-    
 
-    
 }
 
 extension HarmonyHubPlugin: WebSocketDelegate {
@@ -138,5 +136,13 @@ extension HarmonyHubPlugin: WebSocketDelegate {
             isConnected = false
             print(error)
         }
+    }
+    
+    func internalTempChanged(temp: Int) {
+        //
+    }
+    
+    func lightingChanged(value: Int) {
+        //
     }
 }

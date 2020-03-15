@@ -184,6 +184,14 @@ class LightingPlugin: Plugin {
         }.resume()
     }
     
+    func internalTempChanged(temp: Int) {
+        //
+    }
+    
+    func lightingChanged(value: Int) {
+        //
+    }
+    
     private struct Group: Codable {
         struct Action: Codable {
             var bri: Int

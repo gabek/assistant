@@ -18,11 +18,15 @@ class MainViewController: UIViewController {
     private var lightingPlugin: LightingPlugin!
     private var canvasPlugin: MeuralCanvasPlugin!
     private var harmonyHubPlugin: HarmonyHubPlugin!
+    fileprivate var plugins = [Plugin]()
     
     private let speechRecognizer = SpeechRecognizer()
     fileprivate let textToSpeech = TextToSpeech()
     
     fileprivate let audioEngine = AVAudioEngine()
+    
+    fileprivate let sensors = Sensors()
+    fileprivate var sensorBrightness: Int?
     
     fileprivate var doNotDisturbEnabled = false {
         didSet {
@@ -55,6 +59,7 @@ class MainViewController: UIViewController {
         view.layer.cornerRadius = 22.0
 
         speechRecognizer.delegate = self
+        sensors.delegate = self
         
         view.addSubview(wallpaperImageView)
         view.addSubview(clockStackView)
@@ -105,7 +110,7 @@ class MainViewController: UIViewController {
         harmonyHubPlugin = HarmonyHubPlugin(delegate: self)
         compoundCommandPlugin.pluginDelegate = self
         
-        let plugins: [Plugin] = [
+        plugins = [
             WeatherPlugin(delegate: self),
             canvasPlugin,
             lightingPlugin,
@@ -123,13 +128,6 @@ class MainViewController: UIViewController {
                 button.widthAnchor.constraint(equalToConstant: 110),
                 button.heightAnchor.constraint(equalToConstant: 110),
             ])
-        }
-        
-        // Check every n seconds to adjust the screen brightness
-        // based on the display brightness so it's not so blinding
-        // in the dark.
-        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { (_) in
-            self.handleScreenBrightness()
         }
         
         // Toggle day/night mode via button
@@ -190,10 +188,17 @@ class MainViewController: UIViewController {
         }
     }
     
-    private func handleScreenBrightness() {
+    fileprivate func handleScreenBrightness() {
         if self.isInSpeechSession || self.isInDayMode { return }
+        guard let sensorBrightness = sensorBrightness else { return }
         
-        let dimmingAlpha = min(1.0 - (UIScreen.main.brightness * 3.5), 0.6)
+        var dimmingAlpha: CGFloat = 0.0
+        
+        if sensorBrightness < 10 {
+            let adjustedBrightness = Double(sensorBrightness) * 1.8
+            dimmingAlpha = CGFloat(min(1 - (adjustedBrightness * 0.1), 0.7))
+        }
+        
         if dimmingAlpha == self.dimmingView.alpha { return }
         
         DispatchQueue.main.async {
@@ -411,8 +416,6 @@ extension MainViewController: PluginDelegate {
         whiteNoisePlugin.setVolume(0.4)
         if !doNotDisturbEnabled {
             textToSpeech.speak(text)
-            
-
         }
     }
 }
@@ -431,4 +434,23 @@ extension MainViewController: CompoundCommandPluginDelegate {
         
         speak("Goodnight!")
     }
+}
+
+extension MainViewController: SensorsDelegate {
+    func internalTempChanged(temp: Int) {
+        //
+    }
+    
+    func lightingChanged(value: Int) {
+        self.sensorBrightness = value
+        DispatchQueue.main.async {
+            self.handleScreenBrightness()
+        }
+        
+        for plugin in plugins {
+            plugin.lightingChanged(value: value)
+        }
+    }
+    
+    
 }

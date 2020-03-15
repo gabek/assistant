@@ -42,11 +42,17 @@ class HomeKitPlugin: NSObject, Plugin {
     }
     
     func speechDetected(_ speech: String) {
-        guard let command = Command(rawValue: speech) else { return }
+//        guard let command = Command(rawValue: speech) else { return }
 
     }
     
+    func internalTempChanged(temp: Int) {
+        //
+    }
     
+    func lightingChanged(value: Int) {
+        //
+    }
 }
 
 extension HomeKitPlugin: HMAccessoryBrowserDelegate {

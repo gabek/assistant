@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol Plugin {
+protocol Plugin: SensorsDelegate {
     var delegate: PluginDelegate? { get set }
     var commands: [String] { get }
     var actionButton: UIButton? { get }

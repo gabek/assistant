@@ -18,6 +18,8 @@ class MeuralCanvasPlugin: Plugin {
     
     let disposeBag = DisposeBag()
     
+    private var backlight = 0
+
     var commands: [String] {
         return Command.allCases.map { return $0.rawValue }
     }
@@ -36,6 +38,7 @@ class MeuralCanvasPlugin: Plugin {
         case next = "remote/control_command/set_key/right"
         case previous = "remote/control_command/set_key/left"
         case captions = "remote/control_command/set_key/caption"
+        case setBrightness = "remote/control_command/set_backlight"
     }
     
     weak var delegate: PluginDelegate?
@@ -82,6 +85,17 @@ class MeuralCanvasPlugin: Plugin {
     
     private func previous() {
         sendSimpleCommand(.previous)
+    }
+    
+    private func setBacklight(value: Int) {
+        let backlightBrightness = min(max(10, value * 3), 80)
+
+        if backlightBrightness == backlight { return }
+
+        backlight = backlightBrightness
+        
+        guard let url = URL(string: self.canvasURL)?.appendingPathComponent(APIRequest.setBrightness.rawValue).appendingPathComponent(String(backlightBrightness)) else { return }
+        URLSession.shared.dataTask(with: url).resume()
     }
     
     private func getCurrentStatus() -> Observable<CurrentStatusResponse> {
@@ -215,5 +229,13 @@ class MeuralCanvasPlugin: Plugin {
                 return string
             }
         }
+    }
+    
+    func internalTempChanged(temp: Int) {
+        //
+    }
+    
+    func lightingChanged(value: Int) {
+        setBacklight(value: value)
     }
 }

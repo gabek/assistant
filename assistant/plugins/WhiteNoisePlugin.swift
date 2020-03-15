@@ -87,4 +87,11 @@ class WhiteNoisePlugin: Plugin {
         isSoundPlaying = false
     }
     
+    func internalTempChanged(temp: Int) {
+        //
+    }
+    
+    func lightingChanged(value: Int) {
+        //
+    }
 }
