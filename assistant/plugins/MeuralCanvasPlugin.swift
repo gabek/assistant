@@ -90,11 +90,23 @@ class MeuralCanvasPlugin: Plugin {
     private func setBacklight(value: Int) {
         let backlightBrightness = min(max(10, value * 3), 80)
 
-        if backlightBrightness == backlight { return }
+        var adjustedBacklightBrightness = backlightBrightness
+        let brightnessDelta = backlightBrightness - backlight
 
-        backlight = backlightBrightness
+        if brightnessDelta == 0 { return }
+
+        // Try to limit the amount of change each time.
+        if abs(brightnessDelta) < 3 { return }
+        if backlight != 0 && abs(brightnessDelta) < 6 {
+            adjustedBacklightBrightness = backlight + (brightnessDelta / 2)
+        }
         
-        guard let url = URL(string: self.canvasURL)?.appendingPathComponent(APIRequest.setBrightness.rawValue).appendingPathComponent(String(backlightBrightness)) else { return }
+        if adjustedBacklightBrightness == backlight { return }
+        print("\(backlight) -> \(adjustedBacklightBrightness)")
+
+        backlight = adjustedBacklightBrightness
+
+        guard let url = URL(string: self.canvasURL)?.appendingPathComponent(APIRequest.setBrightness.rawValue).appendingPathComponent(String(adjustedBacklightBrightness)) else { return }
         URLSession.shared.dataTask(with: url).resume()
     }
     
