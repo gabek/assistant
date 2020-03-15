@@ -74,7 +74,10 @@ class MainViewController: UIViewController {
         statusStackView.addArrangedSubview(doNotDisturbButton)
         statusStackView.addArrangedSubview(dayNightButton)
         
+        randomItemsStackView.addArrangedSubview(roomTempLabel)
+        
         view.addSubview(statusStackView)
+        view.addSubview(randomItemsStackView)
         
         NSLayoutConstraint.activate([
             clockStackView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -100),
@@ -91,6 +94,9 @@ class MainViewController: UIViewController {
             
             dayNightButton.widthAnchor.constraint(equalToConstant: 110),
             dayNightButton.heightAnchor.constraint(equalToConstant: 110),
+            
+            randomItemsStackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 40),
+            randomItemsStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40),
         ])
         
         wallpaperImageView.pinToEdges()
@@ -263,6 +269,15 @@ class MainViewController: UIViewController {
         return stackView
     }()
     
+    private let randomItemsStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.spacing = 45
+        stackView.alignment = .leading
+        return stackView
+    }()
+    
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.isOpaque = true
@@ -270,6 +285,19 @@ class MainViewController: UIViewController {
         label.font = UIFont.init(name: "Digital-7", size: 280)
         label.textAlignment = .center
         label.textColor = Constants.itemColor
+        label.startFlicker()
+        label.enableGlow(with: Constants.itemColor)
+        return label
+    }()
+    
+    private let roomTempLabel: UILabel = {
+        let label = UILabel()
+        label.isOpaque = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 50)
+        label.textAlignment = .center
+        label.textColor = Constants.secondaryColor
+        label.alpha = 0.5
         label.enableGlow(with: Constants.itemColor)
         return label
     }()
@@ -281,6 +309,7 @@ class MainViewController: UIViewController {
         label.textAlignment = .center
         label.textColor = Constants.itemColor
         label.enableGlow(with: Constants.itemColor)
+        label.startFlicker()
         return label
     }()
     
@@ -290,6 +319,7 @@ class MainViewController: UIViewController {
         label.font = UIFont.systemFont(ofSize: 40, weight: .medium)
         label.textAlignment = .center
         label.textColor = Constants.itemColor
+        label.alpha = 0.9
         label.enableGlow(with: Constants.itemColor)
         return label
     }()
@@ -438,15 +468,13 @@ extension MainViewController: CompoundCommandPluginDelegate {
 
 extension MainViewController: SensorsDelegate {
     func internalTempChanged(temp: Int) {
-        //
+        roomTempLabel.text = "\(temp)F"
     }
     
     func lightingChanged(value: Int) {
         self.sensorBrightness = value
-        DispatchQueue.main.async {
-            self.handleScreenBrightness()
-        }
-        
+        handleScreenBrightness()
+
         for plugin in plugins {
             plugin.lightingChanged(value: value)
         }

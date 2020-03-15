@@ -20,7 +20,7 @@ class Sensors {
     }
     
     weak var delegate: SensorsDelegate?
-    private let sensorURL = URL(string: "http://192.168.1.20")!
+    private let sensorURL = URL(string: "http://192.168.1.15")!
     
     init() {
         Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { (_) in
@@ -36,8 +36,10 @@ class Sensors {
 
             do {
                 let sensors = try ObjectDecoder<Response>().getObjectFrom(jsonData: data, decodingStrategy: .convertFromSnakeCase)
-                self.delegate?.internalTempChanged(temp: sensors.temp)
-                self.delegate?.lightingChanged(value: sensors.light)
+                DispatchQueue.main.async {
+                    self.delegate?.internalTempChanged(temp: sensors.temp)
+                    self.delegate?.lightingChanged(value: sensors.light)
+                }
             } catch {
                 print(error)
             }

@@ -36,5 +36,16 @@ extension UIView {
         radiusAnimation.fillMode = CAMediaTimingFillMode.forwards
         radiusAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         layer.add(radiusAnimation, forKey: "glowViewPulseRadiusAnimation")
+        
+        let alphaAnimation = CABasicAnimation(keyPath: "alpha")
+        alphaAnimation.fromValue = alpha
+        alphaAnimation.toValue = alpha - 0.4
+        alphaAnimation.repeatCount = .infinity
+        alphaAnimation.duration = Double.random(in: 4.0...5.0)
+        alphaAnimation.autoreverses = true
+        alphaAnimation.isRemovedOnCompletion = true
+        alphaAnimation.fillMode = CAMediaTimingFillMode.forwards
+        alphaAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+        layer.add(alphaAnimation, forKey: "alphaAnimation")
     }
 }

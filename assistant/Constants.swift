@@ -10,5 +10,7 @@ import Foundation
 
 class Constants {
     static let itemColor = UIColor.green
+    static let secondaryColor = UIColor(red: 0.4, green: 1.0, blue: 0.5, alpha: 1.0)
+
     static let prefixPhrase = "hey computer"
 }
