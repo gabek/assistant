@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Kingfisher
 
 class StatusButton: LayoutableButton {
     init() {
@@ -39,7 +40,12 @@ class StatusButton: LayoutableButton {
     
     func set(text: String, iconURL: String) {
         guard let url = URL(string: iconURL) else { return }
-        kf.setImage(with: url, for: .normal)
+
+        let imageModifier = AnyImageModifier { (image) -> KFCrossPlatformImage in
+            return image.withRenderingMode(.alwaysTemplate)
+        }
+        
+        kf.setImage(with: url, for: .normal, placeholder: nil, options: [KingfisherOptionsInfoItem.imageModifier(imageModifier)])
         setTitle(text, for: .normal)
     }
     
