@@ -48,6 +48,7 @@ class LightingPlugin: Plugin {
 
     private let toggleButton: UIButton = {
         let button = StatusButton()
+        button.setImage(UIImage(named: "lightbulb"), for: .normal)
         return button
     }()
     

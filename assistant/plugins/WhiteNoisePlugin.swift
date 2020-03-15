@@ -37,6 +37,7 @@ class WhiteNoisePlugin: Plugin {
         let icon = StatusButton()
         icon.translatesAutoresizingMaskIntoConstraints = false
         icon.setTitle("Start", for: .normal)
+        icon.setImage(UIImage(named: "storm"), for: .normal)
         return icon
     }()
 
