@@ -32,11 +32,11 @@ extension UIView {
     }
     
     @objc private func flicker() {
-        let numberOfCycles = Float.random(in: 2...5)
+        let numberOfCycles = Float.random(in: 3...7)
         let animationOptions = UIView.AnimationOptions.autoreverse
         let defaultAlpha = self.alpha
         
-        UIView.animate(withDuration: 0.04, delay: 0, options: animationOptions, animations: { () -> Void in
+        UIView.animate(withDuration: 0.05, delay: 0, options: animationOptions, animations: { () -> Void in
             UIView.setAnimationRepeatCount(numberOfCycles)
             self.alpha = defaultAlpha - 0.14
         }, completion: { (complete) -> Void in

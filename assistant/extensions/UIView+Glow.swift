@@ -19,7 +19,7 @@ extension UIView {
         animation.fromValue = 1.0
         animation.toValue = 0.7
         animation.repeatCount = .infinity
-        animation.duration = 1.0
+        animation.duration = Double.random(in: 1.0...2.0)
         animation.autoreverses = true
         animation.isRemovedOnCompletion = true
         animation.fillMode = CAMediaTimingFillMode.forwards
@@ -30,7 +30,7 @@ extension UIView {
         radiusAnimation.fromValue = 10.0
         radiusAnimation.toValue = 16.0
         radiusAnimation.repeatCount = .infinity
-        radiusAnimation.duration = 2.5
+        radiusAnimation.duration = Double.random(in: 2.0...3.0)
         radiusAnimation.autoreverses = true
         radiusAnimation.isRemovedOnCompletion = true
         radiusAnimation.fillMode = CAMediaTimingFillMode.forwards
@@ -41,7 +41,7 @@ extension UIView {
         alphaAnimation.fromValue = alpha
         alphaAnimation.toValue = alpha - 0.4
         alphaAnimation.repeatCount = .infinity
-        alphaAnimation.duration = Double.random(in: 4.0...5.0)
+        alphaAnimation.duration = Double.random(in: 5.0...6.0)
         alphaAnimation.autoreverses = true
         alphaAnimation.isRemovedOnCompletion = true
         alphaAnimation.fillMode = CAMediaTimingFillMode.forwards
