@@ -10,6 +10,20 @@ import Foundation
 import Kingfisher
 
 class StatusButton: LayoutableButton {
+    override var tintColor: UIColor! {
+        get {
+            return super.tintColor
+        }
+        
+        set {
+            imageView?.tintColor = newValue
+            setTitleColor(newValue, for: .normal)
+            layer.borderColor = newValue.withAlphaComponent(0.7).cgColor
+
+            super.tintColor = newValue
+        }
+    }
+    
     init() {
         super.init(frame: .zero)
         imageVerticalAlignment = .center
@@ -17,14 +31,12 @@ class StatusButton: LayoutableButton {
         titleEdgeInsets = UIEdgeInsets(top: 60, left: 0, bottom: 0, right: 0)
         imageEdgeInsets = UIEdgeInsets(top: -30, left: 0, bottom: 0, right: 0)
         
-        imageView?.tintColor = Constants.itemColor
+        tintColor = Constants.itemColor
         
         backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        setTitleColor(Constants.itemColor, for: .normal)
         titleLabel?.font = UIFont.boldSystemFont(ofSize: 22)
         titleLabel?.textAlignment = .center
         
-        layer.borderColor = Constants.itemColor.withAlphaComponent(0.7).cgColor
         layer.borderWidth = 2.0
         
         titleLabel?.enableGlow(with: Constants.shadowColor)

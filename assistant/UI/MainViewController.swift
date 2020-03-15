@@ -107,8 +107,11 @@ class MainViewController: UIViewController {
         
         setupClock()
         
-        view.addSubview(dimmingView)
-        dimmingView.pinToEdges()
+        DispatchQueue.main.async {
+            let window = UIApplication.shared.keyWindow
+            window?.addSubview(self.dimmingView)
+            self.dimmingView.pinToEdges()
+        }
         
         view.addSubview(doNotDisturbOutline)
         doNotDisturbOutline.pinToEdges()
@@ -200,6 +203,21 @@ class MainViewController: UIViewController {
         } catch {
             print(error)
         }
+        
+        let touchRecognizer = UITapGestureRecognizer(target: self, action: #selector(presentPopupMenu))
+        view.addGestureRecognizer(touchRecognizer)
+        
+        DispatchQueue.main.async {
+            self.presentPopupMenu()
+        }
+    }
+    
+    @objc private func presentPopupMenu() {
+        let vc = PopupPanelView()
+        vc.delegate = self
+        vc.modalPresentationStyle = .overCurrentContext
+        vc.modalTransitionStyle = .crossDissolve
+        present(vc, animated: true, completion: nil)
     }
     
     fileprivate func handleScreenBrightness() {
@@ -496,5 +514,52 @@ extension MainViewController: SensorsDelegate {
         }
     }
     
+    
+}
+
+extension MainViewController: PopupPanelDelegate {
+    func dimLights() {
+        lightingPlugin.changeBrightness(percent: -10)
+    }
+    
+    func brightenLights() {
+        lightingPlugin.changeBrightness(percent: 10)
+    }
+    
+    func lightsPurple() {
+        lightingPlugin.enableScene(.purple)
+    }
+    
+    func lightsRelax() {
+        lightingPlugin.enableScene(.relax)
+    }
+    
+    func lightsSunset() {
+        lightingPlugin.enableScene(.sunset)
+    }
+    
+    func lightsConcentrate() {
+        lightingPlugin.enableScene(.concentrate)
+    }
+    
+    func lightsBright() {
+        lightingPlugin.enableScene(.bright)
+    }
+    
+    func turnOffMeural() {
+        canvasPlugin.off()
+    }
+    
+    func turnOnMeural() {
+        canvasPlugin.on()
+    }
+    
+    func turnOffTV() {
+        harmonyHubPlugin.turnOffTV()
+    }
+    
+    func turnOnTV() {
+        harmonyHubPlugin.turnOnTV()
+    }
     
 }

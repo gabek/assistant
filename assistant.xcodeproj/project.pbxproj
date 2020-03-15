@@ -12,6 +12,7 @@
 		A050F9F7240B4F2B00DCCB82 /* StatusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050F9F6240B4F2B00DCCB82 /* StatusButton.swift */; };
 		A050FA50240C88C700DCCB82 /* HarmonyHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050FA4F240C88C700DCCB82 /* HarmonyHub.swift */; };
 		A0815280241E016E002C6D0A /* UIView+Flicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A081527F241E016E002C6D0A /* UIView+Flicker.swift */; };
+		A0815282241EC1CF002C6D0A /* PopupPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0815281241EC1CF002C6D0A /* PopupPanelView.swift */; };
 		A08CC72123F6645D003CB471 /* PluginProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08CC72023F6645D003CB471 /* PluginProtocol.swift */; };
 		A08CC72423F665D8003CB471 /* MeuralCanvasPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08CC72323F665D8003CB471 /* MeuralCanvasPlugin.swift */; };
 		A08CC72723F6687F003CB471 /* ObjectDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08CC72623F6687F003CB471 /* ObjectDecoder.swift */; };
@@ -51,6 +52,7 @@
 		A050F9F6240B4F2B00DCCB82 /* StatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusButton.swift; sourceTree = "<group>"; };
 		A050FA4F240C88C700DCCB82 /* HarmonyHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmonyHub.swift; sourceTree = "<group>"; };
 		A081527F241E016E002C6D0A /* UIView+Flicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Flicker.swift"; sourceTree = "<group>"; };
+		A0815281241EC1CF002C6D0A /* PopupPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupPanelView.swift; sourceTree = "<group>"; };
 		A08CC72023F6645D003CB471 /* PluginProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginProtocol.swift; sourceTree = "<group>"; };
 		A08CC72323F665D8003CB471 /* MeuralCanvasPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeuralCanvasPlugin.swift; sourceTree = "<group>"; };
 		A08CC72623F6687F003CB471 /* ObjectDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectDecoder.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				A0E5787323FA27D60019852C /* MainViewController.swift */,
 				A0E5787E23FA4AF80019852C /* WeatherFetcher.swift */,
 				A050F9F6240B4F2B00DCCB82 /* StatusButton.swift */,
+				A0815281241EC1CF002C6D0A /* PopupPanelView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -407,6 +410,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0815282241EC1CF002C6D0A /* PopupPanelView.swift in Sources */,
 				A08CC72423F665D8003CB471 /* MeuralCanvasPlugin.swift in Sources */,
 				A0E5787423FA27D60019852C /* MainViewController.swift in Sources */,
 				A0FFBDE923F5306C00EA63A4 /* AppDelegate.swift in Sources */,

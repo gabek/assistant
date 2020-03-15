@@ -36,6 +36,14 @@ class LightingPlugin: Plugin {
         case dim100 = "dim lights by one hundred percent"
     }
     
+    enum LightingScene: String {
+        case purple = "KG-Qb103ctGIbvO"
+        case relax = "t0ZIPksrsH8gUn6"
+        case bright = "ti4qcX2M6Vbkr07"
+        case concentrate = "z81PTtGic0PSA5A"
+        case sunset = "CzgmUmHLnpYN1jb"
+    }
+    
     weak var delegate: PluginDelegate?
     
     var commands: [String] {
@@ -69,7 +77,7 @@ class LightingPlugin: Plugin {
         
         Timer.scheduledTimer(withTimeInterval: 1.0 * 60, repeats: true) { (_) in
             self.checkLightsStatus()
-        }
+        }        
     }
     
     private func checkLightsStatus() {
@@ -151,7 +159,7 @@ class LightingPlugin: Plugin {
         lightsAreOn = false
     }
     
-    private func changeBrightness(percent: Double) {
+    func changeBrightness(percent: Double) {
         let offset = Int(254 * (percent * 0.01))
         sendSimpleCommand("/groups/0/action", command: "{\"bri_inc\":\(offset)}")
     }
@@ -185,6 +193,22 @@ class LightingPlugin: Plugin {
         }.resume()
     }
     
+    func enableScene(_ scene: LightingScene, groupNumber: Int? = 0) {
+        guard let url = URL(string: "http://192.168.1.2/api/\(username)")?.appendingPathComponent("/groups/\(groupNumber ?? 0)/action") else { return }
+        
+        let sceneRequest = GroupScene(scene: scene.rawValue)
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.addValue("text/plain; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.httpBody = sceneRequest.data
+        
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+//            print(response)
+//            print(error)
+        }.resume()
+    }
+    
     func internalTempChanged(temp: Int) {
         //
     }
@@ -205,5 +229,9 @@ class LightingPlugin: Plugin {
         
         var state: State
         var action: Action
+    }
+    
+    private struct GroupScene: Codable {
+        var scene: String
     }
 }
