@@ -7,12 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A0110816241DA99F00CB44D6 /* sensors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0110815241DA99F00CB44D6 /* sensors.swift */; };
-		A050F9F52406488A00DCCB82 /* TextToSpeech.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050F9F42406488A00DCCB82 /* TextToSpeech.swift */; };
-		A050F9F7240B4F2B00DCCB82 /* StatusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050F9F6240B4F2B00DCCB82 /* StatusButton.swift */; };
-		A050FA50240C88C700DCCB82 /* HarmonyHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050FA4F240C88C700DCCB82 /* HarmonyHub.swift */; };
-		A0815280241E016E002C6D0A /* UIView+Flicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A081527F241E016E002C6D0A /* UIView+Flicker.swift */; };
-		A0815282241EC1CF002C6D0A /* PopupPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0815281241EC1CF002C6D0A /* PopupPanelView.swift */; };
 		A0110812241A067100CB44D6 /* commands.txt in Resources */ = {isa = PBXBuildFile; fileRef = A0110811241A067100CB44D6 /* commands.txt */; };
 		A050F9F52406488A00DCCB82 /* TextToSpeech.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050F9F42406488A00DCCB82 /* TextToSpeech.swift */; };
 		A050F9F7240B4F2B00DCCB82 /* StatusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050F9F6240B4F2B00DCCB82 /* StatusButton.swift */; };
@@ -31,6 +25,10 @@
 		A050FA4B240C48F800DCCB82 /* variances in Resources */ = {isa = PBXBuildFile; fileRef = A050FA3E240C48F700DCCB82 /* variances */; };
 		A050FA4C240C48F800DCCB82 /* en-us.lm.dmp in Resources */ = {isa = PBXBuildFile; fileRef = A050FA3F240C48F700DCCB82 /* en-us.lm.dmp */; };
 		A050FA4D240C4C0600DCCB82 /* 6844.lm in Resources */ = {isa = PBXBuildFile; fileRef = A050FA35240C48F700DCCB82 /* 6844.lm */; };
+		A081528A241F1060002C6D0A /* sensors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0815289241F1060002C6D0A /* sensors.swift */; };
+		A081528C241F106A002C6D0A /* UIView+Flicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A081528B241F106A002C6D0A /* UIView+Flicker.swift */; };
+		A081528E241F1090002C6D0A /* HarmonyHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = A081528D241F1090002C6D0A /* HarmonyHub.swift */; };
+		A0815290241F1332002C6D0A /* PopupPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A081528F241F1332002C6D0A /* PopupPanelView.swift */; };
 		A08CC72123F6645D003CB471 /* PluginProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08CC72023F6645D003CB471 /* PluginProtocol.swift */; };
 		A08CC72423F665D8003CB471 /* MeuralCanvasPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08CC72323F665D8003CB471 /* MeuralCanvasPlugin.swift */; };
 		A08CC72723F6687F003CB471 /* ObjectDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08CC72623F6687F003CB471 /* ObjectDecoder.swift */; };
@@ -103,12 +101,6 @@
 
 /* Begin PBXFileReference section */
 		6D006C6A1CD3F250EEB5B652 /* Pods-assistant.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-assistant.release.xcconfig"; path = "Target Support Files/Pods-assistant/Pods-assistant.release.xcconfig"; sourceTree = "<group>"; };
-		A0110815241DA99F00CB44D6 /* sensors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sensors.swift; sourceTree = "<group>"; };
-		A050F9F42406488A00DCCB82 /* TextToSpeech.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextToSpeech.swift; sourceTree = "<group>"; };
-		A050F9F6240B4F2B00DCCB82 /* StatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusButton.swift; sourceTree = "<group>"; };
-		A050FA4F240C88C700DCCB82 /* HarmonyHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmonyHub.swift; sourceTree = "<group>"; };
-		A081527F241E016E002C6D0A /* UIView+Flicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Flicker.swift"; sourceTree = "<group>"; };
-		A0815281241EC1CF002C6D0A /* PopupPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupPanelView.swift; sourceTree = "<group>"; };
 		A0110811241A067100CB44D6 /* commands.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = commands.txt; sourceTree = "<group>"; };
 		A050F9F42406488A00DCCB82 /* TextToSpeech.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextToSpeech.swift; sourceTree = "<group>"; };
 		A050F9F6240B4F2B00DCCB82 /* StatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusButton.swift; sourceTree = "<group>"; };
@@ -126,6 +118,10 @@
 		A050FA3D240C48F700DCCB82 /* feat.params */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = feat.params; sourceTree = "<group>"; };
 		A050FA3E240C48F700DCCB82 /* variances */ = {isa = PBXFileReference; lastKnownFileType = file; path = variances; sourceTree = "<group>"; };
 		A050FA3F240C48F700DCCB82 /* en-us.lm.dmp */ = {isa = PBXFileReference; lastKnownFileType = file; path = "en-us.lm.dmp"; sourceTree = "<group>"; };
+		A0815289241F1060002C6D0A /* sensors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = sensors.swift; sourceTree = "<group>"; };
+		A081528B241F106A002C6D0A /* UIView+Flicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Flicker.swift"; sourceTree = "<group>"; };
+		A081528D241F1090002C6D0A /* HarmonyHub.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HarmonyHub.swift; sourceTree = "<group>"; };
+		A081528F241F1332002C6D0A /* PopupPanelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupPanelView.swift; sourceTree = "<group>"; };
 		A08CC72023F6645D003CB471 /* PluginProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginProtocol.swift; sourceTree = "<group>"; };
 		A08CC72323F665D8003CB471 /* MeuralCanvasPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeuralCanvasPlugin.swift; sourceTree = "<group>"; };
 		A08CC72623F6687F003CB471 /* ObjectDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectDecoder.swift; sourceTree = "<group>"; };
@@ -181,12 +177,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A0110814241DA98E00CB44D6 /* sensors */ = {
-			isa = PBXGroup;
-			children = (
-				A0110815241DA99F00CB44D6 /* sensors.swift */,
-			);
-			path = sensors;
 		A050F9FE240C435A00DCCB82 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -241,9 +231,18 @@
 			path = "en-us";
 			sourceTree = "<group>";
 		};
+		A0815288241F1060002C6D0A /* sensors */ = {
+			isa = PBXGroup;
+			children = (
+				A0815289241F1060002C6D0A /* sensors.swift */,
+			);
+			path = sensors;
+			sourceTree = "<group>";
+		};
 		A08CC72223F66562003CB471 /* plugins */ = {
 			isa = PBXGroup;
 			children = (
+				A081528D241F1090002C6D0A /* HarmonyHub.swift */,
 				A0E5787023FA24240019852C /* TimerPlugin.swift */,
 				A08CC72323F665D8003CB471 /* MeuralCanvasPlugin.swift */,
 				A08CC72823F8DA13003CB471 /* WeatherPlugin.swift */,
@@ -251,7 +250,6 @@
 				A0E5788423FA77D70019852C /* WhiteNoisePlugin.swift */,
 				A0A4B5CC23FE4CF00044CBFB /* CompoundCommandPlugin.swift */,
 				A0A4B5CE23FE5B0A0044CBFB /* HomeKitPlugin.swift */,
-				A050FA4F240C88C700DCCB82 /* HarmonyHub.swift */,
 			);
 			path = plugins;
 			sourceTree = "<group>";
@@ -267,10 +265,10 @@
 		A0E5787223FA27C30019852C /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				A081528F241F1332002C6D0A /* PopupPanelView.swift */,
 				A0E5787323FA27D60019852C /* MainViewController.swift */,
 				A0E5787E23FA4AF80019852C /* WeatherFetcher.swift */,
 				A050F9F6240B4F2B00DCCB82 /* StatusButton.swift */,
-				A0815281241EC1CF002C6D0A /* PopupPanelView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -278,9 +276,9 @@
 		A0E5787523FA2CF80019852C /* extensions */ = {
 			isa = PBXGroup;
 			children = (
+				A081528B241F106A002C6D0A /* UIView+Flicker.swift */,
 				A0E5787623FA2D060019852C /* UIView+Layout.swift */,
 				A0E5788023FA6B120019852C /* UIView+Glow.swift */,
-				A081527F241E016E002C6D0A /* UIView+Flicker.swift */,
 			);
 			path = extensions;
 			sourceTree = "<group>";
@@ -372,7 +370,7 @@
 			isa = PBXGroup;
 			children = (
 				A0A4B5D023FE5B4F0044CBFB /* assistant.entitlements */,
-				A0110814241DA98E00CB44D6 /* sensors */,
+				A0815288241F1060002C6D0A /* sensors */,
 				A0E5788623FA787F0019852C /* audio */,
 				A0E5787B23FA45550019852C /* wallpapers */,
 				A0E5787823FA34A50019852C /* fonts */,
@@ -578,12 +576,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A0815282241EC1CF002C6D0A /* PopupPanelView.swift in Sources */,
+				A0815290241F1332002C6D0A /* PopupPanelView.swift in Sources */,
 				A08CC72423F665D8003CB471 /* MeuralCanvasPlugin.swift in Sources */,
 				A0E5787423FA27D60019852C /* MainViewController.swift in Sources */,
 				A0FFBDE923F5306C00EA63A4 /* AppDelegate.swift in Sources */,
 				A0E5788523FA77D70019852C /* WhiteNoisePlugin.swift in Sources */,
 				A0FFBDFE23F6453E00EA63A4 /* SpeechRecognizer.swift in Sources */,
+				A081528A241F1060002C6D0A /* sensors.swift in Sources */,
 				A0E5786F23F9F6F20019852C /* LightingPlugin.swift in Sources */,
 				A0E5787F23FA4AF80019852C /* WeatherFetcher.swift in Sources */,
 				A050F9F52406488A00DCCB82 /* TextToSpeech.swift in Sources */,
@@ -591,16 +590,15 @@
 				A0E5788323FA6C350019852C /* Constants.swift in Sources */,
 				A0A4B5CD23FE4CF00044CBFB /* CompoundCommandPlugin.swift in Sources */,
 				A08CC72723F6687F003CB471 /* ObjectDecoder.swift in Sources */,
-				A0110816241DA99F00CB44D6 /* sensors.swift in Sources */,
-				A050FA50240C88C700DCCB82 /* HarmonyHub.swift in Sources */,
 				A0E5787123FA24240019852C /* TimerPlugin.swift in Sources */,
 				A0E5788123FA6B120019852C /* UIView+Glow.swift in Sources */,
 				A0A4B5CF23FE5B0A0044CBFB /* HomeKitPlugin.swift in Sources */,
+				A081528C241F106A002C6D0A /* UIView+Flicker.swift in Sources */,
 				A050F9F7240B4F2B00DCCB82 /* StatusButton.swift in Sources */,
 				A0A4B5CB23FD0EC90044CBFB /* LayoutableButton.swift in Sources */,
 				A08CC72923F8DA13003CB471 /* WeatherPlugin.swift in Sources */,
+				A081528E241F1090002C6D0A /* HarmonyHub.swift in Sources */,
 				A08CC72123F6645D003CB471 /* PluginProtocol.swift in Sources */,
-				A0815280241E016E002C6D0A /* UIView+Flicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

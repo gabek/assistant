@@ -197,12 +197,12 @@ class MainViewController: UIViewController {
 //            }
 //        }
         
-        audioEngine.prepare()
-        do {
-            try audioEngine.start()
-        } catch {
-            print(error)
-        }
+//        audioEngine.prepare()
+//        do {
+//            try audioEngine.start()
+//        } catch {
+//            print(error)
+//        }
         
         let touchRecognizer = UITapGestureRecognizer(target: self, action: #selector(presentPopupMenu))
         view.addGestureRecognizer(touchRecognizer)
