@@ -79,11 +79,11 @@ class MeuralCanvasPlugin: Plugin {
         sendSimpleCommand(.off)
     }
     
-    private func next() {
+    func next() {
         sendSimpleCommand(.next)
     }
     
-    private func previous() {
+    func previous() {
         sendSimpleCommand(.previous)
     }
     

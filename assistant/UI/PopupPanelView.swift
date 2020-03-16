@@ -21,6 +21,8 @@ import Foundation
     @objc func lightsBright()
     @objc func dimLights()
     @objc func brightenLights()
+    @objc func nextPainting()
+    @objc func prevPainting()
 }
 
 class PopupPanelView: UIViewController {
@@ -35,15 +37,18 @@ class PopupPanelView: UIViewController {
         blurView.backgroundColor = Constants.secondaryColor.withAlphaComponent(0.1)
         
         let row1 = createRow()
-        row1.addArrangedSubview(makeButton(title: "Canvas Off", selector: #selector(PopupPanelDelegate.turnOffMeural)))
-        row1.addArrangedSubview(makeButton(title: "Canvas On", selector: #selector(PopupPanelDelegate.turnOnMeural)))
+        row1.addArrangedSubview(makeButton(title: "Prev", selector: #selector(PopupPanelDelegate.prevPainting), image: UIImage(named: "previous")))
+        row1.addArrangedSubview(makeButton(title: "Canvas Off", selector: #selector(PopupPanelDelegate.turnOffMeural), image: UIImage(named: "frame")))
+        row1.addArrangedSubview(makeButton(title: "Canvas On", selector: #selector(PopupPanelDelegate.turnOnMeural), image: UIImage(named: "frame")))
+        row1.addArrangedSubview(makeButton(title: "Next", selector: #selector(PopupPanelDelegate.nextPainting), image: UIImage(named: "next")))
+
         view.addSubview(row1)
         row1.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         row1.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor).isActive = true
         
         let row2 = createRow()
-        row2.addArrangedSubview(makeButton(title: "Turn on TV", selector: #selector(PopupPanelDelegate.turnOnTV)))
-        row2.addArrangedSubview(makeButton(title: "Turn off TV", selector: #selector(PopupPanelDelegate.turnOffTV)))
+        row2.addArrangedSubview(makeButton(title: "Turn on TV", selector: #selector(PopupPanelDelegate.turnOnTV), image: UIImage(named: "appletv")))
+        row2.addArrangedSubview(makeButton(title: "Turn off TV", selector: #selector(PopupPanelDelegate.turnOffTV), image: UIImage(named: "appletv")))
         view.addSubview(row2)
         row2.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         row2.topAnchor.constraint(equalTo: row1.bottomAnchor, constant: 30).isActive = true
@@ -59,8 +64,8 @@ class PopupPanelView: UIViewController {
         row3.topAnchor.constraint(equalTo: row2.bottomAnchor, constant: 30).isActive = true
 
         let row4 = createRow()
-        row4.addArrangedSubview(makeButton(title: "Brighten", selector: #selector(PopupPanelDelegate.brightenLights)))
-        row4.addArrangedSubview(makeButton(title: "Dim", selector: #selector(PopupPanelDelegate.dimLights)))
+        row4.addArrangedSubview(makeButton(title: "Brighten", selector: #selector(PopupPanelDelegate.brightenLights), image: UIImage(named: "lightbulb")))
+        row4.addArrangedSubview(makeButton(title: "Dim", selector: #selector(PopupPanelDelegate.dimLights), image: UIImage(named: "lightbulb")))
         view.addSubview(row4)
         row4.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         row4.topAnchor.constraint(equalTo: row3.bottomAnchor, constant: 30).isActive = true

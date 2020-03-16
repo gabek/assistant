@@ -513,11 +513,17 @@ extension MainViewController: SensorsDelegate {
             plugin.lightingChanged(value: value)
         }
     }
-    
-    
 }
 
 extension MainViewController: PopupPanelDelegate {
+    func nextPainting() {
+        canvasPlugin.next()
+    }
+    
+    func prevPainting() {
+        canvasPlugin.previous()
+    }
+    
     func dimLights() {
         lightingPlugin.changeBrightness(percent: -10)
     }
