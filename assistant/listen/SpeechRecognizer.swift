@@ -63,7 +63,7 @@ class SpeechRecognizer: NSObject {
         try! AVAudioSession.sharedInstance().setCategory(.playAndRecord)//, options: [.allowBluetooth, .mixWithOthers, .allowBluetoothA2DP])
         try! AVAudioSession.sharedInstance().setMode(.gameChat)
         try! AVAudioSession.sharedInstance().setPreferredInputNumberOfChannels(1)
-        try! AVAudioSession.sharedInstance().setPreferredSampleRate(48000)
+//        try! AVAudioSession.sharedInstance().setPreferredSampleRate(48000)
 
         let test = generateSpeechRecognitionModels()
         let hmm = Bundle.main.bundlePath   // Path to the acustic model
@@ -72,7 +72,7 @@ class SpeechRecognizer: NSObject {
         let keywords = Bundle.main.path(forResource: "commands", ofType: "txt")!
         if let config = Config(args: ("-hmm", hmm), ("-lm", lm),
                                ("-kws", keywords), ("-dict", dict),
-                               ("-nfft", "2048"), ("-samprate", "48000")
+                               ("-nfft", "2048"), ("-samprate", "16000")
             ) {
             config.showDebugInfo = false
             decoder = Decoder(config: config)!

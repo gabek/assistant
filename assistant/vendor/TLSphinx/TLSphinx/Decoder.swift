@@ -181,9 +181,9 @@ public final class Decoder {
         engine = AVAudioEngine()
 
         let input = engine.inputNode
-       let mixer = AVAudioMixerNode()
-       engine.attach(mixer)
-       engine.connect(input, to: mixer, format: input.outputFormat(forBus: 0))
+//       let mixer = AVAudioMixerNode()
+//       engine.attach(mixer)
+//       engine.connect(input, to: mixer, format: input.outputFormat(forBus: 0))
 
         // We forceunwrap this because the docs for AVAudioFormat specify that this constructor return nil when the channels
         // are grater than 2.
@@ -197,7 +197,7 @@ public final class Decoder {
         }
 
 
-        mixer.installTap(onBus: 0, bufferSize: 2048, format: formatIn) { [unowned self] (buffer, _) in
+        input.installTap(onBus: 0, bufferSize: 2048, format: formatIn) { [unowned self] (buffer, _) in
 
             guard let sphinxBuffer = AVAudioPCMBuffer(pcmFormat: formatOut, frameCapacity: buffer.frameCapacity) else {
                 // Returns nil in the following cases:
