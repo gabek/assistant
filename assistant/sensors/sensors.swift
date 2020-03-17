@@ -18,19 +18,19 @@ class Sensors {
         var light: Int
         var temp: Int
     }
-    
+
     weak var delegate: SensorsDelegate?
-    
+
     init() {
-        Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { (_) in
+        Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { _ in
             self.fetch()
         }
-        
+
         fetch()
     }
-    
+
     private func fetch() {
-        URLSession.shared.dataTask(with: Constants.Hosts.senorServer) { (data, response, error) in
+        URLSession.shared.dataTask(with: Constants.Hosts.senorServer) { data, _, error in
             guard let data = data else { return }
 
             do {

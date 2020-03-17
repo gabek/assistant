@@ -15,55 +15,55 @@ extension UIView {
             assertionFailure("Must be added to a superview")
             return
         }
-        
+
         translatesAutoresizingMaskIntoConstraints = false
-        
+
         NSLayoutConstraint.activate([
             centerXAnchor.constraint(equalTo: superview.centerXAnchor, constant: offset.x),
             centerYAnchor.constraint(equalTo: superview.centerYAnchor, constant: offset.y),
         ])
     }
-    
+
     func pinToEdges() {
         guard let superview = superview else {
             assertionFailure("Must be added to a superview")
             return
         }
-        
+
         translatesAutoresizingMaskIntoConstraints = false
-        
+
         topAnchor.constraint(equalTo: superview.topAnchor).isActive = true
         bottomAnchor.constraint(equalTo: superview.bottomAnchor).isActive = true
         leftAnchor.constraint(equalTo: superview.leftAnchor).isActive = true
         rightAnchor.constraint(equalTo: superview.rightAnchor).isActive = true
     }
-    
+
     func pinToLeftAndRightMargins() {
         guard let superview = superview else {
             assertionFailure("Must be added to a superview")
             return
         }
-        
+
         translatesAutoresizingMaskIntoConstraints = false
-        
+
         leftAnchor.constraint(equalTo: superview.layoutMarginsGuide.leftAnchor).isActive = true
         rightAnchor.constraint(equalTo: superview.layoutMarginsGuide.rightAnchor).isActive = true
     }
-    
+
     func pinToMargins() {
         guard let superview = superview else {
             assertionFailure("Must be added to a superview")
             return
         }
-        
+
         translatesAutoresizingMaskIntoConstraints = false
-        
+
         leftAnchor.constraint(equalTo: superview.layoutMarginsGuide.leftAnchor).isActive = true
         rightAnchor.constraint(equalTo: superview.layoutMarginsGuide.rightAnchor).isActive = true
         topAnchor.constraint(equalTo: superview.layoutMarginsGuide.topAnchor).isActive = true
         bottomAnchor.constraint(equalTo: superview.layoutMarginsGuide.bottomAnchor).isActive = true
     }
-    
+
     static func spacerOfHeight(_ height: CGFloat) -> UIView {
         let spacer = UIView()
         spacer.translatesAutoresizingMaskIntoConstraints = false

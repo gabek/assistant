@@ -6,44 +6,37 @@
 //  Copyright (c) 2015 Bruno Berisso. All rights reserved.
 //
 
-import Foundation
 import AVFoundation
+import Foundation
 import Sphinx
 
-
-fileprivate enum SpeechStateEnum : CustomStringConvertible {
+private enum SpeechStateEnum: CustomStringConvertible {
     case silence
     case speech
     case utterance
 
     var description: String {
-        get {
-            switch(self) {
-            case .silence:
-                return "Silence"
-            case .speech:
-                return "Speech"
-            case .utterance:
-                return "Utterance"
-            }
+        switch self {
+        case .silence:
+            return "Silence"
+        case .speech:
+            return "Speech"
+        case .utterance:
+            return "Utterance"
         }
     }
 }
 
-
-fileprivate extension AVAudioPCMBuffer {
-
+private extension AVAudioPCMBuffer {
     func toData() -> Data {
         let channels = UnsafeBufferPointer(start: int16ChannelData, count: 1)
         let ch0Data = Data(bytes: UnsafeMutablePointer<int16>(channels[0]),
                            count: Int(frameCapacity * format.streamDescription.pointee.mBytesPerFrame))
         return ch0Data
     }
-
 }
 
-
-public enum DecodeErrors : Error {
+public enum DecodeErrors: Error {
     case CantReadSpeachFile(String)
     case CantSetAudioSession(NSError)
     case CantStartAudioEngine(NSError)
@@ -51,15 +44,12 @@ public enum DecodeErrors : Error {
     case CantConvertAudioFormat
 }
 
-
 public final class Decoder {
-
     fileprivate var psDecoder: OpaquePointer?
     fileprivate var engine: AVAudioEngine!
     fileprivate var speechState: SpeechStateEnum
 
     public init?(config: Config) {
-
         speechState = .silence
         psDecoder = config.cmdLnConf.flatMap(ps_init)
 
@@ -74,14 +64,13 @@ public final class Decoder {
     }
 
     @discardableResult fileprivate func process_raw(_ data: Data) -> CInt {
-
         let dataLenght = data.count / 2
-        let numberOfFrames = data.withUnsafeBytes { (bytes : UnsafePointer<Int16>) -> Int32 in
+        let numberOfFrames = data.withUnsafeBytes { (bytes: UnsafePointer<Int16>) -> Int32 in
             ps_process_raw(psDecoder, bytes, dataLenght, SFalse32, SFalse32)
         }
         let hasSpeech = in_speech()
 
-        switch (speechState) {
+        switch speechState {
         case .silence where hasSpeech:
             speechState = .speech
         case .speech where !hasSpeech:
@@ -121,8 +110,7 @@ public final class Decoder {
         }
     }
 
-    fileprivate func hypotesisForSpeech (inFile fileHandle: FileHandle) -> Hypothesis? {
-
+    fileprivate func hypotesisForSpeech(inFile fileHandle: FileHandle) -> Hypothesis? {
         start_utt()
 
         let hypothesis = fileHandle.reduceChunks(2048, initial: nil, reducer: {
@@ -132,7 +120,6 @@ public final class Decoder {
 
             var resultantHyp = partialHyp
             if speechState == .utterance {
-
                 end_utt()
                 resultantHyp = partialHyp + get_hyp()
                 start_utt()
@@ -143,7 +130,7 @@ public final class Decoder {
 
         end_utt()
 
-        //Process any pending speech
+        // Process any pending speech
         if speechState == .speech {
             return hypothesis + get_hyp()
         } else {
@@ -151,14 +138,13 @@ public final class Decoder {
         }
     }
 
-    public func decodeSpeech (atPath filePath: String, complete: @escaping (Hypothesis?) -> ()) throws {
-
+    public func decodeSpeech(atPath filePath: String, complete: @escaping (Hypothesis?) -> Void) throws {
         guard let fileHandle = FileHandle(forReadingAtPath: filePath) else {
             throw DecodeErrors.CantReadSpeachFile(filePath)
         }
 
         DispatchQueue.global().async {
-            let hypothesis = self.hypotesisForSpeech(inFile:fileHandle)
+            let hypothesis = self.hypotesisForSpeech(inFile: fileHandle)
             fileHandle.closeFile()
             DispatchQueue.main.async {
                 complete(hypothesis)
@@ -166,7 +152,7 @@ public final class Decoder {
         }
     }
 
-    public func startDecodingSpeech (_ utteranceComplete: @escaping (Hypothesis?) -> ()) throws {
+    public func startDecodingSpeech(_ utteranceComplete: @escaping (Hypothesis?) -> Void) throws {
 //        do {
 //            if #available(iOS 10.0, *) {
 //                try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .voiceChat, options: [.allowBluetooth, .mixWithOthers, .allowBluetoothA2DP])
@@ -187,7 +173,7 @@ public final class Decoder {
 
         // We forceunwrap this because the docs for AVAudioFormat specify that this constructor return nil when the channels
         // are grater than 2.
-        let formatIn = input.outputFormat(forBus: 0)//AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: 16000, channels: 1, interleaved: false)!
+        let formatIn = input.outputFormat(forBus: 0) // AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: 16000, channels: 1, interleaved: false)!
         let formatOut = AVAudioFormat(commonFormat: .pcmFormatInt16, sampleRate: formatIn.sampleRate, channels: 1, interleaved: false)!
 //        let recordingFormat = input.outputFormat(forBus: 0)
 
@@ -196,8 +182,7 @@ public final class Decoder {
             throw DecodeErrors.CantConvertAudioFormat
         }
 
-
-        input.installTap(onBus: 0, bufferSize: 2048, format: formatIn) { [unowned self] (buffer, _) in
+        input.installTap(onBus: 0, bufferSize: 2048, format: formatIn) { [unowned self] buffer, _ in
 
             guard let sphinxBuffer = AVAudioPCMBuffer(pcmFormat: formatOut, frameCapacity: buffer.frameCapacity) else {
                 // Returns nil in the following cases:
@@ -215,7 +200,7 @@ public final class Decoder {
 
             do {
                 try bufferMapper.convert(to: sphinxBuffer, from: buffer)
-            } catch(let error as NSError) {
+            } catch let error as NSError {
                 print(error)
                 return
             }
@@ -223,10 +208,9 @@ public final class Decoder {
             let audioData = sphinxBuffer.toData()
             self.process_raw(audioData)
 
-            //print("Process: \(buffer.frameLength) frames - \(audioData.count) bytes - sample time: \(time.sampleTime)")
+            // print("Process: \(buffer.frameLength) frames - \(audioData.count) bytes - sample time: \(time.sampleTime)")
 
             if self.speechState == .utterance {
-
                 self.end_utt()
                 let hypothesis = self.get_hyp()
 
@@ -250,18 +234,17 @@ public final class Decoder {
         }
     }
 
-    public func stopDecodingSpeech () {
+    public func stopDecodingSpeech() {
         engine.stop()
         engine = nil
     }
 
-    public func add(words:Array<(word: String, phones: String)>) throws {
-
+    public func add(words: [(word: String, phones: String)]) throws {
         guard engine == nil || !engine.isRunning else {
             throw DecodeErrors.CantAddWordsWhileDecodeingSpeech
         }
 
-        for (word,phones) in words {
+        for (word, phones) in words {
             let update = words.last?.word == word ? STrue32 : SFalse32
             ps_add_word(psDecoder, word, phones, update)
         }

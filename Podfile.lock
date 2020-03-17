@@ -9,12 +9,14 @@ PODS:
     - RxSwift (~> 5)
   - RxSwift (5.0.1)
   - Starscream (4.0.0)
+  - SwiftFormat/CLI (0.44.5)
 
 DEPENDENCIES:
   - Kingfisher (~> 5.0)
   - RxCocoa (~> 5)
   - RxSwift (~> 5)
   - Starscream
+  - SwiftFormat/CLI
 
 SPEC REPOS:
   trunk:
@@ -23,6 +25,7 @@ SPEC REPOS:
     - RxRelay
     - RxSwift
     - Starscream
+    - SwiftFormat
 
 SPEC CHECKSUMS:
   Kingfisher: 0d334cada987fcddbe9b5cec516406e1ee9d4748
@@ -30,7 +33,8 @@ SPEC CHECKSUMS:
   RxRelay: 89d54507f4fd4d969e6ec1d4bd7f3673640b4640
   RxSwift: e2dc62b366a3adf6a0be44ba9f405efd4c94e0c4
   Starscream: 04b26f02727e10a002e6b5d21b188ba0d049910b
+  SwiftFormat: 82a676c71896f604239c6923a629961f913c5924
 
-PODFILE CHECKSUM: cce9ff3c57c36fb0065b908f18be36ed83b2466c
+PODFILE CHECKSUM: 6857efcbb48d3fb20c45e5080355b18b6e12c010
 
 COCOAPODS: 1.8.4

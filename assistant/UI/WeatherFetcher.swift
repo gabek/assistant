@@ -13,18 +13,18 @@ class WeatherFetcher {
         var temp: Double
         var icon: String
     }
-    
+
     func start(completion: @escaping (WeatherResponse?) -> Void) {
         getCurrentWeather(completion: completion)
-        Timer.scheduledTimer(withTimeInterval: 1.0 * 60, repeats: true) { (_) in
+        Timer.scheduledTimer(withTimeInterval: 1.0 * 60, repeats: true) { _ in
             self.getCurrentWeather(completion: completion)
         }
     }
-    
+
     private func getCurrentWeather(completion: @escaping (WeatherResponse?) -> Void) {
         let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?zip=94102,us&units=imperial&appid=93ed55d7ec87196fbea338496a481e4e")!
-        
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
+
+        URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data else { return }
             do {
                 let response = try ObjectDecoder<CurrentWeatherResponse>().getObjectFrom(jsonData: data, decodingStrategy: .convertFromSnakeCase)
@@ -39,27 +39,27 @@ class WeatherFetcher {
             }
         }.resume()
     }
-    
+
     private struct CurrentWeatherResponse: Codable {
         var weather: [Weather]
         var main: Main
         var name: String // Location
-        
+
         struct Weather: Codable {
             var description: String
             var icon: String
         }
-        
+
         struct Main: Codable {
             var temp: Double
             var feelsLike: Double
             var tempMin: Double
             var tempMax: Double
         }
-        
+
         var speechResponse: String {
             guard let currentDescription = weather.first?.description else { return "" }
-            
+
             // Right now in SF it's 59F with partly sunny.  Today foreccast has X with a hhigh of X and low of X.
             return "Right now in \(name) it's \(Int(main.temp)) degrees with \(currentDescription). Today's forecast has a high of \(Int(main.tempMax)) and low of \(Int(main.tempMin)) degrees."
         }

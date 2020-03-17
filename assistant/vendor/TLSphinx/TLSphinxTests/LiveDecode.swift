@@ -6,19 +6,17 @@
 //  Copyright (c) 2015 Bruno Berisso. All rights reserved.
 //
 
-import UIKit
-import XCTest
 import AVFoundation
 import TLSphinx
+import UIKit
+import XCTest
 
 class LiveDecode: XCTestCase {
-
     func getModelPath() -> NSString? {
         return Bundle(for: LiveDecode.self).path(forResource: "en-us", ofType: nil) as NSString?
     }
 
     func testAVAudioRecorder() {
-
         guard let modelPath = getModelPath() else {
             XCTFail("Can't access pocketsphinx model. Bundle root: \(Bundle.main)")
             return
@@ -35,7 +33,7 @@ class LiveDecode: XCTestCase {
 
         config.showDebugInfo = false
 
-        guard let decoder = Decoder(config:config) else {
+        guard let decoder = Decoder(config: config) else {
             XCTFail("Can't run test without a decoder")
             return
         }

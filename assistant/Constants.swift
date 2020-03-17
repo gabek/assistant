@@ -12,7 +12,7 @@ struct Constants {
     struct Strings {
         static let prefixPhrase = "hey computer"
     }
-    
+
     struct Hosts {
         static let senorServer = URL(string: "http://192.168.1.7")!
         static let meuralCanvas = URL(string: "http://192.168.1.32")!

@@ -6,19 +6,16 @@
 //  Copyright (c) 2015 Bruno Berisso. All rights reserved.
 //
 
+import TLSphinx
 import UIKit
 import XCTest
-import TLSphinx
-
 
 class BasicTests: XCTestCase {
-
     func getModelPath() -> NSString? {
         return Bundle(for: BasicTests.self).path(forResource: "en-us", ofType: nil) as NSString?
     }
 
     func testConfig() {
-
         guard let modelPath = getModelPath() else {
             XCTFail("Can't access pocketsphinx model. Bundle root: \(Bundle.main)")
             return
@@ -33,7 +30,6 @@ class BasicTests: XCTestCase {
     }
 
     func testDecoder() {
-
         guard let modelPath = getModelPath() else {
             XCTFail("Can't access pocketsphinx model. Bundle root: \(Bundle.main)")
             return
@@ -48,12 +44,11 @@ class BasicTests: XCTestCase {
             return
         }
 
-        let decoder = Decoder(config:config)
+        let decoder = Decoder(config: config)
         XCTAssert(decoder != nil, "Pass")
     }
 
     func testSpeechFromFile() {
-
         guard let modelPath = getModelPath() else {
             XCTFail("Can't access pocketsphinx model. Bundle root: \(Bundle.main)")
             return
@@ -68,7 +63,7 @@ class BasicTests: XCTestCase {
             return
         }
 
-        guard let decoder = Decoder(config:config) else {
+        guard let decoder = Decoder(config: config) else {
             XCTFail("Can't run test without a decoder")
             return
         }
@@ -77,9 +72,7 @@ class BasicTests: XCTestCase {
         let expectation = self.expectation(description: "Decode finish")
 
         try! decoder.decodeSpeech(atPath: audioFile) {
-
             if let hyp = $0 {
-
                 print("Text: \(hyp.text) - Score: \(hyp.score)")
                 XCTAssert(hyp.text == "go forward ten meters", "Pass")
 
@@ -94,7 +87,6 @@ class BasicTests: XCTestCase {
     }
 
     func testAddWordToLenguageModel() {
-
         guard let modelPath = getModelPath() else {
             XCTFail("Can't access pocketsphinx model. Bundle root: \(Bundle.main)")
             return
@@ -110,7 +102,7 @@ class BasicTests: XCTestCase {
             return
         }
 
-        guard let decoder = Decoder(config:config) else {
+        guard let decoder = Decoder(config: config) else {
             XCTFail("Can't run test without a decoder")
             return
         }
@@ -121,15 +113,13 @@ class BasicTests: XCTestCase {
         try! decoder.decodeSpeech(atPath: audioFile) { [unowned decoder] in
 
             if let hyp = $0 {
-
                 print("Text: \(hyp.text) - Score: \(hyp.score)")
                 XCTAssert(hyp.text == "GO FORWARD TEN", "Pass")
 
-                try! decoder.add(words:[("METERS","M IY T ER Z")])
+                try! decoder.add(words: [("METERS", "M IY T ER Z")])
 
                 try! decoder.decodeSpeech(atPath: audioFile) {
                     if let hyp = $0 {
-
                         print("Text: \(hyp.text) - Score: \(hyp.score)")
                         XCTAssert(hyp.text == "GO FORWARD TEN METERS", "Pass")
                     } else {

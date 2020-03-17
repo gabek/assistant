@@ -9,4 +9,5 @@ target 'assistant' do
   pod 'RxSwift', '~> 5'
   pod 'RxCocoa', '~> 5'
   pod 'Starscream'
+  pod 'SwiftFormat/CLI'
 end

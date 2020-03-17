@@ -10,25 +10,25 @@ import Foundation
 
 class WhiteNoisePlugin: Plugin {
     weak var delegate: PluginDelegate?
-    
+
     enum Command: String, CaseIterable {
         case start = "play rain sounds"
         case stop = "stop rain"
     }
-    
+
     private var isSoundPlaying = false {
         didSet {
             let title = isSoundPlaying ? "Stop" : "Start"
             noiseButton.setTitle(title, for: .normal)
         }
     }
-    
+
     private var player: AVAudioPlayer?
-    
+
     var commands: [String] {
         return Command.allCases.map { return $0.rawValue }
     }
-    
+
     var actionButton: UIButton? {
         return noiseButton
     }
@@ -43,10 +43,10 @@ class WhiteNoisePlugin: Plugin {
 
     required init(delegate: PluginDelegate) {
         self.delegate = delegate
-        
+
         noiseButton.addTarget(self, action: #selector(toggleSound), for: .touchUpInside)
     }
-    
+
     @objc private func toggleSound() {
         if isSoundPlaying {
             stop()
@@ -54,21 +54,21 @@ class WhiteNoisePlugin: Plugin {
             start()
         }
     }
-    
+
     func setVolume(_ volume: Float) {
         player?.setVolume(volume, fadeDuration: 0.6)
     }
-    
+
     func speechDetected(_ speech: String) {
         guard let command = Command(rawValue: speech) else { return }
-        
+
         if command == .start {
             start()
         } else if command == .stop {
             stop()
         }
     }
-    
+
     func start() {
         let url = URL(fileURLWithPath: Bundle.main.path(forResource: "rain", ofType: "mp3")!)
         do {
@@ -78,21 +78,21 @@ class WhiteNoisePlugin: Plugin {
         } catch {
             print(error)
         }
-        
+
         isSoundPlaying = true
     }
-    
+
     func stop() {
         player?.stop()
         player = nil
         isSoundPlaying = false
     }
-    
-    func internalTempChanged(temp: Int) {
+
+    func internalTempChanged(temp _: Int) {
         //
     }
-    
-    func lightingChanged(value: Int) {
+
+    func lightingChanged(value _: Int) {
         //
     }
 }

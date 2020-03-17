@@ -15,16 +15,16 @@ protocol CompoundCommandPluginDelegate: class {
 class CompoundCommandPlugin: Plugin {
     weak var delegate: PluginDelegate?
     weak var pluginDelegate: CompoundCommandPluginDelegate?
-    
+
     enum Command: String, CaseIterable {
-        case goodnight = "goodnight"
+        case goodnight
         case turnOnTheThings = "turn on all the things"
     }
-    
+
     var commands: [String] {
         return Command.allCases.map { return $0.rawValue }
     }
-    
+
     var actionButton: UIButton? {
         return nil
     }
@@ -32,22 +32,22 @@ class CompoundCommandPlugin: Plugin {
     required init(delegate: PluginDelegate) {
         self.delegate = delegate
     }
-    
+
     func speechDetected(_ speech: String) {
         guard let command = Command(rawValue: speech) else { return }
-        
+
         if command == .goodnight {
             pluginDelegate?.goodnight()
         } else if command == .turnOnTheThings {
             pluginDelegate?.turnOnAllTheThings()
         }
     }
-    
-    func internalTempChanged(temp: Int) {
+
+    func internalTempChanged(temp _: Int) {
         //
     }
-    
-    func lightingChanged(value: Int) {
+
+    func lightingChanged(value _: Int) {
         //
     }
 }

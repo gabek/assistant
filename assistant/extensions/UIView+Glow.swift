@@ -14,34 +14,34 @@ extension UIView {
         layer.shadowOffset = .zero
         layer.shadowRadius = 10.0
         layer.shadowColor = color.cgColor
-        
+
         let animation = CABasicAnimation(keyPath: "shadowOpacity")
         animation.fromValue = 1.0
         animation.toValue = 0.7
         animation.repeatCount = .infinity
-        animation.duration = Double.random(in: 1.0...2.0)
+        animation.duration = Double.random(in: 1.0 ... 2.0)
         animation.autoreverses = true
         animation.isRemovedOnCompletion = true
         animation.fillMode = CAMediaTimingFillMode.forwards
         animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         layer.add(animation, forKey: "glowViewPulseAnimation")
-        
+
         let radiusAnimation = CABasicAnimation(keyPath: "shadowRadius")
         radiusAnimation.fromValue = 10.0
         radiusAnimation.toValue = 16.0
         radiusAnimation.repeatCount = .infinity
-        radiusAnimation.duration = Double.random(in: 2.0...3.0)
+        radiusAnimation.duration = Double.random(in: 2.0 ... 3.0)
         radiusAnimation.autoreverses = true
         radiusAnimation.isRemovedOnCompletion = true
         radiusAnimation.fillMode = CAMediaTimingFillMode.forwards
         radiusAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         layer.add(radiusAnimation, forKey: "glowViewPulseRadiusAnimation")
-        
+
         let alphaAnimation = CABasicAnimation(keyPath: "alpha")
         alphaAnimation.fromValue = alpha
         alphaAnimation.toValue = alpha - 0.4
         alphaAnimation.repeatCount = .infinity
-        alphaAnimation.duration = Double.random(in: 5.0...6.0)
+        alphaAnimation.duration = Double.random(in: 5.0 ... 6.0)
         alphaAnimation.autoreverses = true
         alphaAnimation.isRemovedOnCompletion = true
         alphaAnimation.fillMode = CAMediaTimingFillMode.forwards

@@ -13,7 +13,7 @@ import Foundation
     @objc func turnOnMeural()
     @objc func turnOffTV()
     @objc func turnOnTV()
-    
+
     @objc func lightsPurple()
     @objc func lightsRelax()
     @objc func lightsSunset()
@@ -32,10 +32,10 @@ class PopupPanelView: UIViewController {
         let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
         view.addSubview(blurView)
         blurView.pinToEdges()
-        
+
         view.layoutMargins = UIEdgeInsets(top: 50, left: 100, bottom: 70, right: 100)
         blurView.backgroundColor = UIColor.secondaryColor.withAlphaComponent(0.1)
-        
+
         let row1 = createRow()
         row1.addArrangedSubview(makeButton(title: "Prev", selector: #selector(PopupPanelDelegate.prevPainting), image: UIImage(named: "previous")))
         row1.addArrangedSubview(makeButton(title: "Canvas Off", selector: #selector(PopupPanelDelegate.turnOffMeural), image: UIImage(named: "frame")))
@@ -45,7 +45,7 @@ class PopupPanelView: UIViewController {
         view.addSubview(row1)
         row1.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         row1.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor).isActive = true
-        
+
         let row2 = createRow()
         row2.addArrangedSubview(makeButton(title: "Turn on TV", selector: #selector(PopupPanelDelegate.turnOnTV), image: UIImage(named: "appletv")))
         row2.addArrangedSubview(makeButton(title: "Turn off TV", selector: #selector(PopupPanelDelegate.turnOffTV), image: UIImage(named: "appletv")))
@@ -70,12 +70,11 @@ class PopupPanelView: UIViewController {
         row4.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         row4.topAnchor.constraint(equalTo: row3.bottomAnchor, constant: 30).isActive = true
 
-        
-        Timer.scheduledTimer(withTimeInterval: 1.0 * 10, repeats: false) { (_) in
+        Timer.scheduledTimer(withTimeInterval: 1.0 * 10, repeats: false) { _ in
             self.dismiss(animated: true, completion: nil)
         }
     }
-    
+
     private func createRow() -> UIStackView {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -83,7 +82,7 @@ class PopupPanelView: UIViewController {
         stackView.spacing = 50
         return stackView
     }
-    
+
     private func makeButton(title: String, selector: Selector, tintColor: UIColor? = nil, image: UIImage? = nil) -> StatusButton {
         let button = StatusButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -92,13 +91,13 @@ class PopupPanelView: UIViewController {
         button.heightAnchor.constraint(equalToConstant: 150).isActive = true
         button.widthAnchor.constraint(equalToConstant: 150).isActive = true
         button.addTarget(delegate, action: selector, for: .touchUpInside)
-        
+
         if let tintColor = tintColor {
             button.tintColor = tintColor
         }
-        
+
         button.alpha = 0.8
-        
+
         return button
     }
 }

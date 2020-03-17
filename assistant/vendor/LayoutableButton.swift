@@ -3,40 +3,35 @@
 
 import UIKit
 
-
 @IBDesignable
 class LayoutableButton: UIButton {
-    
-    enum VerticalAlignment : String {
+    enum VerticalAlignment: String {
         case center, top, bottom, unset
     }
-    
-    
-    enum HorizontalAlignment : String {
+
+    enum HorizontalAlignment: String {
         case center, left, right, unset
     }
-    
-    
+
     @IBInspectable
     var imageToTitleSpacing: CGFloat = 8.0 {
         didSet {
             setNeedsLayout()
         }
     }
-    
-    
+
     var imageVerticalAlignment: VerticalAlignment = .unset {
         didSet {
             setNeedsLayout()
         }
     }
-    
+
     var imageHorizontalAlignment: HorizontalAlignment = .unset {
         didSet {
             setNeedsLayout()
         }
     }
-    
+
     @available(*, unavailable, message: "This property is reserved for Interface Builder. Use 'imageVerticalAlignment' instead.")
     @IBInspectable
     var imageVerticalAlignmentName: String {
@@ -51,7 +46,7 @@ class LayoutableButton: UIButton {
             }
         }
     }
-    
+
     @available(*, unavailable, message: "This property is reserved for Interface Builder. Use 'imageHorizontalAlignment' instead.")
     @IBInspectable
     var imageHorizontalAlignmentName: String {
@@ -66,33 +61,33 @@ class LayoutableButton: UIButton {
             }
         }
     }
-    
-    var extraContentEdgeInsets:UIEdgeInsets = UIEdgeInsets.zero
-    
+
+    var extraContentEdgeInsets: UIEdgeInsets = UIEdgeInsets.zero
+
     override var contentEdgeInsets: UIEdgeInsets {
         get {
             return super.contentEdgeInsets
         }
         set {
             super.contentEdgeInsets = newValue
-            self.extraContentEdgeInsets = newValue
+            extraContentEdgeInsets = newValue
         }
     }
-    
-    var extraImageEdgeInsets:UIEdgeInsets = UIEdgeInsets.zero
-    
+
+    var extraImageEdgeInsets: UIEdgeInsets = UIEdgeInsets.zero
+
     override var imageEdgeInsets: UIEdgeInsets {
         get {
             return super.imageEdgeInsets
         }
         set {
             super.imageEdgeInsets = newValue
-            self.extraImageEdgeInsets = newValue
+            extraImageEdgeInsets = newValue
         }
     }
-    
-    var extraTitleEdgeInsets:UIEdgeInsets = UIEdgeInsets.zero
-    
+
+    var extraTitleEdgeInsets: UIEdgeInsets = UIEdgeInsets.zero
+
     override var titleEdgeInsets: UIEdgeInsets {
         get {
             return super.titleEdgeInsets
@@ -102,59 +97,56 @@ class LayoutableButton: UIButton {
             self.extraTitleEdgeInsets = newValue
         }
     }
-    
-    //Needed to avoid IB crash during autolayout
+
+    // Needed to avoid IB crash during autolayout
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
-    
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
-        self.imageEdgeInsets = super.imageEdgeInsets
-        self.titleEdgeInsets = super.titleEdgeInsets
-        self.contentEdgeInsets = super.contentEdgeInsets
+
+        imageEdgeInsets = super.imageEdgeInsets
+        titleEdgeInsets = super.titleEdgeInsets
+        contentEdgeInsets = super.contentEdgeInsets
     }
-    
+
     override func layoutSubviews() {
-        if let imageSize = self.imageView?.image?.size,
-            let font = self.titleLabel?.font,
-            let textSize = self.titleLabel?.attributedText?.size() ?? self.titleLabel?.text?.size(withAttributes: [NSAttributedString.Key.font: font]) {
-            
+        if let imageSize = imageView?.image?.size,
+            let font = titleLabel?.font,
+            let textSize = titleLabel?.attributedText?.size() ?? titleLabel?.text?.size(withAttributes: [NSAttributedString.Key.font: font]) {
             var _imageEdgeInsets = UIEdgeInsets.zero
             var _titleEdgeInsets = UIEdgeInsets.zero
             var _contentEdgeInsets = UIEdgeInsets.zero
-            
+
             let halfImageToTitleSpacing = imageToTitleSpacing / 2.0
-            
+
             switch imageVerticalAlignment {
             case .bottom:
                 _imageEdgeInsets.top = (textSize.height + imageToTitleSpacing) / 2.0
                 _imageEdgeInsets.bottom = (-textSize.height - imageToTitleSpacing) / 2.0
                 _titleEdgeInsets.top = (-imageSize.height - imageToTitleSpacing) / 2.0
                 _titleEdgeInsets.bottom = (imageSize.height + imageToTitleSpacing) / 2.0
-                _contentEdgeInsets.top = (min (imageSize.height, textSize.height) + imageToTitleSpacing) / 2.0
-                _contentEdgeInsets.bottom = (min (imageSize.height, textSize.height) + imageToTitleSpacing) / 2.0
-                //only works with contentVerticalAlignment = .center
+                _contentEdgeInsets.top = (min(imageSize.height, textSize.height) + imageToTitleSpacing) / 2.0
+                _contentEdgeInsets.bottom = (min(imageSize.height, textSize.height) + imageToTitleSpacing) / 2.0
+                // only works with contentVerticalAlignment = .center
                 contentVerticalAlignment = .center
             case .top:
                 _imageEdgeInsets.top = (-textSize.height - imageToTitleSpacing) / 2.0
                 _imageEdgeInsets.bottom = (textSize.height + imageToTitleSpacing) / 2.0
                 _titleEdgeInsets.top = (imageSize.height + imageToTitleSpacing) / 2.0
                 _titleEdgeInsets.bottom = (-imageSize.height - imageToTitleSpacing) / 2.0
-                _contentEdgeInsets.top = (min (imageSize.height, textSize.height) + imageToTitleSpacing) / 2.0
-                _contentEdgeInsets.bottom = (min (imageSize.height, textSize.height) + imageToTitleSpacing) / 2.0
-                //only works with contentVerticalAlignment = .center
+                _contentEdgeInsets.top = (min(imageSize.height, textSize.height) + imageToTitleSpacing) / 2.0
+                _contentEdgeInsets.bottom = (min(imageSize.height, textSize.height) + imageToTitleSpacing) / 2.0
+                // only works with contentVerticalAlignment = .center
                 contentVerticalAlignment = .center
             case .center:
-                //only works with contentVerticalAlignment = .center
+                // only works with contentVerticalAlignment = .center
                 contentVerticalAlignment = .center
-                break
             case .unset:
                 break
             }
-            
+
             switch imageHorizontalAlignment {
             case .left:
                 _imageEdgeInsets.left = -halfImageToTitleSpacing
@@ -175,38 +167,37 @@ class LayoutableButton: UIButton {
                 _imageEdgeInsets.right = -textSize.width / 2.0
                 _titleEdgeInsets.left = -imageSize.width / 2.0
                 _titleEdgeInsets.right = imageSize.width / 2.0
-                _contentEdgeInsets.left = -((imageSize.width + textSize.width) - max (imageSize.width, textSize.width)) / 2.0
-                _contentEdgeInsets.right = -((imageSize.width + textSize.width) - max (imageSize.width, textSize.width)) / 2.0
+                _contentEdgeInsets.left = -((imageSize.width + textSize.width) - max(imageSize.width, textSize.width)) / 2.0
+                _contentEdgeInsets.right = -((imageSize.width + textSize.width) - max(imageSize.width, textSize.width)) / 2.0
             case .unset:
                 break
             }
-            
+
             _contentEdgeInsets.top += extraContentEdgeInsets.top
             _contentEdgeInsets.bottom += extraContentEdgeInsets.bottom
             _contentEdgeInsets.left += extraContentEdgeInsets.left
             _contentEdgeInsets.right += extraContentEdgeInsets.right
-            
+
             _imageEdgeInsets.top += extraImageEdgeInsets.top
             _imageEdgeInsets.bottom += extraImageEdgeInsets.bottom
             _imageEdgeInsets.left += extraImageEdgeInsets.left
             _imageEdgeInsets.right += extraImageEdgeInsets.right
-            
+
             _titleEdgeInsets.top += extraTitleEdgeInsets.top
             _titleEdgeInsets.bottom += extraTitleEdgeInsets.bottom
             _titleEdgeInsets.left += extraTitleEdgeInsets.left
             _titleEdgeInsets.right += extraTitleEdgeInsets.right
-            
+
             super.imageEdgeInsets = _imageEdgeInsets
             super.titleEdgeInsets = _titleEdgeInsets
             super.contentEdgeInsets = _contentEdgeInsets
-            
+
         } else {
             super.imageEdgeInsets = extraImageEdgeInsets
             super.titleEdgeInsets = extraTitleEdgeInsets
             super.contentEdgeInsets = extraContentEdgeInsets
         }
-        
+
         super.layoutSubviews()
     }
-    
 }

@@ -13,23 +13,19 @@ public struct Hypothesis {
     public let score: Int
 }
 
-extension Hypothesis : CustomStringConvertible {
-
+extension Hypothesis: CustomStringConvertible {
     public var description: String {
-        get {
-            return "Text: \(text) - Score: \(score)"
-        }
+        return "Text: \(text) - Score: \(score)"
     }
-
 }
 
 extension Hypothesis {
-    static func +(lhs: Hypothesis, rhs: Hypothesis) -> Hypothesis {
+    static func + (lhs: Hypothesis, rhs: Hypothesis) -> Hypothesis {
         return Hypothesis(text: lhs.text + " " + rhs.text, score: (lhs.score + rhs.score) / 2)
     }
 }
 
-func +(lhs: Hypothesis?, rhs: Hypothesis?) -> Hypothesis? {
+func + (lhs: Hypothesis?, rhs: Hypothesis?) -> Hypothesis? {
     if let _lhs = lhs, let _rhs = rhs {
         return _lhs + _rhs
     } else {

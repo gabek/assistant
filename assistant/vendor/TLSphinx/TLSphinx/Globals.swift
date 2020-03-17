@@ -15,9 +15,7 @@ let STrue32: CInt = 1
 let SFalse32: CInt = 0
 
 extension FileHandle {
-
     func reduceChunks<T>(_ size: Int, initial: T, reducer: (Data, T) -> T) -> T {
-
         var reduceValue = initial
         var chuckData = readData(ofLength: size)
 
@@ -28,5 +26,4 @@ extension FileHandle {
 
         return reduceValue
     }
-
 }
