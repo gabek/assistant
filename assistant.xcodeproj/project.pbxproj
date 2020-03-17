@@ -29,6 +29,8 @@
 		A081528C241F106A002C6D0A /* UIView+Flicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A081528B241F106A002C6D0A /* UIView+Flicker.swift */; };
 		A081528E241F1090002C6D0A /* HarmonyHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = A081528D241F1090002C6D0A /* HarmonyHub.swift */; };
 		A0815290241F1332002C6D0A /* PopupPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A081528F241F1332002C6D0A /* PopupPanelView.swift */; };
+		A08152982420A5E7002C6D0A /* cold.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A08152962420A5E7002C6D0A /* cold.jpg */; };
+		A081529A2420A6B2002C6D0A /* moon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A08152992420A6B2002C6D0A /* moon.jpg */; };
 		A08CC72123F6645D003CB471 /* PluginProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08CC72023F6645D003CB471 /* PluginProtocol.swift */; };
 		A08CC72423F665D8003CB471 /* MeuralCanvasPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08CC72323F665D8003CB471 /* MeuralCanvasPlugin.swift */; };
 		A08CC72723F6687F003CB471 /* ObjectDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08CC72623F6687F003CB471 /* ObjectDecoder.swift */; };
@@ -122,6 +124,8 @@
 		A081528B241F106A002C6D0A /* UIView+Flicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Flicker.swift"; sourceTree = "<group>"; };
 		A081528D241F1090002C6D0A /* HarmonyHub.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HarmonyHub.swift; sourceTree = "<group>"; };
 		A081528F241F1332002C6D0A /* PopupPanelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupPanelView.swift; sourceTree = "<group>"; };
+		A08152962420A5E7002C6D0A /* cold.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cold.jpg; sourceTree = "<group>"; };
+		A08152992420A6B2002C6D0A /* moon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = moon.jpg; sourceTree = "<group>"; };
 		A08CC72023F6645D003CB471 /* PluginProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginProtocol.swift; sourceTree = "<group>"; };
 		A08CC72323F665D8003CB471 /* MeuralCanvasPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeuralCanvasPlugin.swift; sourceTree = "<group>"; };
 		A08CC72623F6687F003CB471 /* ObjectDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectDecoder.swift; sourceTree = "<group>"; };
@@ -294,6 +298,8 @@
 		A0E5787B23FA45550019852C /* wallpapers */ = {
 			isa = PBXGroup;
 			children = (
+				A08152962420A5E7002C6D0A /* cold.jpg */,
+				A08152992420A6B2002C6D0A /* moon.jpg */,
 				A0E5787C23FA45690019852C /* scab-picker.jpg */,
 			);
 			path = wallpapers;
@@ -519,9 +525,11 @@
 				A050FA47240C48F800DCCB82 /* means in Resources */,
 				A0FFBDEF23F5306F00EA63A4 /* Assets.xcassets in Resources */,
 				A050FA41240C48F800DCCB82 /* cmudict-en-us.dict in Resources */,
+				A08152982420A5E7002C6D0A /* cold.jpg in Resources */,
 				A050FA4B240C48F800DCCB82 /* variances in Resources */,
 				A050FA4C240C48F800DCCB82 /* en-us.lm.dmp in Resources */,
 				A0E5788823FA78970019852C /* rain.mp3 in Resources */,
+				A081529A2420A6B2002C6D0A /* moon.jpg in Resources */,
 				A0E5787A23FA34B90019852C /* digital-7.ttf in Resources */,
 				A050FA42240C48F800DCCB82 /* 6844.dic in Resources */,
 				A050FA40240C48F800DCCB82 /* en-us-phone.lm.dmp in Resources */,

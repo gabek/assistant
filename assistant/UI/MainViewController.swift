@@ -23,10 +23,14 @@ class MainViewController: UIViewController {
     private let speechRecognizer = SpeechRecognizer()
     fileprivate let textToSpeech = TextToSpeech()
 
-//    fileprivate let audioEngine = AVAudioEngine()
-
     fileprivate let sensors = Sensors()
     fileprivate var sensorBrightness: Int?
+
+    private let wallpapers = [
+        "scab-picker.jpg",
+        "cold.jpg",
+        "moon.jpg",
+    ]
 
     fileprivate var doNotDisturbEnabled = false {
         didSet {
@@ -169,6 +173,17 @@ class MainViewController: UIViewController {
 
         let touchRecognizer = UITapGestureRecognizer(target: self, action: #selector(presentPopupMenu))
         view.addGestureRecognizer(touchRecognizer)
+
+        Timer.scheduledTimer(withTimeInterval: 20 * 60, repeats: true) { _ in
+            self.updateWallpaper()
+        }
+    }
+
+    private func updateWallpaper() {
+        guard let wallpaper = wallpapers.randomElement() else { return }
+        UIView.transition(with: wallpaperImageView, duration: 3.0, options: .transitionCrossDissolve, animations: {
+            self.wallpaperImageView.image = UIImage(named: wallpaper)
+        }, completion: nil)
     }
 
     @objc private func presentPopupMenu() {
@@ -460,6 +475,10 @@ extension MainViewController: CompoundCommandPluginDelegate {
     }
 
     func goodnight() {
+        UIView.transition(with: wallpaperImageView, duration: 1.0, options: .transitionCrossDissolve, animations: {
+            self.wallpaperImageView.alpha = 0.5
+        }, completion: nil)
+
         harmonyHubPlugin.turnOffTV()
         lightingPlugin.allLightsOff()
         canvasPlugin.off()
@@ -480,6 +499,12 @@ extension MainViewController: SensorsDelegate {
 
         for plugin in plugins {
             plugin.lightingChanged(value: value)
+        }
+
+        if wallpaperImageView.alpha != 1.0 {
+            UIView.transition(with: wallpaperImageView, duration: 1.0, options: .transitionCrossDissolve, animations: {
+                self.wallpaperImageView.alpha = 1.0
+            }, completion: nil)
         }
     }
 }

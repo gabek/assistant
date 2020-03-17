@@ -33,7 +33,7 @@ class StatusButton: LayoutableButton {
 
         tintColor = UIColor.itemColor
 
-        backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        backgroundColor = UIColor.black.withAlphaComponent(0.7)
         titleLabel?.font = UIFont.boldSystemFont(ofSize: 22)
         titleLabel?.textAlignment = .center
 
