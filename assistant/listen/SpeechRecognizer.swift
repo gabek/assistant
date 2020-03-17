@@ -35,7 +35,7 @@ class SpeechRecognizer: NSObject {
     
     private func generateSpeechRecognitionModels() -> (lmPath: String, dicPath: String)? {
         let lmGenerator = OELanguageModelGenerator()
-        let phrases = plugins.flatMap { return $0.commands } + [Constants.prefixPhrase]
+        let phrases = plugins.flatMap { return $0.commands } + [Constants.Strings.prefixPhrase]
         let name = "assistant"
         
         //        let grammar = [ThisWillBeSaidOnce : [
@@ -92,13 +92,13 @@ class SpeechRecognizer: NSObject {
     fileprivate func didReceiveSpeech(_ speech: String) {
         if speech == "" { return }
         
-        guard let location = speech.range(of: Constants.prefixPhrase)?.lowerBound else { return }
+        guard let location = speech.range(of: Constants.Strings.prefixPhrase)?.lowerBound else { return }
 
         let fixedString = speech.suffix(from: location)
 
         print("*****", fixedString)
 
-        let removedPrefixPhrase = fixedString.replacingOccurrences(of: Constants.prefixPhrase, with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+        let removedPrefixPhrase = fixedString.replacingOccurrences(of: Constants.Strings.prefixPhrase, with: "").trimmingCharacters(in: .whitespacesAndNewlines)
         if removedPrefixPhrase == "" { return }
         
         for plugin in plugins {

@@ -20,7 +20,6 @@ class Sensors {
     }
     
     weak var delegate: SensorsDelegate?
-    private let sensorURL = URL(string: "http://192.168.1.15")!
     
     init() {
         Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { (_) in
@@ -31,7 +30,7 @@ class Sensors {
     }
     
     private func fetch() {
-        URLSession.shared.dataTask(with: sensorURL) { (data, response, error) in
+        URLSession.shared.dataTask(with: Constants.Hosts.senorServer) { (data, response, error) in
             guard let data = data else { return }
 
             do {

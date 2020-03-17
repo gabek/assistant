@@ -42,9 +42,7 @@ class MeuralCanvasPlugin: Plugin {
     }
     
     weak var delegate: PluginDelegate?
-    
-    private let canvasURL = "http://192.168.1.32"
-    
+        
     var actionButton: UIButton? {
         return nil
     }
@@ -106,16 +104,13 @@ class MeuralCanvasPlugin: Plugin {
 
         backlight = adjustedBacklightBrightness
 
-        guard let url = URL(string: self.canvasURL)?.appendingPathComponent(APIRequest.setBrightness.rawValue).appendingPathComponent(String(adjustedBacklightBrightness)) else { return }
+        let url = Constants.Hosts.meuralCanvas.appendingPathComponent(APIRequest.setBrightness.rawValue).appendingPathComponent(String(adjustedBacklightBrightness))
         URLSession.shared.dataTask(with: url).resume()
     }
     
     private func getCurrentStatus() -> Observable<CurrentStatusResponse> {
         return Observable.create { observer -> Disposable in
-            guard let currentItemURL = URL(string: self.canvasURL)?.appendingPathComponent("/remote/get_gallery_status_json") else {
-                observer.onError(MeuralCanvasAPIError.urlError)
-                return Disposables.create()
-            }
+            let currentItemURL = Constants.Hosts.meuralCanvas.appendingPathComponent("/remote/get_gallery_status_json")
             
             let task = URLSession.shared.dataTask(with: currentItemURL) { (data, response, error) in
                 do {
@@ -141,10 +136,7 @@ class MeuralCanvasPlugin: Plugin {
     private func getItem(id: String, playlistID: String) -> Observable<PlaylistResponse.Item> {
         return Observable.create { observer -> Disposable in
             
-            guard let playlistRequestURL = URL(string: self.canvasURL)?.appendingPathComponent("/remote/get_frame_items_by_gallery_json/").appendingPathComponent(playlistID) else {
-                observer.onError(MeuralCanvasAPIError.urlError)
-                return Disposables.create()
-            }
+        let playlistRequestURL = Constants.Hosts.meuralCanvas.appendingPathComponent("/remote/get_frame_items_by_gallery_json/").appendingPathComponent(playlistID)
             
             let task = URLSession.shared.dataTask(with: playlistRequestURL) { (data, response, error) in
                 do {
@@ -193,7 +185,7 @@ class MeuralCanvasPlugin: Plugin {
     }
     
     private func sendSimpleCommand(_ command: APIRequest) {
-        guard let url = URL(string: self.canvasURL)?.appendingPathComponent(command.rawValue) else { return }
+        let url = Constants.Hosts.meuralCanvas.appendingPathComponent(command.rawValue)
         URLSession.shared.dataTask(with: url).resume()
     }
     

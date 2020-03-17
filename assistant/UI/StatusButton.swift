@@ -31,7 +31,7 @@ class StatusButton: LayoutableButton {
         titleEdgeInsets = UIEdgeInsets(top: 60, left: 0, bottom: 0, right: 0)
         imageEdgeInsets = UIEdgeInsets(top: -30, left: 0, bottom: 0, right: 0)
         
-        tintColor = Constants.itemColor
+        tintColor = UIColor.itemColor
         
         backgroundColor = UIColor.black.withAlphaComponent(0.5)
         titleLabel?.font = UIFont.boldSystemFont(ofSize: 22)
@@ -39,8 +39,8 @@ class StatusButton: LayoutableButton {
         
         layer.borderWidth = 2.0
         
-        titleLabel?.enableGlow(with: Constants.shadowColor)
-        imageView?.enableGlow(with: Constants.shadowColor.withAlphaComponent(0.8))
+        titleLabel?.enableGlow(with: UIColor.shadowColor)
+        imageView?.enableGlow(with: UIColor.shadowColor.withAlphaComponent(0.8))
         imageView?.startFlicker()
     }
     

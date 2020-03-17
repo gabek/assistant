@@ -310,9 +310,9 @@ class MainViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.init(name: "Digital-7", size: 280)
         label.textAlignment = .center
-        label.textColor = Constants.itemColor
+        label.textColor = UIColor.itemColor
         label.startFlicker()
-        label.enableGlow(with: Constants.shadowColor)
+        label.enableGlow(with: UIColor.shadowColor)
         return label
     }()
     
@@ -322,9 +322,9 @@ class MainViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 50)
         label.textAlignment = .center
-        label.textColor = Constants.secondaryColor
+        label.textColor = UIColor.secondaryColor
         label.alpha = 0.5
-        label.enableGlow(with: Constants.shadowColor)
+        label.enableGlow(with: UIColor.shadowColor)
         return label
     }()
     
@@ -333,8 +333,8 @@ class MainViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.init(name: "Digital-7", size: 70)
         label.textAlignment = .center
-        label.textColor = Constants.itemColor
-        label.enableGlow(with: Constants.shadowColor)
+        label.textColor = UIColor.itemColor
+        label.enableGlow(with: UIColor.shadowColor)
         label.startFlicker()
         return label
     }()
@@ -344,9 +344,9 @@ class MainViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 40, weight: .medium)
         label.textAlignment = .center
-        label.textColor = Constants.itemColor
+        label.textColor = UIColor.itemColor
         label.alpha = 0.9
-        label.enableGlow(with: Constants.shadowColor)
+        label.enableGlow(with: UIColor.shadowColor)
         return label
     }()
     

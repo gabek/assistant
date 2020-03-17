@@ -34,7 +34,7 @@ class PopupPanelView: UIViewController {
         blurView.pinToEdges()
         
         view.layoutMargins = UIEdgeInsets(top: 50, left: 100, bottom: 70, right: 100)
-        blurView.backgroundColor = Constants.secondaryColor.withAlphaComponent(0.1)
+        blurView.backgroundColor = UIColor.secondaryColor.withAlphaComponent(0.1)
         
         let row1 = createRow()
         row1.addArrangedSubview(makeButton(title: "Prev", selector: #selector(PopupPanelDelegate.prevPainting), image: UIImage(named: "previous")))

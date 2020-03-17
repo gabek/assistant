@@ -165,7 +165,7 @@ class LightingPlugin: Plugin {
     }
     
     private func sendSimpleCommand(_ path: String, command: String) {
-        guard let url = URL(string: "http://192.168.1.2/api/\(username)")?.appendingPathComponent(path) else { return }
+        let url = Constants.Hosts.hueHub.appendingPathComponent("/api/\(username)").appendingPathComponent(path)
         
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
@@ -180,7 +180,7 @@ class LightingPlugin: Plugin {
     }
     
     private func getGroup(_ groupNumber: Int, completion: @escaping (Group) -> Void) {
-        guard let url = URL(string: "http://192.168.1.2/api/\(username)")?.appendingPathComponent("/groups/\(groupNumber)/") else { return }
+        let url = Constants.Hosts.hueHub.appendingPathComponent("/api/\(username)").appendingPathComponent("/groups/\(groupNumber)/")
         
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             guard let data = data else { return }
@@ -194,7 +194,7 @@ class LightingPlugin: Plugin {
     }
     
     func enableScene(_ scene: LightingScene, groupNumber: Int? = 0) {
-        guard let url = URL(string: "http://192.168.1.2/api/\(username)")?.appendingPathComponent("/groups/\(groupNumber ?? 0)/action") else { return }
+        let url = Constants.Hosts.hueHub.appendingPathComponent("/api/\(username)").appendingPathComponent("/groups/\(groupNumber ?? 0)/action")
         
         let sceneRequest = GroupScene(scene: scene.rawValue)
         
