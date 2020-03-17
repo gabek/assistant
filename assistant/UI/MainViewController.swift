@@ -71,24 +71,28 @@ class MainViewController: UIViewController {
         clockStackView.addArrangedSubview(questionLabel)
         clockStackView.addArrangedSubview(answerLabel)
 
-        statusStackView.addArrangedSubview(doNotDisturbButton)
-        statusStackView.addArrangedSubview(dayNightButton)
-        statusStackView.addArrangedSubview(goodnightButton)
+        statusStackView1.addArrangedSubview(doNotDisturbButton)
+        statusStackView1.addArrangedSubview(dayNightButton)
+        statusStackView1.addArrangedSubview(goodnightButton)
 
         randomItemsStackView.addArrangedSubview(roomTempLabel)
 
-        view.addSubview(statusStackView)
+        view.addSubview(statusStackView1)
+        view.addSubview(statusStackView2)
         view.addSubview(randomItemsStackView)
 
         NSLayoutConstraint.activate([
             clockStackView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -100),
             clockStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            clockStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 120),
+            clockStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height * 0.1),
             ampmLabel.topAnchor.constraint(equalTo: timeLabel.topAnchor, constant: 15),
             ampmLabel.leftAnchor.constraint(equalTo: timeLabel.rightAnchor, constant: 10),
 
-            statusStackView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 50),
-            statusStackView.centerXAnchor.constraint(equalTo: clockStackView.centerXAnchor),
+            statusStackView1.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 50),
+            statusStackView1.centerXAnchor.constraint(equalTo: clockStackView.centerXAnchor),
+
+            statusStackView2.topAnchor.constraint(equalTo: statusStackView1.bottomAnchor, constant: 20),
+            statusStackView2.centerXAnchor.constraint(equalTo: clockStackView.centerXAnchor),
 
             doNotDisturbButton.widthAnchor.constraint(equalToConstant: 110),
             doNotDisturbButton.heightAnchor.constraint(equalToConstant: 110),
@@ -136,7 +140,12 @@ class MainViewController: UIViewController {
 
         let pluginButtons = plugins.compactMap { $0.actionButton }
         for button in pluginButtons {
-            statusStackView.addArrangedSubview(button)
+            if statusStackView1.arrangedSubviews.count > 5 {
+                statusStackView2.addArrangedSubview(button)
+            } else {
+                statusStackView1.addArrangedSubview(button)
+            }
+
             NSLayoutConstraint.activate([
                 button.widthAnchor.constraint(equalToConstant: 110),
                 button.heightAnchor.constraint(equalToConstant: 110),
@@ -215,7 +224,8 @@ class MainViewController: UIViewController {
 
     fileprivate func removeActionButtons() {
         UIView.animate(withDuration: 0.2) {
-            self.statusStackView.alpha = 0
+            self.statusStackView1.alpha = 0
+            self.statusStackView2.alpha = 0
         }
 
         UIView.animate(withDuration: 0.4) {
@@ -236,12 +246,21 @@ class MainViewController: UIViewController {
         return stackView
     }()
 
-    private let statusStackView: UIStackView = {
+    private let statusStackView1: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.spacing = 45
-        stackView.alignment = .center
+        stackView.distribution = .fillEqually
+        return stackView
+    }()
+
+    private let statusStackView2: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.spacing = 45
+        stackView.distribution = .fillEqually
         return stackView
     }()
 
@@ -407,7 +426,8 @@ extension MainViewController: SpeechRecognizerDelegate {
             self.answerLabel.alpha = 0
         }) { _ in
             UIView.animate(withDuration: 1.7) {
-                self.statusStackView.alpha = 1.0
+                self.statusStackView1.alpha = 1.0
+                self.statusStackView2.alpha = 1.0
             }
             self.isInSpeechSession = false
             self.view.layer.borderWidth = 0.0
