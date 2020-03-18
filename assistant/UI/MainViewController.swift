@@ -88,7 +88,7 @@ class MainViewController: UIViewController {
         NSLayoutConstraint.activate([
             clockStackView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -100),
             clockStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            clockStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height * 0.1),
+            clockStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height * 0.15),
             ampmLabel.topAnchor.constraint(equalTo: timeLabel.topAnchor, constant: 15),
             ampmLabel.leftAnchor.constraint(equalTo: timeLabel.rightAnchor, constant: 10),
 

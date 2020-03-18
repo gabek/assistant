@@ -15,11 +15,7 @@ class HarmonyHubPlugin: Plugin {
         case turnOnTV = "turn on the TV"
     }
 
-    enum Constants: String, RawRepresentable {
-        case hubIP = "192.168.1.4"
-        case hubPort = "8088"
-        case hubPath = "?domain=svcs.myharmony.com&hubId=3888326"
-
+    struct Devices {
         enum LGTV: String {
             case DeviceID = "37912042"
             case PowerOffCommand = "PowerOff"
@@ -51,12 +47,12 @@ class HarmonyHubPlugin: Plugin {
     }
 
     func turnOffTV() {
-        send(deviceID: Constants.LGTV.DeviceID.rawValue, button: Constants.LGTV.PowerOffCommand.rawValue)
+        send(deviceID: Devices.LGTV.DeviceID.rawValue, button: Devices.LGTV.PowerOffCommand.rawValue)
     }
 
     func turnOnTV() {
-        send(deviceID: Constants.LGTV.DeviceID.rawValue, button: Constants.LGTV.PowerOnCommand.rawValue)
-        send(deviceID: Constants.AppleTV.DeviceID.rawValue, button: Constants.AppleTV.HomeCommand.rawValue)
+        send(deviceID: Devices.LGTV.DeviceID.rawValue, button: Devices.LGTV.PowerOnCommand.rawValue)
+        send(deviceID: Devices.AppleTV.DeviceID.rawValue, button: Devices.AppleTV.HomeCommand.rawValue)
     }
 
     private func send(deviceID: String, button: String) {
@@ -74,7 +70,15 @@ class HarmonyHubPlugin: Plugin {
     }
 
     func setup() {
-        var request = URLRequest(url: URL(string: "ws://\(Constants.hubIP.rawValue):\(Constants.hubPort.rawValue)/\(Constants.hubPath.rawValue)")!)
+        let queryItems = [
+            URLQueryItem(name: "domain", value: "svcs.myharmony.com"),
+            URLQueryItem(name: "hubId", value: "3888326"),
+        ]
+
+        guard var url = URLComponents(url: Constants.Hosts.harmonyHub.appendingPathComponent("/"), resolvingAgainstBaseURL: false) else { return }
+        url.queryItems = queryItems
+
+        var request = URLRequest(url: url.url!)
         request.setValue("http://sl.dhg.myharmony.com", forHTTPHeaderField: "Origin")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
