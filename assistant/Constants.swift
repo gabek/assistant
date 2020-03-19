@@ -19,6 +19,10 @@ struct Constants {
         static let hueHub = URL(string: "http://192.168.1.2")!
         static let harmonyHub = URL(string: "ws://192.168.1.6:8088")!
     }
+
+    struct Time {
+        static let meuralCanvasPlaylistRotationInterval: TimeInterval = 3 * 60 * 60
+    }
 }
 
 extension UIColor {

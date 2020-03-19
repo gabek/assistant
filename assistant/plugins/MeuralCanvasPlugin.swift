@@ -39,6 +39,26 @@ class MeuralCanvasPlugin: Plugin {
         case previous = "remote/control_command/set_key/left"
         case captions = "remote/control_command/set_key/caption"
         case setBrightness = "remote/control_command/set_backlight"
+        case setPlaylist = "/remote/control_command/change_gallery"
+    }
+
+    private enum Playlists: String, CaseIterable {
+        case art = "135814"
+        case photography = "135817"
+        case bands = "135855"
+        case starWars = "135861"
+        case flyers = "139850"
+
+        var ttl: TimeInterval {
+            switch self {
+            case .art:
+                return 30
+            case .photography:
+                return 20
+            default:
+                return 10
+            }
+        }
     }
 
     weak var delegate: PluginDelegate?
@@ -47,8 +67,46 @@ class MeuralCanvasPlugin: Plugin {
         return nil
     }
 
+    private var playlistIndex: Int = 0
+    private var scheduledNextItemTimer: Timer?
     required init(delegate: PluginDelegate) {
         self.delegate = delegate
+
+        // Every minute check to see what playlist we're on
+        // and how long the current image has been displayed.
+        // Depending on the playlist move to the next item
+        // if needed.
+        Timer.scheduledTimer(withTimeInterval: 1.0 * 60, repeats: true) { _ in
+            self.handleAutomaticNextItem()
+        }
+
+        // Every N minutes to change to the next playlist/gallery
+        Timer.scheduledTimer(withTimeInterval: Constants.Time.meuralCanvasPlaylistRotationInterval, repeats: true) { _ in
+            var nextPlaylistIndex: Int = self.playlistIndex + 1
+            if nextPlaylistIndex > Playlists.allCases.count - 1 {
+                nextPlaylistIndex = 0
+            }
+            self.playlistIndex = nextPlaylistIndex
+            self.setPlaylist(id: Playlists.allCases[nextPlaylistIndex].rawValue)
+        }
+    }
+
+    private var trackedCurrentItem: (item: String, time: Date)?
+    private func handleAutomaticNextItem() {
+        getCurrentStatus().subscribe(onNext: { item in
+            guard let playlist = Playlists(rawValue: item.response.currentGallery) else { return }
+
+            if let trackedCurrentItem = self.trackedCurrentItem, trackedCurrentItem.item == item.response.currentItem, Date().timeIntervalSince(trackedCurrentItem.time) > playlist.ttl {
+                self.next()
+                return
+            } else if self.trackedCurrentItem?.item != item.response.currentItem {
+                self.trackedCurrentItem = (item.response.currentItem, Date())
+                return
+            }
+
+        }, onError: { error in
+            print(error)
+         }).disposed(by: disposeBag)
     }
 
     func speechDetected(_ speech: String) {
@@ -83,6 +141,11 @@ class MeuralCanvasPlugin: Plugin {
 
     func previous() {
         sendSimpleCommand(.previous)
+    }
+
+    func setPlaylist(id: String) {
+        let url = Constants.Hosts.meuralCanvas.appendingPathComponent(APIRequest.setPlaylist.rawValue).appendingPathComponent(id)
+        URLSession.shared.dataTask(with: url).resume()
     }
 
     private func setBacklight(value: Int) {
