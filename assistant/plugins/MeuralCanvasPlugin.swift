@@ -21,7 +21,7 @@ class MeuralCanvasPlugin: Plugin {
     private var backlight = 0
 
     var commands: [String] {
-        return Command.allCases.map { return $0.rawValue }
+        Command.allCases.map { $0.rawValue }
     }
 
     enum Command: String, CaseIterable {
@@ -49,14 +49,27 @@ class MeuralCanvasPlugin: Plugin {
         case starWars = "135861"
         case flyers = "139850"
 
-        var ttl: TimeInterval {
+        var itemTTL: TimeInterval {
             switch self {
             case .art:
-                return 30
+                return 30 * 60
             case .photography:
-                return 20
+                return 20 * 60
             default:
-                return 10
+                return 10 * 60
+            }
+        }
+
+        var playlistTTL: TimeInterval {
+            switch self {
+            case .starWars:
+                return 20 * 60
+            case .bands:
+                return 20 * 60
+            case .flyers:
+                return 20 * 60
+            default:
+                return 3 * 60 * 60
             }
         }
     }
@@ -64,11 +77,12 @@ class MeuralCanvasPlugin: Plugin {
     weak var delegate: PluginDelegate?
 
     var actionButton: UIButton? {
-        return nil
+        nil
     }
 
     private var playlistIndex: Int = 0
     private var scheduledNextItemTimer: Timer?
+    private var playlistRotationTimer: Timer?
     required init(delegate: PluginDelegate) {
         self.delegate = delegate
 
@@ -79,24 +93,29 @@ class MeuralCanvasPlugin: Plugin {
         Timer.scheduledTimer(withTimeInterval: 1.0 * 60, repeats: true) { _ in
             self.handleAutomaticNextItem()
         }
-
-        // Every N minutes to change to the next playlist/gallery
-        Timer.scheduledTimer(withTimeInterval: Constants.Time.meuralCanvasPlaylistRotationInterval, repeats: true) { _ in
-            var nextPlaylistIndex: Int = self.playlistIndex + 1
-            if nextPlaylistIndex > Playlists.allCases.count - 1 {
-                nextPlaylistIndex = 0
-            }
-            self.playlistIndex = nextPlaylistIndex
-            self.setPlaylist(id: Playlists.allCases[nextPlaylistIndex].rawValue)
-        }
     }
 
     private var trackedCurrentItem: (item: String, time: Date)?
+    private var trackedCurrentPlaylist: String?
+
     private func handleAutomaticNextItem() {
         getCurrentStatus().subscribe(onNext: { item in
             guard let playlist = Playlists(rawValue: item.response.currentGallery) else { return }
 
-            if let trackedCurrentItem = self.trackedCurrentItem, trackedCurrentItem.item == item.response.currentItem, Date().timeIntervalSince(trackedCurrentItem.time) > playlist.ttl {
+            if playlist.rawValue != self.trackedCurrentPlaylist {
+                // Every N minutes to change to the next playlist/gallery
+                self.playlistRotationTimer?.invalidate()
+                self.trackedCurrentPlaylist = playlist.rawValue
+                self.playlistRotationTimer = Timer.scheduledTimer(withTimeInterval: playlist.playlistTTL, repeats: true) { _ in
+                    var nextPlaylistIndex: Int = self.playlistIndex + 1
+                    if nextPlaylistIndex > Playlists.allCases.count - 1 {
+                        nextPlaylistIndex = 0
+                    }
+                    self.playlistIndex = nextPlaylistIndex
+                    self.setPlaylist(id: Playlists.allCases[nextPlaylistIndex].rawValue)
+                }
+            }
+            if let trackedCurrentItem = self.trackedCurrentItem, trackedCurrentItem.item == item.response.currentItem, Date().timeIntervalSince(trackedCurrentItem.time) > playlist.itemTTL {
                 self.next()
                 return
             } else if self.trackedCurrentItem?.item != item.response.currentItem {
@@ -172,7 +191,7 @@ class MeuralCanvasPlugin: Plugin {
     }
 
     private func getCurrentStatus() -> Observable<CurrentStatusResponse> {
-        return Observable.create { observer -> Disposable in
+        Observable.create { observer -> Disposable in
             let currentItemURL = Constants.Hosts.meuralCanvas.appendingPathComponent("/remote/get_gallery_status_json")
 
             let task = URLSession.shared.dataTask(with: currentItemURL) { data, _, error in
@@ -197,7 +216,7 @@ class MeuralCanvasPlugin: Plugin {
     }
 
     private func getItem(id: String, playlistID: String) -> Observable<PlaylistResponse.Item> {
-        return Observable.create { observer -> Disposable in
+        Observable.create { observer -> Disposable in
 
             let playlistRequestURL = Constants.Hosts.meuralCanvas.appendingPathComponent("/remote/get_frame_items_by_gallery_json/").appendingPathComponent(playlistID)
 
