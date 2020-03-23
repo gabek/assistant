@@ -10,7 +10,7 @@ import Foundation
 import Speech
 import TLSphinx
 
-protocol SpeechRecognizerDelegate: class {
+protocol SpeechRecognizerDelegate: AnyObject {
     func speechDetected(_ speech: String)
     func displayResponse(_ speech: String)
 

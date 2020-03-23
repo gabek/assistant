@@ -112,13 +112,13 @@
 		A050FA34240C48F700DCCB82 /* 6844.dic */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 6844.dic; sourceTree = "<group>"; };
 		A050FA35240C48F700DCCB82 /* 6844.lm */ = {isa = PBXFileReference; explicitFileType = compiled; fileEncoding = 4; path = 6844.lm; sourceTree = "<group>"; };
 		A050FA36240C48F700DCCB82 /* goforward.raw */ = {isa = PBXFileReference; lastKnownFileType = file; path = goforward.raw; sourceTree = "<group>"; };
-		A050FA38240C48F700DCCB82 /* sendump */ = {isa = PBXFileReference; lastKnownFileType = file; path = sendump; sourceTree = "<group>"; };
+		A050FA38240C48F700DCCB82 /* sendump */ = {isa = PBXFileReference; lastKnownFileType = text; path = sendump; sourceTree = "<group>"; };
 		A050FA39240C48F700DCCB82 /* noisedict */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = noisedict; sourceTree = "<group>"; };
-		A050FA3A240C48F700DCCB82 /* means */ = {isa = PBXFileReference; lastKnownFileType = file; path = means; sourceTree = "<group>"; };
-		A050FA3B240C48F700DCCB82 /* mdef */ = {isa = PBXFileReference; lastKnownFileType = file; path = mdef; sourceTree = "<group>"; };
-		A050FA3C240C48F700DCCB82 /* transition_matrices */ = {isa = PBXFileReference; lastKnownFileType = file; path = transition_matrices; sourceTree = "<group>"; };
+		A050FA3A240C48F700DCCB82 /* means */ = {isa = PBXFileReference; lastKnownFileType = text; path = means; sourceTree = "<group>"; };
+		A050FA3B240C48F700DCCB82 /* mdef */ = {isa = PBXFileReference; lastKnownFileType = text; path = mdef; sourceTree = "<group>"; };
+		A050FA3C240C48F700DCCB82 /* transition_matrices */ = {isa = PBXFileReference; lastKnownFileType = text; path = transition_matrices; sourceTree = "<group>"; };
 		A050FA3D240C48F700DCCB82 /* feat.params */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = feat.params; sourceTree = "<group>"; };
-		A050FA3E240C48F700DCCB82 /* variances */ = {isa = PBXFileReference; lastKnownFileType = file; path = variances; sourceTree = "<group>"; };
+		A050FA3E240C48F700DCCB82 /* variances */ = {isa = PBXFileReference; lastKnownFileType = text; path = variances; sourceTree = "<group>"; };
 		A050FA3F240C48F700DCCB82 /* en-us.lm.dmp */ = {isa = PBXFileReference; lastKnownFileType = file; path = "en-us.lm.dmp"; sourceTree = "<group>"; };
 		A0815289241F1060002C6D0A /* sensors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = sensors.swift; sourceTree = "<group>"; };
 		A081528B241F106A002C6D0A /* UIView+Flicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Flicker.swift"; sourceTree = "<group>"; };
@@ -432,7 +432,7 @@
 			buildConfigurationList = A0FFBDF923F5306F00EA63A4 /* Build configuration list for PBXNativeTarget "assistant" */;
 			buildPhases = (
 				8B968B0FBCA73B81FBA704EC /* [CP] Check Pods Manifest.lock */,
-				A08152922420961A002C6D0A /* ShellScript */,
+				A08152922420961A002C6D0A /* SwiftFormat */,
 				A0FFBDE123F5306C00EA63A4 /* Sources */,
 				A0FFBDE223F5306C00EA63A4 /* Frameworks */,
 				A0FFBDE323F5306C00EA63A4 /* Resources */,
@@ -578,7 +578,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A08152922420961A002C6D0A /* ShellScript */ = {
+		A08152922420961A002C6D0A /* SwiftFormat */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -587,6 +587,7 @@
 			);
 			inputPaths = (
 			);
+			name = SwiftFormat;
 			outputFileListPaths = (
 			);
 			outputPaths = (

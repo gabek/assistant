@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol TextToSpeechDelegate: class {
+protocol TextToSpeechDelegate: AnyObject {
     func didFinishSpeaking()
 }
 

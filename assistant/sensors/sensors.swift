@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol SensorsDelegate: class {
+protocol SensorsDelegate: AnyObject {
     func internalTempChanged(temp: Int)
     func lightingChanged(value: Int)
 }

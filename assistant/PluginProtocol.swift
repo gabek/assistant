@@ -16,7 +16,7 @@ protocol Plugin: SensorsDelegate {
     func speechDetected(_ speech: String)
 }
 
-protocol PluginDelegate: class {
+protocol PluginDelegate: AnyObject {
     func speak(_ text: String)
     func commandAcknowledged(_ text: String)
 }

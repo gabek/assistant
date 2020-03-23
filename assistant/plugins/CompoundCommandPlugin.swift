@@ -7,7 +7,7 @@
 //
 
 import Foundation
-protocol CompoundCommandPluginDelegate: class {
+protocol CompoundCommandPluginDelegate: AnyObject {
     func goodnight()
     func turnOnAllTheThings()
 }

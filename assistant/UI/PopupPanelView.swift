@@ -8,7 +8,7 @@
 
 import Foundation
 
-@objc protocol PopupPanelDelegate: class {
+@objc protocol PopupPanelDelegate: AnyObject {
     @objc func turnOffMeural()
     @objc func turnOnMeural()
     @objc func turnOffTV()

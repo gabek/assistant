@@ -11,7 +11,7 @@ import Sphinx.Base
 
 public final class Config {
     var cmdLnConf: OpaquePointer?
-    fileprivate var cArgs: [UnsafeMutablePointer<Int8>?]
+    private var cArgs: [UnsafeMutablePointer<Int8>?]
 
     public init?(args: (String, String)...) {
         // Create [UnsafeMutablePointer<Int8>].

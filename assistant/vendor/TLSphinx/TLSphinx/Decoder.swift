@@ -45,9 +45,9 @@ public enum DecodeErrors: Error {
 }
 
 public final class Decoder {
-    fileprivate var psDecoder: OpaquePointer?
-    fileprivate var engine: AVAudioEngine!
-    fileprivate var speechState: SpeechStateEnum
+    private var psDecoder: OpaquePointer?
+    private var engine: AVAudioEngine!
+    private var speechState: SpeechStateEnum
 
     public init?(config: Config) {
         speechState = .silence
@@ -63,7 +63,7 @@ public final class Decoder {
         assert(refCount == 0, "Can't free decoder because it's shared among instances")
     }
 
-    @discardableResult fileprivate func process_raw(_ data: Data) -> CInt {
+    @discardableResult private func process_raw(_ data: Data) -> CInt {
         let dataLenght = data.count / 2
         let numberOfFrames = data.withUnsafeBytes { (bytes: UnsafePointer<Int16>) -> Int32 in
             ps_process_raw(psDecoder, bytes, dataLenght, SFalse32, SFalse32)
@@ -84,19 +84,19 @@ public final class Decoder {
         return numberOfFrames
     }
 
-    fileprivate func in_speech() -> Bool {
+    private func in_speech() -> Bool {
         return ps_get_in_speech(psDecoder) == STrue
     }
 
-    @discardableResult fileprivate func start_utt() -> Bool {
+    @discardableResult private func start_utt() -> Bool {
         return ps_start_utt(psDecoder) == 0
     }
 
-    @discardableResult fileprivate func end_utt() -> Bool {
+    @discardableResult private func end_utt() -> Bool {
         return ps_end_utt(psDecoder) == 0
     }
 
-    fileprivate func get_hyp() -> Hypothesis? {
+    private func get_hyp() -> Hypothesis? {
         var score: int32 = 0
 
         guard let string = ps_get_hyp(psDecoder, &score) else {
@@ -110,7 +110,7 @@ public final class Decoder {
         }
     }
 
-    fileprivate func hypotesisForSpeech(inFile fileHandle: FileHandle) -> Hypothesis? {
+    private func hypotesisForSpeech(inFile fileHandle: FileHandle) -> Hypothesis? {
         start_utt()
 
         let hypothesis = fileHandle.reduceChunks(2048, initial: nil, reducer: {
