@@ -90,6 +90,7 @@ class MeuralCanvasPlugin: Plugin {
         // and how long the current image has been displayed.
         // Depending on the playlist move to the next item
         // if needed.
+        handleAutomaticNextItem()
         Timer.scheduledTimer(withTimeInterval: 1.0 * 60, repeats: true) { _ in
             self.handleAutomaticNextItem()
         }
@@ -106,13 +107,15 @@ class MeuralCanvasPlugin: Plugin {
                 // Every N minutes to change to the next playlist/gallery
                 self.playlistRotationTimer?.invalidate()
                 self.trackedCurrentPlaylist = playlist.rawValue
-                self.playlistRotationTimer = Timer.scheduledTimer(withTimeInterval: playlist.playlistTTL, repeats: true) { _ in
-                    var nextPlaylistIndex: Int = self.playlistIndex + 1
-                    if nextPlaylistIndex > Playlists.allCases.count - 1 {
-                        nextPlaylistIndex = 0
+                DispatchQueue.main.async {
+                    self.playlistRotationTimer = Timer.scheduledTimer(withTimeInterval: playlist.playlistTTL, repeats: true) { _ in
+                        var nextPlaylistIndex: Int = self.playlistIndex + 1
+                        if nextPlaylistIndex > Playlists.allCases.count - 1 {
+                            nextPlaylistIndex = 0
+                        }
+                        self.playlistIndex = nextPlaylistIndex
+                        self.setPlaylist(id: Playlists.allCases[nextPlaylistIndex].rawValue)
                     }
-                    self.playlistIndex = nextPlaylistIndex
-                    self.setPlaylist(id: Playlists.allCases[nextPlaylistIndex].rawValue)
                 }
             }
             if let trackedCurrentItem = self.trackedCurrentItem, trackedCurrentItem.item == item.response.currentItem, Date().timeIntervalSince(trackedCurrentItem.time) > playlist.itemTTL {
