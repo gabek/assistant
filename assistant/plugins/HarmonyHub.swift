@@ -114,15 +114,15 @@ class HarmonyHubPlugin: Plugin {
 extension HarmonyHubPlugin: WebSocketDelegate {
     func didReceive(event: WebSocketEvent, client _: WebSocket) {
         switch event {
-        case let .connected(headers):
+        case .connected:
             isConnected = true
-            print("websocket is connected: \(headers)")
+            // print("websocket is connected: \(headers)")
             schedulePing()
         case let .disconnected(reason, code):
             isConnected = false
             print("websocket is disconnected: \(reason) with code: \(code)")
-        case let .text(string):
-            print("Received text: \(string)")
+        case .text:
+            break
         case let .binary(data):
             print("Received data: \(data.count)")
         case .ping:
@@ -137,7 +137,7 @@ extension HarmonyHubPlugin: WebSocketDelegate {
             isConnected = false
         case let .error(error):
             isConnected = false
-            print(error)
+            print(error as Any)
             setup()
         }
     }

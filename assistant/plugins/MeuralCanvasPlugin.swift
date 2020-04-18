@@ -16,6 +16,8 @@ class MeuralCanvasPlugin: Plugin {
         case apiResponseError
     }
 
+    private let apiClient = APIClient(baseURL: Constants.Hosts.meuralCanvas)
+
     let disposeBag = DisposeBag()
 
     private var backlight = 0
@@ -40,9 +42,12 @@ class MeuralCanvasPlugin: Plugin {
         case captions = "remote/control_command/set_key/caption"
         case setBrightness = "remote/control_command/set_backlight"
         case setPlaylist = "/remote/control_command/change_gallery"
+        case setItem = "/remote/control_command/change_item/"
+        case getGalleryStatus = "/remote/get_gallery_status_json"
+        case getPlaylist = "/remote/get_frame_items_by_gallery_json/"
     }
 
-    private enum Playlists: String, CaseIterable {
+    private enum Playlist: String, CaseIterable {
         case art = "135814"
         case photography = "135817"
         case bands = "135855"
@@ -68,6 +73,8 @@ class MeuralCanvasPlugin: Plugin {
                 return 20 * 60
             case .flyers:
                 return 20 * 60
+            case .photography:
+                return 20 * 60
             default:
                 return 3 * 60 * 60
             }
@@ -79,6 +86,9 @@ class MeuralCanvasPlugin: Plugin {
     var actionButton: UIButton? {
         nil
     }
+
+    private var currentPlaylistItems: [PlaylistResponse.Item]?
+    private var availablePlaylistItems: [PlaylistResponse.Item]?
 
     private var playlistIndex: Int = 0
     private var scheduledNextItemTimer: Timer?
@@ -101,34 +111,38 @@ class MeuralCanvasPlugin: Plugin {
 
     private func handleAutomaticNextItem() {
         getCurrentStatus().subscribe(onNext: { item in
-            guard let playlist = Playlists(rawValue: item.response.currentGallery) else { return }
+            guard let playlist = Playlist(rawValue: item.response.currentGallery) else { return }
 
             if playlist.rawValue != self.trackedCurrentPlaylist {
                 // Every N minutes to change to the next playlist/gallery
                 self.playlistRotationTimer?.invalidate()
                 self.trackedCurrentPlaylist = playlist.rawValue
+
                 DispatchQueue.main.async {
                     self.playlistRotationTimer = Timer.scheduledTimer(withTimeInterval: playlist.playlistTTL, repeats: true) { _ in
                         var nextPlaylistIndex: Int = self.playlistIndex + 1
-                        if nextPlaylistIndex > Playlists.allCases.count - 1 {
+                        if nextPlaylistIndex > Playlist.allCases.count - 1 {
                             nextPlaylistIndex = 0
                         }
                         self.playlistIndex = nextPlaylistIndex
-                        self.setPlaylist(id: Playlists.allCases[nextPlaylistIndex].rawValue)
+                        self.setPlaylist(id: Playlist.allCases[nextPlaylistIndex].rawValue)
                     }
                 }
             }
-            if let trackedCurrentItem = self.trackedCurrentItem, trackedCurrentItem.item == item.response.currentItem, Date().timeIntervalSince(trackedCurrentItem.time) > playlist.itemTTL {
-                self.next()
-                return
-            } else if self.trackedCurrentItem?.item != item.response.currentItem {
-                self.trackedCurrentItem = (item.response.currentItem, Date())
-                return
-            }
+
+            self.getPlaylist(id: playlist.rawValue).bind { _ in
+                if let trackedCurrentItem = self.trackedCurrentItem, trackedCurrentItem.item == item.response.currentItem, Date().timeIntervalSince(trackedCurrentItem.time) > playlist.itemTTL {
+                    self.next()
+                    return
+                } else if self.trackedCurrentItem?.item != item.response.currentItem {
+                    self.trackedCurrentItem = (item.response.currentItem, Date())
+                    return
+                }
+            }.disposed(by: self.disposeBag)
 
         }, onError: { error in
             print(error)
-         }).disposed(by: disposeBag)
+        }).disposed(by: disposeBag)
     }
 
     func speechDetected(_ speech: String) {
@@ -158,7 +172,18 @@ class MeuralCanvasPlugin: Plugin {
     }
 
     func next() {
-        sendSimpleCommand(.next)
+        if let currentPlaylistItems = currentPlaylistItems, availablePlaylistItems?.count == 0 {
+            availablePlaylistItems = currentPlaylistItems
+        }
+
+        if let availablePlaylistItems = availablePlaylistItems {
+            let randomIndex = Int(arc4random_uniform(UInt32(availablePlaylistItems.count)))
+            let nextItem = availablePlaylistItems[randomIndex]
+            self.availablePlaylistItems?.remove(at: randomIndex)
+            setItem(id: nextItem.id)
+        } else {
+            sendSimpleCommand(.next)
+        }
     }
 
     func previous() {
@@ -166,7 +191,22 @@ class MeuralCanvasPlugin: Plugin {
     }
 
     func setPlaylist(id: String) {
+        currentPlaylistItems = nil
+        availablePlaylistItems = nil
+
         let url = Constants.Hosts.meuralCanvas.appendingPathComponent(APIRequest.setPlaylist.rawValue).appendingPathComponent(id)
+
+        // Change playlist
+        URLSession.shared.dataTask(with: url) { _, _, _ in
+            // Get the contents of the playlist
+            self.getPlaylist(id: id).bind { _ in
+                self.next()
+            }.disposed(by: self.disposeBag)
+        }.resume()
+    }
+
+    private func setItem(id: String) {
+        let url = Constants.Hosts.meuralCanvas.appendingPathComponent(APIRequest.setItem.rawValue).appendingPathComponent(id)
         URLSession.shared.dataTask(with: url).resume()
     }
 
@@ -195,7 +235,7 @@ class MeuralCanvasPlugin: Plugin {
 
     private func getCurrentStatus() -> Observable<CurrentStatusResponse> {
         Observable.create { observer -> Disposable in
-            let currentItemURL = Constants.Hosts.meuralCanvas.appendingPathComponent("/remote/get_gallery_status_json")
+            let currentItemURL = Constants.Hosts.meuralCanvas.appendingPathComponent(APIRequest.getGalleryStatus.rawValue)
 
             let task = URLSession.shared.dataTask(with: currentItemURL) { data, _, error in
                 do {
@@ -212,6 +252,38 @@ class MeuralCanvasPlugin: Plugin {
             }
             task.resume()
 
+            return Disposables.create {
+                task.cancel()
+            }
+        }
+    }
+
+    private func getPlaylist(id: String) -> Observable<PlaylistResponse> {
+        return Observable.create { observer -> Disposable in
+
+            let playlistRequestURL = Constants.Hosts.meuralCanvas.appendingPathComponent(APIRequest.getPlaylist.rawValue).appendingPathComponent(id)
+
+            let task = URLSession.shared.dataTask(with: playlistRequestURL) { data, _, error in
+                do {
+                    guard let data = data else {
+                        observer.onError(MeuralCanvasAPIError.apiResponseError)
+                        return
+                    }
+
+                    let playlistResponse = try ObjectDecoder<PlaylistResponse>().getObjectFrom(jsonData: data, decodingStrategy: .convertFromSnakeCase)
+
+                    let items = playlistResponse.response
+                    self.currentPlaylistItems = items
+                    self.availablePlaylistItems = self.currentPlaylistItems
+
+                    observer.onNext(playlistResponse)
+
+                } catch {
+                    observer.onError(error)
+                }
+            }
+
+            task.resume()
             return Disposables.create {
                 task.cancel()
             }
