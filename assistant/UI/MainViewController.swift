@@ -292,7 +292,7 @@ class MainViewController: UIViewController {
         let label = UILabel()
         label.isOpaque = true
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "Digital-7", size: 280)
+        label.font = UIFont(name: "Digital-7 Mono", size: 280)
         label.textAlignment = .center
         label.textColor = UIColor.itemColor
         label.startFlicker()

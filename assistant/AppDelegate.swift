@@ -19,7 +19,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        self.window = window
         window.makeKeyAndVisible()
 
+        dumpFonts()
+
         return true
+    }
+
+    func dumpFonts() {
+        for family: String in UIFont.familyNames {
+            print(family)
+        }
     }
 
     // MARK: UISceneSession Lifecycle

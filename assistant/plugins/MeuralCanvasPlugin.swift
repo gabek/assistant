@@ -16,8 +16,6 @@ class MeuralCanvasPlugin: Plugin {
         case apiResponseError
     }
 
-    private let apiClient = APIClient(baseURL: Constants.Hosts.meuralCanvas)
-
     let disposeBag = DisposeBag()
 
     private var backlight = 0

@@ -10,6 +10,7 @@
 	<string>Need to use the microphhone to listen for commands</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>digital-7 (mono).ttf</string>
 		<string>digital-7.ttf</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>

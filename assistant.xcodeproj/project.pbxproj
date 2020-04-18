@@ -50,6 +50,7 @@
 		A0E5788323FA6C350019852C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E5788223FA6C350019852C /* Constants.swift */; };
 		A0E5788523FA77D70019852C /* WhiteNoisePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E5788423FA77D70019852C /* WhiteNoisePlugin.swift */; };
 		A0E5788823FA78970019852C /* rain.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A0E5788723FA78970019852C /* rain.mp3 */; };
+		A0EE86A4244B9CEC00862393 /* digital-7 (mono).ttf in Resources */ = {isa = PBXBuildFile; fileRef = A0EE86A2244B9CEC00862393 /* digital-7 (mono).ttf */; };
 		A0FF1E6923F78232003A6183 /* Slt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0FF1E6623F78232003A6183 /* Slt.framework */; };
 		A0FF1E6A23F78233003A6183 /* OpenEars.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0FF1E6723F78232003A6183 /* OpenEars.framework */; };
 		A0FF1E6B23F78233003A6183 /* AcousticModelEnglish.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A0FF1E6823F78232003A6183 /* AcousticModelEnglish.bundle */; };
@@ -146,6 +147,7 @@
 		A0E5788223FA6C350019852C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A0E5788423FA77D70019852C /* WhiteNoisePlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteNoisePlugin.swift; sourceTree = "<group>"; };
 		A0E5788723FA78970019852C /* rain.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = rain.mp3; sourceTree = "<group>"; };
+		A0EE86A2244B9CEC00862393 /* digital-7 (mono).ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "digital-7 (mono).ttf"; sourceTree = "<group>"; };
 		A0FF1E6623F78232003A6183 /* Slt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Slt.framework; sourceTree = "<group>"; };
 		A0FF1E6723F78232003A6183 /* OpenEars.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OpenEars.framework; sourceTree = "<group>"; };
 		A0FF1E6823F78232003A6183 /* AcousticModelEnglish.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AcousticModelEnglish.bundle; sourceTree = "<group>"; };
@@ -290,6 +292,7 @@
 		A0E5787823FA34A50019852C /* fonts */ = {
 			isa = PBXGroup;
 			children = (
+				A0EE86A2244B9CEC00862393 /* digital-7 (mono).ttf */,
 				A0E5787923FA34B90019852C /* digital-7.ttf */,
 			);
 			path = fonts;
@@ -522,6 +525,7 @@
 				A0FFBDF223F5306F00EA63A4 /* Preview Assets.xcassets in Resources */,
 				A050FA4A240C48F800DCCB82 /* feat.params in Resources */,
 				A050FA46240C48F800DCCB82 /* noisedict in Resources */,
+				A0EE86A4244B9CEC00862393 /* digital-7 (mono).ttf in Resources */,
 				A050FA47240C48F800DCCB82 /* means in Resources */,
 				A0FFBDEF23F5306F00EA63A4 /* Assets.xcassets in Resources */,
 				A050FA41240C48F800DCCB82 /* cmudict-en-us.dict in Resources */,
