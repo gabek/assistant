@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        self.window = window
         window.makeKeyAndVisible()
 
-        dumpFonts()
+//        dumpFonts()
 
         return true
     }

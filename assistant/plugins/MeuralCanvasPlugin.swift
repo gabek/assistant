@@ -85,12 +85,12 @@ class MeuralCanvasPlugin: Plugin {
         nil
     }
 
-    private var currentPlaylistItems: [PlaylistResponse.Item]?
-    private var availablePlaylistItems: [PlaylistResponse.Item]?
+    private var allPlaylistItems = [String: [PlaylistResponse.Item]]()
+    private var availablePlaylistItems = [String: [PlaylistResponse.Item]]()
 
     private var playlistIndex: Int = 0
     private var scheduledNextItemTimer: Timer?
-    private var playlistRotationTimer: Timer?
+
     required init(delegate: PluginDelegate) {
         self.delegate = delegate
 
@@ -99,44 +99,47 @@ class MeuralCanvasPlugin: Plugin {
         // Depending on the playlist move to the next item
         // if needed.
         handleAutomaticNextItem()
-        Timer.scheduledTimer(withTimeInterval: 1.0 * 60, repeats: true) { _ in
+        scheduledNextItemTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
             self.handleAutomaticNextItem()
         }
     }
 
     private var trackedCurrentItem: (item: String, time: Date)?
-    private var trackedCurrentPlaylist: String?
+    private var trackedCurrentPlaylist: (id: String, time: Date)?
+
+    private func nextPlaylist() {
+        var nextPlaylistIndex: Int = playlistIndex + 1
+        if nextPlaylistIndex > Playlist.allCases.count - 1 {
+            nextPlaylistIndex = 0
+        }
+        playlistIndex = nextPlaylistIndex
+        let playlistId = Playlist.allCases[nextPlaylistIndex].rawValue
+        setPlaylist(id: playlistId)
+        trackedCurrentPlaylist = (playlistId, Date())
+    }
 
     private func handleAutomaticNextItem() {
         getCurrentStatus().subscribe(onNext: { item in
             guard let playlist = Playlist(rawValue: item.response.currentGallery) else { return }
 
-            if playlist.rawValue != self.trackedCurrentPlaylist {
-                // Every N minutes to change to the next playlist/gallery
-                self.playlistRotationTimer?.invalidate()
-                self.trackedCurrentPlaylist = playlist.rawValue
-
-                DispatchQueue.main.async {
-                    self.playlistRotationTimer = Timer.scheduledTimer(withTimeInterval: playlist.playlistTTL, repeats: true) { _ in
-                        var nextPlaylistIndex: Int = self.playlistIndex + 1
-                        if nextPlaylistIndex > Playlist.allCases.count - 1 {
-                            nextPlaylistIndex = 0
-                        }
-                        self.playlistIndex = nextPlaylistIndex
-                        self.setPlaylist(id: Playlist.allCases[nextPlaylistIndex].rawValue)
-                    }
-                }
+            // Take note of the current playlist if it has changed
+            if playlist.rawValue != self.trackedCurrentPlaylist?.id {
+                self.trackedCurrentPlaylist = (playlist.rawValue, Date())
+                return
             }
 
-            self.getPlaylist(id: playlist.rawValue).bind { _ in
-                if let trackedCurrentItem = self.trackedCurrentItem, trackedCurrentItem.item == item.response.currentItem, Date().timeIntervalSince(trackedCurrentItem.time) > playlist.itemTTL {
-                    self.next()
-                    return
-                } else if self.trackedCurrentItem?.item != item.response.currentItem {
-                    self.trackedCurrentItem = (item.response.currentItem, Date())
-                    return
-                }
-            }.disposed(by: self.disposeBag)
+            // If the current playlist has been around longer than it's TTL then move to the next playlist
+            if let trackedCurrentPlaylist = self.trackedCurrentPlaylist, Date().timeIntervalSince(trackedCurrentPlaylist.time) > playlist.playlistTTL {
+                self.nextPlaylist()
+                return
+            }
+
+            // If the current playlist's current item has been around longer than the item's TTL then
+            // move to the next item in the current playlist
+            if let trackedCurrentItem = self.trackedCurrentItem, trackedCurrentItem.item == item.response.currentItem, Date().timeIntervalSince(trackedCurrentItem.time) > playlist.itemTTL {
+                self.next()
+                return
+            }
 
         }, onError: { error in
             print(error)
@@ -170,14 +173,18 @@ class MeuralCanvasPlugin: Plugin {
     }
 
     func next() {
-        if let currentPlaylistItems = currentPlaylistItems, availablePlaylistItems?.count == 0 {
-            availablePlaylistItems = currentPlaylistItems
+        guard let trackedCurrentPlaylistId = trackedCurrentPlaylist?.id else { return }
+//        guard let playlist = Playlist(rawValue: trackedCurrentPlaylistId) else { return }
+//        print(playlist, availablePlaylistItems[trackedCurrentPlaylistId]?.count)
+
+        if availablePlaylistItems[trackedCurrentPlaylistId]?.count == 0 {
+            availablePlaylistItems[trackedCurrentPlaylistId] = allPlaylistItems[trackedCurrentPlaylistId]
         }
 
-        if let availablePlaylistItems = availablePlaylistItems {
+        if let availablePlaylistItems = availablePlaylistItems[trackedCurrentPlaylistId] {
             let randomIndex = Int(arc4random_uniform(UInt32(availablePlaylistItems.count)))
             let nextItem = availablePlaylistItems[randomIndex]
-            self.availablePlaylistItems?.remove(at: randomIndex)
+            self.availablePlaylistItems[trackedCurrentPlaylistId]?.remove(at: randomIndex)
             setItem(id: nextItem.id)
         } else {
             sendSimpleCommand(.next)
@@ -189,17 +196,18 @@ class MeuralCanvasPlugin: Plugin {
     }
 
     func setPlaylist(id: String) {
-        currentPlaylistItems = nil
-        availablePlaylistItems = nil
-
         let url = Constants.Hosts.meuralCanvas.appendingPathComponent(APIRequest.setPlaylist.rawValue).appendingPathComponent(id)
 
         // Change playlist
         URLSession.shared.dataTask(with: url) { _, _, _ in
-            // Get the contents of the playlist
-            self.getPlaylist(id: id).bind { _ in
+            if self.allPlaylistItems[id] == nil {
+                // Get the contents of the playlist
+                self.getPlaylist(id: id).bind { _ in
+                    self.next()
+                }.disposed(by: self.disposeBag)
+            } else {
                 self.next()
-            }.disposed(by: self.disposeBag)
+            }
         }.resume()
     }
 
@@ -258,7 +266,6 @@ class MeuralCanvasPlugin: Plugin {
 
     private func getPlaylist(id: String) -> Observable<PlaylistResponse> {
         return Observable.create { observer -> Disposable in
-
             let playlistRequestURL = Constants.Hosts.meuralCanvas.appendingPathComponent(APIRequest.getPlaylist.rawValue).appendingPathComponent(id)
 
             let task = URLSession.shared.dataTask(with: playlistRequestURL) { data, _, error in
@@ -271,8 +278,8 @@ class MeuralCanvasPlugin: Plugin {
                     let playlistResponse = try ObjectDecoder<PlaylistResponse>().getObjectFrom(jsonData: data, decodingStrategy: .convertFromSnakeCase)
 
                     let items = playlistResponse.response
-                    self.currentPlaylistItems = items
-                    self.availablePlaylistItems = self.currentPlaylistItems
+                    self.allPlaylistItems[id] = items
+                    self.availablePlaylistItems[id] = self.allPlaylistItems[id]
 
                     observer.onNext(playlistResponse)
 
