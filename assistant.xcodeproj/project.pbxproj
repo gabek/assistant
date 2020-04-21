@@ -51,6 +51,7 @@
 		A0E5788523FA77D70019852C /* WhiteNoisePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E5788423FA77D70019852C /* WhiteNoisePlugin.swift */; };
 		A0E5788823FA78970019852C /* rain.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A0E5788723FA78970019852C /* rain.mp3 */; };
 		A0EE86A4244B9CEC00862393 /* digital-7 (mono).ttf in Resources */ = {isa = PBXBuildFile; fileRef = A0EE86A2244B9CEC00862393 /* digital-7 (mono).ttf */; };
+		A0EE86A6244EA16300862393 /* AudioSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0EE86A5244EA16300862393 /* AudioSettingsViewController.swift */; };
 		A0FF1E6923F78232003A6183 /* Slt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0FF1E6623F78232003A6183 /* Slt.framework */; };
 		A0FF1E6A23F78233003A6183 /* OpenEars.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0FF1E6723F78232003A6183 /* OpenEars.framework */; };
 		A0FF1E6B23F78233003A6183 /* AcousticModelEnglish.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A0FF1E6823F78232003A6183 /* AcousticModelEnglish.bundle */; };
@@ -148,6 +149,7 @@
 		A0E5788423FA77D70019852C /* WhiteNoisePlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteNoisePlugin.swift; sourceTree = "<group>"; };
 		A0E5788723FA78970019852C /* rain.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = rain.mp3; sourceTree = "<group>"; };
 		A0EE86A2244B9CEC00862393 /* digital-7 (mono).ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "digital-7 (mono).ttf"; sourceTree = "<group>"; };
+		A0EE86A5244EA16300862393 /* AudioSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSettingsViewController.swift; sourceTree = "<group>"; };
 		A0FF1E6623F78232003A6183 /* Slt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Slt.framework; sourceTree = "<group>"; };
 		A0FF1E6723F78232003A6183 /* OpenEars.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OpenEars.framework; sourceTree = "<group>"; };
 		A0FF1E6823F78232003A6183 /* AcousticModelEnglish.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AcousticModelEnglish.bundle; sourceTree = "<group>"; };
@@ -275,6 +277,7 @@
 				A0E5787323FA27D60019852C /* MainViewController.swift */,
 				A0E5787E23FA4AF80019852C /* WeatherFetcher.swift */,
 				A050F9F6240B4F2B00DCCB82 /* StatusButton.swift */,
+				A0EE86A5244EA16300862393 /* AudioSettingsViewController.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -609,6 +612,7 @@
 			files = (
 				A0815290241F1332002C6D0A /* PopupPanelView.swift in Sources */,
 				A08CC72423F665D8003CB471 /* MeuralCanvasPlugin.swift in Sources */,
+				A0EE86A6244EA16300862393 /* AudioSettingsViewController.swift in Sources */,
 				A0E5787423FA27D60019852C /* MainViewController.swift in Sources */,
 				A0FFBDE923F5306C00EA63A4 /* AppDelegate.swift in Sources */,
 				A0E5788523FA77D70019852C /* WhiteNoisePlugin.swift in Sources */,

@@ -34,9 +34,6 @@ class MainViewController: UIViewController {
 
     fileprivate var doNotDisturbEnabled = false {
         didSet {
-            let title = doNotDisturbEnabled ? "Unmute" : "Mute"
-            doNotDisturbButton.setTitle(title, for: .normal)
-
             let width: CGFloat = doNotDisturbEnabled ? 5.0 : 0.0
             doNotDisturbOutline.layer.borderWidth = width
         }
@@ -75,7 +72,7 @@ class MainViewController: UIViewController {
         clockStackView.addArrangedSubview(questionLabel)
         clockStackView.addArrangedSubview(answerLabel)
 
-        statusStackView1.addArrangedSubview(doNotDisturbButton)
+        statusStackView1.addArrangedSubview(audioSettingsButton)
         statusStackView1.addArrangedSubview(dayNightButton)
         statusStackView1.addArrangedSubview(goodnightButton)
 
@@ -98,8 +95,8 @@ class MainViewController: UIViewController {
             statusStackView2.topAnchor.constraint(equalTo: statusStackView1.bottomAnchor, constant: 20),
             statusStackView2.centerXAnchor.constraint(equalTo: clockStackView.centerXAnchor),
 
-            doNotDisturbButton.widthAnchor.constraint(equalToConstant: 110),
-            doNotDisturbButton.heightAnchor.constraint(equalToConstant: 110),
+            audioSettingsButton.widthAnchor.constraint(equalToConstant: 110),
+            audioSettingsButton.heightAnchor.constraint(equalToConstant: 110),
 
             dayNightButton.widthAnchor.constraint(equalToConstant: 110),
             dayNightButton.heightAnchor.constraint(equalToConstant: 110),
@@ -169,7 +166,7 @@ class MainViewController: UIViewController {
         isInDayMode = false
         doNotDisturbEnabled = false
 
-        doNotDisturbButton.addTarget(self, action: #selector(toggleDoNotDisturb), for: .touchUpInside)
+        audioSettingsButton.addTarget(self, action: #selector(audioSettingsButtonPressed), for: .touchUpInside)
 
         let touchRecognizer = UITapGestureRecognizer(target: self, action: #selector(presentPopupMenu))
         view.addGestureRecognizer(touchRecognizer)
@@ -215,8 +212,12 @@ class MainViewController: UIViewController {
         }
     }
 
-    @objc private func toggleDoNotDisturb() {
-        doNotDisturbEnabled.toggle()
+    @objc private func audioSettingsButtonPressed() {
+        let vc = AudioSettingsViewController()
+        vc.delegate = self
+        vc.modalPresentationStyle = .overCurrentContext
+        vc.modalTransitionStyle = .crossDissolve
+        present(vc, animated: true, completion: nil)
     }
 
     private func setupClock() {
@@ -389,11 +390,11 @@ class MainViewController: UIViewController {
         return outline
     }()
 
-    fileprivate let doNotDisturbButton: StatusButton = {
+    fileprivate let audioSettingsButton: StatusButton = {
         let icon = StatusButton()
         icon.translatesAutoresizingMaskIntoConstraints = false
         icon.setImage(UIImage(named: "mute"), for: .normal)
-        icon.setTitle("Mute", for: .normal)
+        icon.setTitle("Audio", for: .normal)
         return icon
     }()
 
@@ -560,5 +561,25 @@ extension MainViewController: PopupPanelDelegate {
 
     func turnOnTV() {
         harmonyHubPlugin.turnOnTV()
+    }
+}
+
+extension MainViewController: AudioSettingsViewControllerDelegate {
+    func audioEnableMovieMode() {
+        makeReceiverCommand(path: "MainZone/index.put.asp", command: "PutSurroundMode%2FMOVIE")
+    }
+
+    func audioEnableMusicMode() {
+        makeReceiverCommand(path: "MainZone/index.put.asp", command: "PutSurroundMode%2FMUSIC")
+    }
+
+    private func makeReceiverCommand(path: String, command: String) {
+        let url = Constants.Hosts.audioReceiver.appendingPathComponent(path)
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = "cmd0=\(command)".data(using: .utf8)
+        request.addValue("ZoneName=MAIN%20ZONE", forHTTPHeaderField: "Cookie")
+
+        URLSession.shared.dataTask(with: request).resume()
     }
 }

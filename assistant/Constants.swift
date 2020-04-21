@@ -18,6 +18,7 @@ struct Constants {
         static let meuralCanvas = URL(string: "http://192.168.1.32")!
         static let hueHub = URL(string: "http://192.168.1.2")!
         static let harmonyHub = URL(string: "ws://192.168.1.7:8088")!
+        static let audioReceiver = URL(string: "http://192.168.1.25/")!
     }
 }
 
