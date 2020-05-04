@@ -565,6 +565,14 @@ extension MainViewController: PopupPanelDelegate {
 }
 
 extension MainViewController: AudioSettingsViewControllerDelegate {
+    func audioChangeToDJInput() {
+        makeReceiverCommand(path: "MainZone/index.put.asp", command: "PutZone_InputFunction/GAME")
+    }
+
+    func audioChangeToTVInput() {
+        makeReceiverCommand(path: "MainZone/index.put.asp", command: "PutZone_InputFunction/TV")
+    }
+
     func audioEnableMovieMode() {
         makeReceiverCommand(path: "MainZone/index.put.asp", command: "PutSurroundMode%2FMOVIE")
     }
